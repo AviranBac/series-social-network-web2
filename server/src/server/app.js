@@ -3,7 +3,7 @@ const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const websiteUrl = "https://api.themoviedb.org/3/";
-const apiKey = "4287ce9fa98248ad849cf2e6502ff51a";
+const apiKey = "";
 const app = express();
 
 app.use(bodyParser.json());
