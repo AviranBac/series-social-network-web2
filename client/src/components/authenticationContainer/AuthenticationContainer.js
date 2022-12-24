@@ -24,8 +24,8 @@ const AuthenticationContainer = () => {
         if (isLoginTab !== updatedIsLoginTab) {
             setIsLoginTab(updatedIsLoginTab);
 
-            const resetFormRef = isLoginTab ? loginRef : registerRef;
-            resetFormRef.current.resetForm();
+            const resetRef = isLoginTab ? loginRef : registerRef;
+            resetRef.current.reset();
         }
     };
 

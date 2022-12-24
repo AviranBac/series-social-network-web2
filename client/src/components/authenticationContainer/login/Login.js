@@ -14,8 +14,9 @@ const Login = forwardRef((props, ref) => {
     const [ error, setError ] = useState();
 
     useImperativeHandle(ref, () => ({
-        resetForm() {
+        reset() {
             loginFormRef.current.reset();
+            setError(null);
         }
     }), []);
 

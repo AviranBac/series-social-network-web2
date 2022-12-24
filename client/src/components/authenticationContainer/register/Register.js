@@ -12,8 +12,9 @@ const Register = forwardRef((props, ref) => {
     const [ error, setError ] = useState();
 
     useImperativeHandle(ref, () => ({
-        resetForm() {
+        reset() {
             registerFormRef.current.reset();
+            setError(null);
         }
     }), []);
 
