@@ -1,23 +1,21 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import AuthenticatedRoute from "./utils/AuthenticatedRoute";
-import Login from "./components/login/Login";
-import Register from "./components/register/Register";
+import { Navigate, Route, Routes } from "react-router-dom";
+import AuthenticationGuardRoute from "./utils/AuthenticationGuardRoute";
 import Home from "./components/home/Home";
 import Logout from "./components/logout/Logout";
+import AuthenticationContainer from "./components/authenticationContainer/AuthenticationContainer";
 
 const Routing = () => {
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/logout" element={<Logout />} />
-                <Route path="/" element={<AuthenticatedRoute />}>
-                    <Route path="/" element={<Home />} />
-                </Route>
-                <Route path="*" element={<Navigate to='/' />} />
-            </Routes>
-        </BrowserRouter>
+        <Routes>
+            <Route path="/auth" element={<AuthenticationGuardRoute shouldBeLoggedIn="false" />}>
+                <Route path="/auth" element={<AuthenticationContainer />} />
+            </Route>
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/" element={<AuthenticationGuardRoute />}>
+                <Route path="/" element={<Home />} />
+            </Route>
+            <Route path="*" element={<Navigate to='/' />} />
+        </Routes>
     );
 };
 

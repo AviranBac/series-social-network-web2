@@ -1,6 +1,23 @@
 import axios from 'axios';
 import { config } from "../config/config";
 
+const humanizeErrorMessage = (error) => {
+    const errorMessage = error.response ? error.response?.data?.error?.message : error.message;
+
+    switch (errorMessage) {
+        case "EMAIL_EXISTS": return "This email is already in use.";
+        case "WEAK_PASSWORD": return "Your password must be 6 characters long or more.";
+        case "INVALID_EMAIL": return "Your email address is badly formatted.";
+        case "EMAIL_NOT_FOUND":
+        case "INVALID_PASSWORD":
+            return "Invalid credentials. Please try again.";
+        default: {
+            console.error(errorMessage);
+            return "Unknown error";
+        }
+    }
+};
+
 const login = (payload) => {
     const { email, password } = payload;
 
@@ -14,8 +31,8 @@ const login = (payload) => {
             return response.data;
         })
         .catch(error => {
-            throw new Error(`Incorrect email and/or password, ${(error.response ? error.response?.data?.message : error.message)}`);
-        })
+            throw new Error(humanizeErrorMessage(error));
+        });
 };
 
 const register = (payload) => {
@@ -28,8 +45,8 @@ const register = (payload) => {
     })
         .then(response => response.data)
         .catch(error => {
-            throw new Error(`Something went wrong while trying to register, ${(error.response ? error.response?.data?.message : error.message)}`);
-        })
+            throw new Error(humanizeErrorMessage(error));
+        });
 };
 
 const updateUserDetails = (idToken, displayName) => {
@@ -40,8 +57,8 @@ const updateUserDetails = (idToken, displayName) => {
     })
         .then(response => response.data)
         .catch(error => {
-            throw new Error(`Something went wrong while trying to register, ${(error.response ? error.response?.data?.message : error.message)}`);
-        })
+            throw new Error(humanizeErrorMessage(error));
+        });
 };
 
 const logout = () => {
