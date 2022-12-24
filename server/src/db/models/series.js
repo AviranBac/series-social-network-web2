@@ -10,38 +10,37 @@ const seriesSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    firstAirDate: {
+    first_air_date: {
         type: Date,
     },
-    originalLanguage: {
+    original_language: {
         type: String,
     },
     overview: {
         type: String,
     },
-    posterPath:{
+    poster_path:{
         type: String,
     },
     popularity: {
         type: Number,
     },
-    voteAverage: {
+    vote_average: {
         type: Number,
     },
-    voteCount: {
+    vote_count: {
         type: Number,
     },
-    numberOfEpisodes: {
+    // numberOfEpisodes: {
+    //     type: Number,
+    // },
+    number_of_seasons: {
         type: Number,
     },
-    numberOfSeasons: {
-        type: Number,
-    },
-    geners: {
-        type: [Genre.schema]
+    genre_ids: {
+       // type: [Genre.schema]
+       type: [Number]
     }
-    //seasons
-    // private SeriesStatus status;
 });
 
 const Series = mongoose.model('series', seriesSchema);

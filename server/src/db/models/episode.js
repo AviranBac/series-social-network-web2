@@ -10,27 +10,27 @@ const episodesSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    episodeNumber: {
+    episode_number: {
         type: Number,
         require: true
     },
-    seriesId: {
+    show_id: {
         type: Series.schema,
         require: true
     },
-    airDate: {
+    air_date: {
         type: Date
     },
     overview: {
         type: String
     },
-    stillPath: { 
+    still_path: { 
         type: String
     },
-    voteAverage: {
+    vote_average: {
         type: Number
     },
-    voteCount: {
+    vote_count: {
         type: Number
     },
 });

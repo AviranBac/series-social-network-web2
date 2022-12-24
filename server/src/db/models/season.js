@@ -11,25 +11,26 @@ const seasonsSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    seasonNumber: {
+    season_number: {
         type: Number,
         require: true
     },
-    airDate: {
+    air_date: {
         type: Date
     },
     overview: {
         type: String
     },
-    posterPath: {
+    poster_path: {
         type: String
     },
-    epsidoes: {
+    episodes: {
         type: [Episodes.schema],
         require: true
     },
-    seriesId: {
-        type: Series.schema,
+    show_id: {
+        //type: Series.schema,
+        type: Number,
         require: true
     }
 });
