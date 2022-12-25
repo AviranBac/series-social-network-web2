@@ -14,9 +14,12 @@ const episodesSchema = new mongoose.Schema({
         type: Number,
         require: true
     },
-    show_id: {
-        type: Series.schema,
-        require: true
+    seriesId: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: Series.modelName
+        }],
+        required: true
     },
     air_date: {
         type: Date

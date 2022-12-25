@@ -25,13 +25,18 @@ const seasonsSchema = new mongoose.Schema({
         type: String
     },
     episodes: {
-        type: [Episodes.schema],
-        require: true
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: Episodes.modelName
+        }],
+        required: true
     },
-    show_id: {
-        //type: Series.schema,
-        type: Number,
-        require: true
+    seriesId: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: Series.modelName
+        }],
+        required: true
     }
 });
 

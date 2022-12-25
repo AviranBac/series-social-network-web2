@@ -31,9 +31,6 @@ const seriesSchema = new mongoose.Schema({
     vote_count: {
         type: Number,
     },
-    // numberOfEpisodes: {
-    //     type: Number,
-    // },
     number_of_seasons: {
         type: Number,
     },
