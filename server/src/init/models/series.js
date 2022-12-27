@@ -43,11 +43,11 @@ const fetchPopularSeries = async () => {
     return popularSeries;
 }
 
-const fetchSingleSeries = async (seriesId) => {
+const fetchSingleSeries = async (tmdbSeriesId) => {
     let series;
 
     try {
-        const response = await axios.get(`${process.env.TMDB_API_URL}tv/${seriesId}`, {
+        const response = await axios.get(`${process.env.TMDB_API_URL}tv/${tmdbSeriesId}`, {
             headers: { "Accept-Encoding": "gzip,deflate,compress" },
             params: {
                 api_key: process.env.TMDB_API_KEY,
@@ -59,7 +59,7 @@ const fetchSingleSeries = async (seriesId) => {
         series.genre_ids = series.genres.map(genre => genre.id);
         console.log(`Got series id: ${series.id}, name: ${series.name}`);
     } catch (e) {
-        console.log(`Failed while fetching series id ${seriesId}: ${e}`);
+        console.log(`Failed while fetching series id ${tmdbSeriesId}: ${e}`);
     }
 
     return series;
