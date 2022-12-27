@@ -1,12 +1,12 @@
 const Episodes = require('../../db/models/episode');
 
-const insertEpisodes = async (episodes, seriesId) => {
-    const episodesWithSeriesId = episodes.map((episode) => ({ ...episode, series_id: seriesId }));
+const insertEpisodes = async (episodes, series) => {
+    const episodesWithSeriesId = episodes.map((episode) => ({ ...episode, series_id: series._id }));
 
     let response;
     try {
         response = await Episodes.insertMany(episodesWithSeriesId);
-        console.log(`Inserted ${episodesWithSeriesId.length} episodes to DB`);
+        console.log(`Inserted ${episodesWithSeriesId.length} episodes from series ${series.name} to DB`);
     } catch (e) {
         console.log(`Failed while inserting episodes to DB: ${e}`);
     }

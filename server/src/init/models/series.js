@@ -2,51 +2,71 @@ const axios = require('axios');
 const { initSeasons } = require('./seasons');
 const Series = require("../../db/models/series");
 
-const fetchingSeries = async () => {
-    let series = [];
+const fetchPopularSeries = async () => {
+    let popularSeries = [];
+    let page = 1;
+    let totalPages = 50;
+    const wantedLanguages = ["en", "he"];
+    const seriesLimit = 100;
 
-    // TODO: proper pagination limit
+    while (popularSeries.length < seriesLimit && page <= totalPages) {
+        try {
+            console.log(`Requesting page ${page} for popular series from TMDB`);
+
+            const response = await axios.get(`${process.env.TMDB_API_URL}tv/popular`, {
+                params: {
+                    api_key: process.env.TMDB_API_KEY,
+                    language: 'en-US',
+                    page
+                },
+                headers: { "Accept-Encoding": "gzip,deflate,compress" }
+            });
+
+            totalPages = response.data.total_pages;
+
+            const fetchedSeries = await Promise.all(response.data.results
+                .filter(series => wantedLanguages.includes(series.original_language))
+                .map((async (series) => await fetchSingleSeries(series.id)))
+                .filter(series => !!series)
+                .slice(0, seriesLimit - popularSeries.length)
+            );
+
+            popularSeries.push(...fetchedSeries);
+            console.log(`Finished Fetching page number: ${page}, total series matching criteria: ${popularSeries.length}`);
+        } catch (e) {
+            console.log(`Failed while fetching page ${page} of popular series: ${e}`);
+        }
+
+        page++;
+    }
+
+    return popularSeries;
+}
+
+const fetchSingleSeries = async (seriesId) => {
+    let series;
+
     try {
-        console.log("Requesting popular series from TMDB");
-        const response = await axios.get(`${process.env.TMDB_API_URL}tv/popular`, {
+        const response = await axios.get(`${process.env.TMDB_API_URL}tv/${seriesId}`, {
+            headers: { "Accept-Encoding": "gzip,deflate,compress" },
             params: {
                 api_key: process.env.TMDB_API_KEY,
-                language: 'en-US',
-                page: 1,
-                limit: 50
-            },
-            headers: { "Accept-Encoding": "gzip,deflate,compress" }
+                language: 'en-US'
+            }
         });
 
-        series = response.data.results;
-        console.log(`Got ${series.length} series from TMDB`);
+        series = response.data;
+        series.genre_ids = series.genres.map(genre => genre.id);
+        console.log(`Got series id: ${series.id}, name: ${series.name}`);
     } catch (e) {
-        console.log(`Failed while fetching series: ${e}`);
+        console.log(`Failed while fetching series id ${seriesId}: ${e}`);
     }
 
     return series;
 }
 
-const fetchingNumberOfSeasons = async (series) => {
-    let numOfSeasons = 0;
-
-    try {
-        console.log(`Requesting numberOfSeason for series id: ${series.id}, name: ${series.name}`);
-        const seriesResponse = await axios.get(`${process.env.TMDB_API_URL}tv/${series.id}?api_key=${process.env.TMDB_API_KEY}`, {
-            headers: { "Accept-Encoding": "gzip,deflate,compress" }
-        });
-
-        numOfSeasons = seriesResponse.data.number_of_seasons;
-        console.log(`Got numberOfSeason for series id: ${series.id}, name: ${series.name}`);
-    } catch (e) {
-        console.log(`Failed while fetching number of seasons of series: ${e}`);
-    }
-    return numOfSeasons;
-}
-
 const insertSeries = async (series) => {
     let response = [];
-
     try {
         response = await Series.insertMany(series);
         console.log(`Inserted ${series.length} series to DB`);
@@ -58,15 +78,12 @@ const insertSeries = async (series) => {
 };
 
 const initSeries = async () => {
-    const fetchedSeries = await fetchingSeries();
+    const fetchedSeries = await fetchPopularSeries();
+    const response = await insertSeries(fetchedSeries);
 
-    const series = await Promise.all(fetchedSeries.map(async (series) => {
-        const numOfSeasons = await fetchingNumberOfSeasons(series);
-        return { ...series, number_of_seasons: numOfSeasons };
+    await Promise.all(response.map(async (series) => {
+        await initSeasons(series);
     }));
-
-    const response = await insertSeries(series);
-    response.forEach(series => initSeasons(series));
 };
 
 module.exports = {

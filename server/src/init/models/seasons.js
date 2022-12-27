@@ -6,27 +6,30 @@ const fetchSeason = async (series, seasonNumber) => {
     let season;
 
     try {
-        console.log(`Requesting season number ${seasonNumber} for ${series.name} (id: ${series.id})`);
-        const response = await axios.get(`${process.env.TMDB_API_URL}tv/${series.id}/season/${seasonNumber}?api_key=${process.env.TMDB_API_KEY}`, {
-            headers: { "Accept-Encoding": "gzip,deflate,compress" }
+        const response = await axios.get(`${process.env.TMDB_API_URL}tv/${series.id}/season/${seasonNumber}`, {
+            headers: { "Accept-Encoding": "gzip,deflate,compress" },
+            params: {
+                api_key: process.env.TMDB_API_KEY,
+                language: 'en-US'
+            }
         });
 
         season = response.data;
         season.series_id = series._id;
-        console.log(`Got season number ${seasonNumber} for ${series.name} (id: ${series.id})`);
+        console.log(`Got season number ${seasonNumber} for ${series.name}`);
     } catch (e) {
-        console.log(`Failed while fetching season number ${seasonNumber} for ${series.name} (id: ${series.id}): ${e}`);
+        console.log(`Failed while fetching season number ${seasonNumber} for ${series.name}: ${e}`);
     }
 
     return season;
 };
 
-const insertSeasons = async (seasons) => {
+const insertSeasons = async (seasons, seriesName) => {
     try {
         await Seasons.insertMany(seasons);
-        console.log(`Inserted ${seasons.length} seasons to DB`);
+        console.log(`Inserted ${seasons.length} seasons for series ${seriesName} to DB`);
     } catch (e) {
-        console.log(`Failed while inserting seasons to DB: ${e}`);
+        console.log(`Failed while inserting seasons for series ${seriesName} to DB: ${e}`);
     }
 };
 
@@ -35,11 +38,14 @@ const initSeasons = async (series) => {
 
     for (let currSeason = 1; currSeason <= series.number_of_seasons; currSeason++) {
         const season = await fetchSeason(series, currSeason);
-        season.episode_ids = await insertEpisodes(season.episodes, series._id);
-        seasons.push(season);
+
+        if (season) {
+            season.episode_ids = await insertEpisodes(season.episodes, series);
+            seasons.push(season);
+        }
     }
 
-    await insertSeasons(seasons);
+    await insertSeasons(seasons, series.name);
 };
 
 module.exports = {
