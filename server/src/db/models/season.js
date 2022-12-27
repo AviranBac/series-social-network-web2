@@ -24,19 +24,15 @@ const seasonsSchema = new mongoose.Schema({
     poster_path: {
         type: String
     },
-    episodes: {
-        type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: Episodes.modelName
-        }],
-        required: true
-    },
-    seriesId: {
-        type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: Series.modelName
-        }],
-        required: true
+    episode_ids: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Episodes.modelName,
+        require: true
+    }],
+    series_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Series.modelName,
+        require: true
     }
 });
 

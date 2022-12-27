@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const followersSchema = new mongoose.Schema({
-    usernameFrom: {
+    username_from: {
         type: String,
         require: true
     },
-    usernameTo: {
+    username_to: {
         type: String,
         require: true
     }

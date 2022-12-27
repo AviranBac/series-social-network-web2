@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Genre = require('./genre');
 
 const seriesSchema = new mongoose.Schema({
     id: {
@@ -19,7 +18,7 @@ const seriesSchema = new mongoose.Schema({
     overview: {
         type: String,
     },
-    poster_path:{
+    poster_path: {
         type: String,
     },
     popularity: {
@@ -34,10 +33,9 @@ const seriesSchema = new mongoose.Schema({
     number_of_seasons: {
         type: Number,
     },
-    genre_ids: {
-       // type: [Genre.schema]
-       type: [Number]
-    }
+    genre_ids: [{
+        type: Number
+    }]
 });
 
 const Series = mongoose.model('series', seriesSchema);

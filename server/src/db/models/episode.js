@@ -14,12 +14,10 @@ const episodesSchema = new mongoose.Schema({
         type: Number,
         require: true
     },
-    seriesId: {
-        type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: Series.modelName
-        }],
-        required: true
+    series_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Series.modelName,
+        require: true
     },
     air_date: {
         type: Date
@@ -27,7 +25,7 @@ const episodesSchema = new mongoose.Schema({
     overview: {
         type: String
     },
-    still_path: { 
+    still_path: {
         type: String
     },
     vote_average: {

@@ -6,8 +6,9 @@ const watchlistsSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    episodeId: {
-        type: Episodes.schema,
+    episode_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Episodes.modelName,
         require: true
     }
 });

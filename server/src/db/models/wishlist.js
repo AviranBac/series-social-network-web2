@@ -6,11 +6,12 @@ const wishlistsSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    seriesIds: {
-        type: [Series.schema],
+    series_ids: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Series.modelName,
         require: true
-    }
+    }]
 });
 
-const wishLists = mongoose.model('wishlist', wishlistsSchema);
-module.exports = wishLists;
+const WishLists = mongoose.model('wishlist', wishlistsSchema);
+module.exports = WishLists;

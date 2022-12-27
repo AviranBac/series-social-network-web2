@@ -1,11 +1,11 @@
-const { initSeriesList } = require('./models/series');
-const { initGenresList } = require('./models/genres');
+const { initSeries } = require('./models/series');
+const { initGenres } = require('./models/genres');
 
 const initDB = async () => {
-    initSeriesList();
-    initGenresList();
+    await initGenres();
+    await initSeries();
 };
 
 module.exports = {
-    initDB,
+    initDB
 };

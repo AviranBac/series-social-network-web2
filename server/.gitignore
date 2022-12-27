@@ -106,3 +106,4 @@ dist
 # IDEs
 .idea/
 .DS_Store
+.vscode/

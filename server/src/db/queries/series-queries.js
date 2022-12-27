@@ -4,19 +4,19 @@ const getAllSeries = async () => {
 
 };
 
-const getSeriesById = (id) => {
+const getSeriesById = async (id) => {
 
 };
 
-const getPopularSeries = () => {
+const getPopularSeries = async () => {
 
 };
 
-const getTopRatedSeries = () => {
+const getTopRatedSeries = async () => {
 
 };
 
-const getWatchedSeries = () => {
+const getWatchedSeries = async () => {
 
 };
 
@@ -24,6 +24,6 @@ module.exports = {
     getAllSeries,
     getSeriesById,
     getPopularSeries,
-    getTopRatedSeries, 
+    getTopRatedSeries,
     getWatchedSeries
 };
