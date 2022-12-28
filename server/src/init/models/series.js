@@ -1,13 +1,13 @@
 const axios = require('axios');
 const { initSeasons } = require('./seasons');
-const Series = require("../../db/models/series");
+const Series = require("../../db/mongo/models/series");
 
 const fetchPopularSeries = async (genre_ids) => {
     let popularSeries = [];
     let page = 1;
     let totalPages = 50;
     const wantedLanguages = ["en", "he"];
-    const seriesLimit = 1;
+    const seriesLimit = 100;
 
     while (popularSeries.length < seriesLimit && page <= totalPages) {
         try {

@@ -1,5 +1,5 @@
 const axios = require('axios');
-const Genres = require('../../db/models/genre');
+const Genres = require('../../db/mongo/models/genre');
 
 const fetchGenres = async () => {
     let genres = [];

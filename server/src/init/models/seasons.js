@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { insertEpisodes } = require('./episodes');
-const Seasons = require('../../db/models/season');
+const Seasons = require('../../db/mongo/models/season');
 
 const fetchSeason = async (series, seasonNumber) => {
     let season;
