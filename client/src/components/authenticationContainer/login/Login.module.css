@@ -1,0 +1,8 @@
+.signUp {
+    transition: all .2s linear;
+    cursor: pointer;
+}
+
+.signUp:hover {
+    color: #fbfbfb !important;
+}
