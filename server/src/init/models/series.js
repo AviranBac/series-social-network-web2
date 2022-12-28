@@ -7,7 +7,7 @@ const fetchPopularSeries = async (genre_ids) => {
     let page = 1;
     let totalPages = 50;
     const wantedLanguages = ["en", "he"];
-    const seriesLimit = 1;
+    const seriesLimit = 100;
 
     while (popularSeries.length < seriesLimit && page <= totalPages) {
         try {
@@ -83,8 +83,9 @@ const initSeries = async (genre_ids) => {
 
     await Promise.all(response.map(async (series) => {
         const { id } = fetchedSeries.find(tmdbSeries => (tmdbSeries.name === series.name));
-        series.id = id;
-        await initSeasons(series);
+        const seriesCopy = JSON.parse(JSON.stringify(series)); // deep copy
+        seriesCopy.id = id;
+        await initSeasons(seriesCopy);
     }));
 };
 
