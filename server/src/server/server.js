@@ -1,5 +1,5 @@
 const app = require('./app');
-const { initMongoConnection } = require("../db/db-connection");
+const { initMongoConnection } = require("../db/mongo/mongo-connection");
 
 (async () => {
     await initMongoConnection();

@@ -1,4 +1,4 @@
-const Episodes = require('../../db/models/episode');
+const Episodes = require('../../db/mongo/models/episode');
 
 const insertEpisodes = async (episodes, series) => {
     const episodesWithSeriesId = episodes.map((episode) => {
