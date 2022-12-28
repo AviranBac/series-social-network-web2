@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 const Series = require('./series');
 
 const episodesSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        require: true
-    },
     name: {
         type: String,
         require: true

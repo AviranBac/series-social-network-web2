@@ -20,17 +20,22 @@ const fetchGenres = async () => {
     }
 
     return genres;
-}
+};
 
 const initGenres = async () => {
     const genres = await fetchGenres();
 
+    let response = [];
     try {
-        await Genres.insertMany(genres);
+        response = await Genres.insertMany(genres);
         console.log(`Inserted ${genres.length} genres to DB`);
     } catch (e) {
         console.log(`Failed while inserting genres to DB: ${e}`);
     }
+    return response.map(genre => {
+        const { id } = genres.find(genreDb => genre.name === genreDb.name);
+        return { name: genre.name, _id: genre._id, id };
+    });
 };
 
 module.exports = {

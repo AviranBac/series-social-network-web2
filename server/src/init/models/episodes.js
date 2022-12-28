@@ -1,7 +1,9 @@
 const Episodes = require('../../db/models/episode');
 
 const insertEpisodes = async (episodes, series) => {
-    const episodesWithSeriesId = episodes.map((episode) => ({ ...episode, series_id: series._id }));
+    const episodesWithSeriesId = episodes.map((episode) => {
+        return { ...episode, series_id: series._id };
+    });
 
     let response;
     try {

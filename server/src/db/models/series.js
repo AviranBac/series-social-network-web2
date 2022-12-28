@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
+const Genres = require('./genre');
 
 const seriesSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        require: true
-    },
     name: {
         type: String,
         require: true
@@ -34,7 +31,9 @@ const seriesSchema = new mongoose.Schema({
         type: Number,
     },
     genre_ids: [{
-        type: Number
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Genres.modelName,
+        require: true
     }]
 });
 

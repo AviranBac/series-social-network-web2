@@ -2,12 +2,12 @@ const axios = require('axios');
 const { initSeasons } = require('./seasons');
 const Series = require("../../db/models/series");
 
-const fetchPopularSeries = async () => {
+const fetchPopularSeries = async (genre_ids) => {
     let popularSeries = [];
     let page = 1;
     let totalPages = 50;
     const wantedLanguages = ["en", "he"];
-    const seriesLimit = 100;
+    const seriesLimit = 1;
 
     while (popularSeries.length < seriesLimit && page <= totalPages) {
         try {
@@ -26,7 +26,7 @@ const fetchPopularSeries = async () => {
 
             const fetchedSeries = await Promise.all(response.data.results
                 .filter(series => wantedLanguages.includes(series.original_language))
-                .map((async (series) => await fetchSingleSeries(series.id)))
+                .map((async (series) => await fetchSingleSeries(series.id, genre_ids)))
                 .filter(series => !!series)
                 .slice(0, seriesLimit - popularSeries.length)
             );
@@ -43,7 +43,7 @@ const fetchPopularSeries = async () => {
     return popularSeries;
 }
 
-const fetchSingleSeries = async (tmdbSeriesId) => {
+const fetchSingleSeries = async (tmdbSeriesId, genre_ids) => {
     let series;
 
     try {
@@ -56,7 +56,7 @@ const fetchSingleSeries = async (tmdbSeriesId) => {
         });
 
         series = response.data;
-        series.genre_ids = series.genres.map(genre => genre.id);
+        series.genre_ids = series.genres.map(genre => genre_ids.filter(genreDbIds => parseInt(genreDbIds.id) === genre.id).map(genre => genre._id));
         console.log(`Got series id: ${series.id}, name: ${series.name}`);
     } catch (e) {
         console.log(`Failed while fetching series id ${tmdbSeriesId}: ${e}`);
@@ -77,11 +77,13 @@ const insertSeries = async (series) => {
     return response;
 };
 
-const initSeries = async () => {
-    const fetchedSeries = await fetchPopularSeries();
+const initSeries = async (genre_ids) => {
+    const fetchedSeries = await fetchPopularSeries(genre_ids);
     const response = await insertSeries(fetchedSeries);
 
     await Promise.all(response.map(async (series) => {
+        const { id } = fetchedSeries.find(tmdbSeries => (tmdbSeries.name === series.name));
+        series.id = id;
         await initSeasons(series);
     }));
 };
