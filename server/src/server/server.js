@@ -1,8 +1,8 @@
 const app = require('./app');
-const { initConnection } = require('../db/db-connection');
+const { initMongoConnection } = require("../db/db-connection");
 
 (async () => {
-    await initConnection();
+    await initMongoConnection();
 
     app.listen(8080, () => {
         console.log("Server listening on port 8080!");

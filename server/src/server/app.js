@@ -2,7 +2,8 @@ require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
-const { initDB } = require("../init/init-database");
+const { userRouter } = require("../routes/users");
+const { scrapingRouter } = require("../routes/scraping");
 const app = express();
 
 app.use(bodyParser.json());
@@ -13,10 +14,8 @@ app.use(cors({
     optionSuccessStatus: 200
 }));
 
-app.post('/scraping/trigger', async (req, res) => {
-    await initDB();
-    res.send();
-});
+app.use('/users', userRouter);
+app.use('/scraping', scrapingRouter);
 
 // app.get('/series', async (req, res) => {
 
