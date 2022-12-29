@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const { userRouter } = require("../routes/users");
 const { scrapingRouter } = require("../routes/scraping");
 const { followersRouter } = require("../routes/follow");
+const { watchlistRouter } = require("../routes/watchlist");
+const { wishlistRouter } = require("../routes/wishlist");
 const app = express();
 
 app.use(bodyParser.json());
@@ -18,6 +20,8 @@ app.use(cors({
 app.use('/users', userRouter);
 app.use('/scraping', scrapingRouter);
 app.use('/follows', followersRouter);
+app.use('/wishlist', wishlistRouter);
+app.use('/watchlist', watchlistRouter);
 
 // app.get('/series', async (req, res) => {
 

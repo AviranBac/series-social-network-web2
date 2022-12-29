@@ -8,9 +8,9 @@ router.get('/:email_from/followers', async (req, res) => {
     try {
         let followers = await Follows.find({ email_from: emailFrom}).exec();
         res.send(followers);
-        console.log(`Found requested followers of ${emailFrom}`);
+        console.log(`Sending requested followers of ${emailFrom}`);
     } catch (e) {
-        console.log(`Couldn't find followers of ${emailFrom}, error was ${e}`);
+        console.log(`Couldn't send followers of ${emailFrom}, error was ${e}`);
     }
 });
 
@@ -19,9 +19,9 @@ router.get('/:email_from/following', async (req, res) => {
     try {
         let following = await Follows.find({ email_to: emailFrom }).exec();
         res.send(following);
-        console.log(`Found requested following of ${emailFrom}`);
+        console.log(`Sending requested following of ${emailFrom}`);
     } catch (e) {
-        console.log(`Couldn't find following of ${emailFrom}, error was ${e}`);
+        console.log(`Couldn't send following of ${emailFrom}, error was ${e}`);
     }
 });
 
@@ -31,9 +31,9 @@ router.get('/:email_from/following/:email_to', async (req, res) => {
     try {
         let following = await Follows.find({ email_to: emailTo, email_from: emailFrom}).exec();
         res.send(following);
-        console.log(`Found requested following from ${emailFrom} to ${emailTo}`);
+        console.log(`Sending requested following from ${emailFrom} to ${emailTo}`);
     } catch (e) {
-        console.log(`Couldn't find following from ${emailFrom} to ${emailTo}, error was ${e}`);
+        console.log(`Couldn't send following from ${emailFrom} to ${emailTo}, error was ${e}`);
     }
 });
 
