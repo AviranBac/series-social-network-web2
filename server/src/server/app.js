@@ -4,6 +4,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { userRouter } = require("../routes/users");
 const { scrapingRouter } = require("../routes/scraping");
+const seriesRouter = require('../routes/series');
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -17,27 +19,6 @@ app.use(cors({
 app.use('/users', userRouter);
 app.use('/scraping', scrapingRouter);
 
-// app.get('/series', async (req, res) => {
-
-// });
-
-
-// app.get('/genres', async (req, res) => {
-
-// });
-
-
-// app.get('/series/:id');
-
-// app.get('/series/filters');
-
-// app.get('/series/commonAmongFollowing');
-
-// app.get('/series/watched');
-
-// app.get('/series/topRated');
-
-// app.get('/series/popular');
-
+app.use('/series', seriesRouter);
 
 module.exports = app;
