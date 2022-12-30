@@ -6,6 +6,7 @@ const { userRouter } = require("../routes/users");
 const { scrapingRouter } = require("../routes/scraping");
 const { followRouter } = require("../routes/follows");
 const { watchlistRouter } = require("../routes/watchlist");
+const { wishlistRouter } = require("../routes/wishlist");
 const app = express();
 
 app.use(bodyParser.json());
@@ -20,6 +21,7 @@ app.use('/follows', followRouter);
 app.use('/users', userRouter);
 app.use('/scraping', scrapingRouter);
 app.use('/watchlist', watchlistRouter);
+app.use('/wishlist', wishlistRouter);
 
 // app.get('/series', async (req, res) => {
 
