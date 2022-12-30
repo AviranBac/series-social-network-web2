@@ -83,8 +83,9 @@ const initSeries = async (genre_ids) => {
 
     await Promise.all(response.map(async (series) => {
         const { id } = fetchedSeries.find(tmdbSeries => (tmdbSeries.name === series.name));
-        series.id = id;
-        await initSeasons(series);
+        const seriesCopy = JSON.parse(JSON.stringify(series)); // deep copy
+        seriesCopy.id = id;
+        await initSeasons(seriesCopy);
     }));
 };
 
