@@ -1,14 +1,14 @@
 const Episodes = require('../../db/mongo/models/episode');
 
-const insertEpisodes = async (episodes, series) => {
-    const episodesWithSeriesId = episodes.map((episode) => {
-        return { ...episode, series_id: series._id };
+const insertEpisodes = async (series, season, episodes) => {
+    const episodesWithRefIds = episodes.map((episode) => {
+        return { ...episode, season_id: season._id }
     });
 
     let response;
     try {
-        response = await Episodes.insertMany(episodesWithSeriesId);
-        console.log(`Inserted ${episodesWithSeriesId.length} episodes from series ${series.name} to DB`);
+        response = await Episodes.insertMany(episodesWithRefIds);
+        console.log(`Inserted ${episodesWithRefIds.length} episodes from series ${series.name} to DB`);
     } catch (e) {
         console.log(`Failed while inserting episodes to DB: ${e}`);
     }

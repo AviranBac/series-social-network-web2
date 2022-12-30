@@ -1,6 +1,6 @@
 const Follows = require("../db/mongo/models/follow");
 
-const validateInput = (action, emailFrom, emailTo) => {
+const validateFollowInput = (action, emailFrom, emailTo) => {
     if (action !== "ADD" && action !== "REMOVE") {
         throw new Error(`action is invalid: ${action}`);
     }
@@ -33,7 +33,7 @@ const removeFollow = async (emailFrom, emailTo) => {
 };
 
 module.exports = {
-    validateInput,
+    validateFollowInput,
     addFollow,
     removeFollow
 }

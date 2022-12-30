@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Series = require('./series');
+const Seasons = require("./season");
 
 const episodesSchema = new mongoose.Schema({
     name: {
@@ -10,9 +10,9 @@ const episodesSchema = new mongoose.Schema({
         type: Number,
         require: true
     },
-    series_id: {
+    season_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: Series.modelName,
+        ref: Seasons.modelName,
         require: true
     },
     air_date: {

@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const { userRouter } = require("../routes/users");
 const { scrapingRouter } = require("../routes/scraping");
 const { followRouter } = require("../routes/follows");
+const { watchlistRouter } = require("../routes/watchlist");
 const app = express();
 
 app.use(bodyParser.json());
@@ -18,6 +19,7 @@ app.use(cors({
 app.use('/follows', followRouter);
 app.use('/users', userRouter);
 app.use('/scraping', scrapingRouter);
+app.use('/watchlist', watchlistRouter);
 
 // app.get('/series', async (req, res) => {
 
@@ -40,6 +42,5 @@ app.use('/scraping', scrapingRouter);
 // app.get('/series/topRated');
 
 // app.get('/series/popular');
-
 
 module.exports = app;
