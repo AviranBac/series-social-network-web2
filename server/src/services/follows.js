@@ -19,13 +19,11 @@ const validateFollowInput = (action, emailFrom, emailTo) => {
 };
 
 const addFollow = async (emailFrom, emailTo) => {
-    let follow = await Follows.findOne({ email_from: emailFrom, email_to: emailTo });
-
-    if (!follow) {
-        follow = await Follows.insertMany({ email_from: emailFrom, email_to: emailTo });
-    }
-
-    return follow;
+    return Follows.findOneAndUpdate(
+        { email_from: emailFrom, email_to: emailTo },
+        { email_from: emailFrom, email_to: emailTo },
+        { upsert: true, new: true }
+    );
 };
 
 const removeFollow = async (emailFrom, emailTo) => {
