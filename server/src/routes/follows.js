@@ -1,17 +1,18 @@
 const express = require("express");
 const HttpStatus = require("http-status-codes");
-const { addFollow, removeFollow, validateFollowInput } = require("../services/follows");
+const { validationResult } = require('express-validator/check');
+const followsValidation = require('../validation/follow');
+const { addFollow, removeFollow } = require("../services/follows");
 const router = express.Router();
 
-router.post('', async (req, res) => {
-    const { action, emailFrom, emailTo } = req.body;
-
-    try {
-        validateFollowInput(action, emailFrom, emailTo);
-    } catch (e) {
-        res.status(HttpStatus.BAD_REQUEST).send(`${e}`);
+router.post('', followsValidation(), async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(HttpStatus.BAD_REQUEST).json({ errors: errors.array() });
         return;
     }
+
+    const { action, emailFrom, emailTo } = req.body;
 
     let response;
     let statusCode = HttpStatus.OK;

@@ -9,39 +9,6 @@ const {
     sortBySeasonNumber
 } = require("./series");
 
-const validateWatchlistInput = async (action, email, entityType, entityId) => {
-    if (action !== "ADD" && action !== "REMOVE") {
-        throw new Error(`action is invalid: ${action}`);
-    }
-
-    if (!email || email.trim() === "") {
-        throw new Error(`email is invalid: ${email}`);
-    }
-
-    let mongooseModel;
-    switch (entityType) {
-        case "SERIES": mongooseModel = Series; break;
-        case "SEASON": mongooseModel = Seasons; break;
-        case "EPISODE": mongooseModel = Episodes; break;
-        default: throw new Error(`entityType is invalid: ${entityType}`);
-    }
-
-    let entityExistsError;
-    try {
-        const entityExists = !!(await mongooseModel.findById(entityId));
-
-        if (!entityExists) {
-            entityExistsError = `entityId ${entityId} does not exist for entityType ${entityType}`
-        }
-    } catch (e) {
-        entityExistsError = `Failed to find ${entityId} for entityType ${entityType}. Error: ${e}`;
-    }
-
-    if (entityExistsError) {
-        throw new Error(entityExistsError);
-    }
-};
-
 const addToWatchlist = async (email, entityType, entityId) => {
     const allEpisodeIdsOfEntity = await getTvEpisodeIdsByEntity(entityType, entityId);
 
@@ -161,7 +128,6 @@ const calculateSeriesWatchlistStatus = (originalSeries, watchlistSeries) => {
 };
 
 module.exports = {
-    validateWatchlistInput,
     addToWatchlist,
     removeFromWatchlist,
     getUserWatchlist
