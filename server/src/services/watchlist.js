@@ -1,9 +1,9 @@
 const WatchLists = require("../db/mongo/models/watchlist");
 
-const searchWatchlistByUsername = async (username) => {
-    return WatchLists.find({ username: username}).exec();
+const getUserWatchlist = async (email) => {
+    return WatchLists.find({ email: email}).exec();
 };
 
 module.exports = {
-    searchWatchlistByUsername
+    getUserWatchlist 
 }

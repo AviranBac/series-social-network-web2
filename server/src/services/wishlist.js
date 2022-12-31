@@ -1,20 +1,20 @@
 const WishLists = require("../db/mongo/models/wishlist");
 const Series = require("../db/mongo/models/series");
 
-const searchWishlistByUsername = async (username) => {
+const getUserWishlist = async (email) => {
 
-    const wishlist = await WishLists.findOne({ username: username}).exec();
+    const wishlist = await WishLists.findOne({ email: email}).exec();
 
-    let seriesWishlist = [];
-
-    for (const series_id of wishlist.series_ids ) {
-        const seriesDetails = await Series.findById(series_id).exec();
-        seriesWishlist.push(seriesDetails);
-    }
-    
+    // let seriesWishlist = [];
+    // { $in: arrayOfIds }
+    // // for (const series_id of wishlist.series_ids ) {
+    // //     const seriesDetails = await Series.findById(series_id).exec();
+    // //     seriesWishlist.push(seriesDetails);
+    // // }
+    const seriesWishlist = await Series.find({_id: { $in: wishlist.series_ids}}).exec();
     return seriesWishlist;
 };
 
 module.exports = {
-    searchWishlistByUsername
+    getUserWishlist
 }

@@ -1,20 +1,20 @@
 const express = require("express");
 const HttpStatus = require("http-status-codes");
-const {searchWishlistByUsername} = require("../services/wishlist");
+const {getUserWishlist} = require("../services/wishlist");
 
 const router = express.Router();
 
-router.get('/:username', async (req, res) => {
+router.get('/:email', async (req, res) => {
 
     let response;
     let statusCode = HttpStatus.OK;
-    const username  = req.params.username;
+    const email  = req.params.email;
     try {
-        response = await searchWishlistByUsername(username);
-        console.log(`Sending requested wishlist of ${username}`);
+        response = await getUserWishlist(email);
+        console.log(`Sending requested wishlist of ${email}`);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-        response = `Couldn't send wishlist of ${username}, error was ${e}`;
+        response = `Couldn't send wishlist of ${email}, error was ${e}`;
         console.log(response);
     }
     res.status(statusCode).send(response);

@@ -19,17 +19,17 @@ router.get('/:email/followers', async (req, res) => {
     res.status(statusCode).send(response);
 });
 
-router.get('/:email_from/following', async (req, res) => {
+router.get('/:email/following', async (req, res) => {
 
     let response;
     let statusCode = HttpStatus.OK;
-    const emailFrom  = req.params.email_from;
+    const email  = req.params.email;
     try {
-        response = await searchFollowings(emailFrom);
-        console.log(`Sending requested following of ${emailFrom}`);
+        response = await searchFollowings(email);
+        console.log(`Sending requested following of ${email}`);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-        response = `Couldn't send following of ${emailFrom}, error was ${e}`;
+        response = `Couldn't send following of ${email}, error was ${e}`;
         console.log(response);
     }
     res.status(statusCode).send(response);

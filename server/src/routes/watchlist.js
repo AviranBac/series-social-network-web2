@@ -1,20 +1,20 @@
 const express = require("express");
 const HttpStatus = require("http-status-codes");
-const {searchWatchlistByUsername} = require("../services/watchlist");
+const {getUserWatchlist } = require("../services/watchlist");
 
 const router = express.Router();
 
-router.get('/:username', async (req, res) => {
+router.get('/:email', async (req, res) => {
 
     let response;
     let statusCode = HttpStatus.OK;
-    const username  = req.params.username;
+    const email  = req.params.email;
     try {
-        response = await searchWatchlistByUsername(username);
-        console.log(`Sending requested watchlist of ${username}`);
+        response = await getUserWatchlist(email);
+        console.log(`Sending requested watchlist of ${email}`);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-        response = `Couldn't send watchlist of ${username}, error was ${e}`;
+        response = `Couldn't send watchlist of ${email}, error was ${e}`;
         console.log(response);
     }
     res.status(statusCode).send(response);
