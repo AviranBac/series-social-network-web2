@@ -30,11 +30,7 @@ const validateWishlistInput = async (action, email, seriesId) => {
 const addToWishlist = async (email, seriesId) => {
     return WishLists.findOneAndUpdate(
         { email },
-        {
-            $addToSet: {
-                series_ids: new mongoose.mongo.ObjectId(seriesId)
-            }
-        },
+        { $addToSet: { series_ids: new mongoose.mongo.ObjectId(seriesId) } },
         { upsert: true, new: true }
     );
 };

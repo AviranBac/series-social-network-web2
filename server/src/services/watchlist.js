@@ -20,17 +20,10 @@ const validateWatchlistInput = async (action, email, entityType, entityId) => {
 
     let mongooseModel;
     switch (entityType) {
-        case "SERIES":
-            mongooseModel = Series;
-            break;
-        case "SEASON":
-            mongooseModel = Seasons;
-            break;
-        case "EPISODE":
-            mongooseModel = Episodes;
-            break;
-        default:
-            throw new Error(`entityType is invalid: ${entityType}`);
+        case "SERIES": mongooseModel = Series; break;
+        case "SEASON": mongooseModel = Seasons; break;
+        case "EPISODE": mongooseModel = Episodes; break;
+        default: throw new Error(`entityType is invalid: ${entityType}`);
     }
 
     let entityExistsError;
