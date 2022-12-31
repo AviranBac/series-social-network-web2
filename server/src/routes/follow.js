@@ -1,11 +1,9 @@
 const express = require("express");
 const { searchFollowers, searchFollowings, isFollowingExist} = require("../services/follow");
 const HttpStatus = require("http-status-codes");
-const { validationResult } = require('express-validator/check');
 const router = express.Router();
 
 router.get('/:email/followers', async (req, res) => {
-    validateRequest(req);
 
     let response;
     let statusCode = HttpStatus.OK;
@@ -22,7 +20,6 @@ router.get('/:email/followers', async (req, res) => {
 });
 
 router.get('/:email_from/following', async (req, res) => {
-    validateRequest(req);
 
     let response;
     let statusCode = HttpStatus.OK;
@@ -39,7 +36,6 @@ router.get('/:email_from/following', async (req, res) => {
 });
 
 router.get('/:email_from/following/:email_to', async (req, res) => {
-    validateRequest(req);
 
     let response;
     let statusCode = HttpStatus.OK;
@@ -56,13 +52,6 @@ router.get('/:email_from/following/:email_to', async (req, res) => {
     res.status(statusCode).send(response);
 });
 
-const validateRequest = (req) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        res.status(HttpStatus.BAD_REQUEST).json({ errors: errors.array() });
-        return;
-    } 
-};
 
 module.exports = {
     followersRouter: router

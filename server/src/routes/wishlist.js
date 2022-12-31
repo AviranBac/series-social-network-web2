@@ -1,16 +1,10 @@
 const express = require("express");
 const HttpStatus = require("http-status-codes");
-const { validationResult } = require('express-validator/check');
 const {searchWishlistByUsername} = require("../services/wishlist");
 
 const router = express.Router();
 
 router.get('/:username', async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        res.status(HttpStatus.BAD_REQUEST).json({ errors: errors.array() });
-        return;
-    }
 
     let response;
     let statusCode = HttpStatus.OK;
