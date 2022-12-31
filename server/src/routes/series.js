@@ -1,21 +1,41 @@
 const express = require('express');
 const Series = require('../db/mongo/models/series');
+const Genres = require('../db/mongo/models/genre');
+
 const router = express.Router();
 
 const pageLimit = 10;
 
 router.get('/', async (req, res) => {
-    res.send('working');
+    const pageNumber = req.params.pageNumber;
+    const { name, status, genre } = req.params;
 });
 
-router.get('/filters');
+router.get('/filters', async (req, res) => {
+    let response;
+    let statusCode = 200;
 
-router.get('/commonAmongFollowing');
+    try { 
+        response = await Genres.find();
+    } catch (e) {
+        statusCode = 500;
+        response = `Failed while fetching genres: ${e}`;
+        console.log(response);
+    }
 
-router.get('/watched');
+    res.status(statusCode).send(response);
+});
+
+router.get('/commonAmongFollowing/:username', async (req, res) => {
+    const pageNumber = req.params.pageNumber;
+    const username = req.params.username;
+});
+
+router.get('/watched', async (req, res) => {
+});
 
 router.get('/topRated', async (req, res) => {
-    const pageNumber = 1 || req.params.pageNumber;
+    const pageNumber = req.params.pageNumber;
 
     let response;
     let statusCode = 200;
