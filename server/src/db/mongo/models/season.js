@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Series = require('./series');
-const Episodes = require('./episode');
 
 const seasonsSchema = new mongoose.Schema({
     name: {
@@ -20,11 +19,6 @@ const seasonsSchema = new mongoose.Schema({
     poster_path: {
         type: String
     },
-    episode_ids: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: Episodes.modelName,
-        require: true
-    }],
     series_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: Series.modelName,
