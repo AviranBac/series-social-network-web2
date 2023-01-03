@@ -1,0 +1,54 @@
+table {
+    width: 70%;
+    margin: auto;
+    border-collapse: collapse;
+    border: 1rem;
+    position: relative;
+}
+
+thead tr th {
+    font-weight: bold;
+    text-align: left;
+    background-color: #fafafa;
+    color: gray;
+}
+
+th, td {
+    padding: 8px;
+    overflow-wrap: break-word;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(0, 0, 0, .12);
+}
+
+.removeColumn {
+    text-align: right;
+    width: 5%;
+    padding-right: 1rem;
+}
+
+.removeColumn svg:hover {
+    cursor: pointer;
+}
+
+.noDataCell {
+    text-align: center;
+    border-bottom-color: transparent;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    background-color: #3b71ca;
+}
+
+.link {
+    display: block;
+    width: 100%;
+    color: black;
+}
+
+.link:hover {
+    color: black;
+}
