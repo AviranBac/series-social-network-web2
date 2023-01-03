@@ -27,9 +27,9 @@ const Pagination = (props) => {
 
     const lastPage = paginationRange[paginationRange.length - 1];
     return (
-        <ul className={classes.paginationContainer}>
+        <ul className={`${classes.paginationContainer} w-100 d-flex justify-content-center p-0 m-3`}>
             <li onClick={onPrevious}
-                className={classnames(classes.paginationItem, {
+                className={classnames(classes.paginationItem, "text-center d-flex align-items-center", {
                     [classes.disabled]: currentPage === 1
                 })}
             >

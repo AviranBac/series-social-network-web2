@@ -1,21 +1,14 @@
 .paginationContainer {
-    width: 100%;
-    display: flex;
-    justify-content: center;
     list-style-type: none;
-    padding: 0;
-    margin: 1rem;
 }
 
 .paginationContainer .paginationItem {
     padding: 0 12px;
     height: 32px;
-    text-align: center;
     margin: auto 4px;
     color: rgba(0, 0, 0, 0.87);
     display: flex;
     box-sizing: border-box;
-    align-items: center;
     letter-spacing: 0.01071em;
     border-radius: 16px;
     line-height: 1.43;
