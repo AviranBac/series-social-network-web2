@@ -1,14 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import Pagination from "../pagination/Pagination";
-import { mockResponse } from "../../services/mock.service";
 import classes from "./PaginationTable.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import classnames from "classnames";
 import { Link, useNavigate } from "react-router-dom";
-
-const PAGE_SIZE = 10;
 
 export const userColumnDetails = [
     { field: 'email', label: 'Email' },
@@ -27,25 +24,13 @@ library.add(faClose);
 
 const PaginationTable = (props) => {
     const {
-        itemsPerPage = 10,
-        columnDetails = [
-            { field: "a", label: "Field a" },
-            { field: "b", label: "Field b" },
-            { field: "c", label: "Field c" },
-            { field: "d", label: "Field d" },
-            { field: "e", label: "Field e" },
-        ],
-        canRemoveEntity = true,
-        loadRequestFn = async (currentPage) => {
-            console.log("loadRequestFn", currentPage);
-            return {
-                totalElements: mockResponse.totalElements,
-                content: mockResponse.content.slice((currentPage - 1) * PAGE_SIZE, (currentPage - 1) * PAGE_SIZE + PAGE_SIZE)
-            }
-        },
-        removeRequestFn = async () => Promise.resolve(),
+        pageSize = 10,
+        columnDetails,
+        canRemoveEntity = false,
+        loadRequestFn,
+        removeRequestFn,
         imageSrcExtractor,
-        routerLinkExtractor = (entity) => `/${entity.b}`,
+        routerLinkExtractor,
         noDataBody = "There are 0 items"
     } = props;
 
@@ -76,7 +61,7 @@ const PaginationTable = (props) => {
     }
 
     const calculatePosition = (currentIndex) => (
-        currentIndex + 1 + (currentPage - 1) * Number(itemsPerPage)
+        currentIndex + 1 + (currentPage - 1) * Number(pageSize)
     );
 
     const getDisplayedFieldsHTML = (entity, index) => {
@@ -153,7 +138,7 @@ const PaginationTable = (props) => {
             <Pagination
                 currentPage={currentPage}
                 totalCount={totalCount}
-                pageSize={PAGE_SIZE}
+                pageSize={pageSize}
                 onPageChange={page => setCurrentPage(page)}
             />
         </>
