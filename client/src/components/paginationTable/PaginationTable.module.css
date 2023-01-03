@@ -1,9 +1,7 @@
 table {
     width: 70%;
-    margin: auto;
     border-collapse: collapse;
     border: 1rem;
-    position: relative;
 }
 
 thead tr th {
@@ -14,7 +12,7 @@ thead tr th {
 }
 
 th, td {
-    padding: 8px;
+    padding: .5rem;
     overflow-wrap: break-word;
     border-bottom-width: 1px;
     border-bottom-color: rgba(0, 0, 0, .12);
@@ -30,25 +28,10 @@ th, td {
     cursor: pointer;
 }
 
-.noDataCell {
-    text-align: center;
-    border-bottom-color: transparent;
-}
-
 .clickable {
     cursor: pointer;
 }
 
 .clickable:hover {
     background-color: #3b71ca;
-}
-
-.link {
-    display: block;
-    width: 100%;
-    color: black;
-}
-
-.link:hover {
-    color: black;
 }

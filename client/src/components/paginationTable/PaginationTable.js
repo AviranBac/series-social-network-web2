@@ -58,8 +58,8 @@ const PaginationTable = (props) => {
     const loadRequest = useCallback(() => {
         loadRequestFn(currentPage)
             .then(response => {
-                // setTotalCount(response.totalElements);
-                // setCurrentData(response.content);
+                setTotalCount(response.totalElements);
+                setCurrentData(response.content);
             });
     }, [loadRequestFn, currentPage]);
 
@@ -110,7 +110,7 @@ const PaginationTable = (props) => {
 
     return (
         <>
-            <table>
+            <table className="m-auto position-relative">
                 <thead>
                 {currentData.length > 0 &&
                     <tr>
@@ -134,7 +134,7 @@ const PaginationTable = (props) => {
                         { getDisplayedFieldsHTML(entity, index).map(({ cellHTML, cellClassName }, index) => (
                             <td key={index} className={cellClassName}>
                                 { routerLinkExtractor ?
-                                    <Link to={routerLinkExtractor(entity)} className={classes.link}>{cellHTML}</Link> :
+                                    <Link to={routerLinkExtractor(entity)} className="w-100 d-block text-black">{cellHTML}</Link> :
                                     {cellHTML}
                                 }
                             </td>
@@ -144,7 +144,7 @@ const PaginationTable = (props) => {
 
                 {currentData.length === 0 &&
                     <tr>
-                        <td colSpan={columnsAmount} className={classes.noDataCell}>{noDataBody}</td>
+                        <td colSpan={columnsAmount} className="text-center border-white">{noDataBody}</td>
                     </tr>
                 }
                 </tbody>
