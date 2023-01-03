@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Genres = require('./genre');
 
+const statusSeries = ['Returning Series', 'Ended', 'Canceled'];
+
 const seriesSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -29,6 +31,10 @@ const seriesSchema = new mongoose.Schema({
     },
     number_of_seasons: {
         type: Number,
+    },
+    status: {
+        type: String,
+        enum : statusSeries,
     },
     genre_ids: [{
         type: mongoose.Schema.Types.ObjectId,

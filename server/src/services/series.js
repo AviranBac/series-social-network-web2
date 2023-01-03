@@ -37,6 +37,40 @@ const aggregateSeries = async (seriesIds) => {
     ]);
 };
 
+const filterSeries = async ({name, status, genre}, pageNumber, pageLimit) => {
+
+    const aggregationQuery = [];
+
+    name && aggregationQuery.push({ $addFields: { searchIndex: { $indexOfCP: ["$name", String(name)] } } }, { $match: { searchIndex: { $ne: -1 } } });
+    status && aggregationQuery.push({ $match: { status: { $eq: status } } });
+    aggregationQuery.push(...lookupGenres());
+    aggregationQuery.push({
+        $replaceWith: {
+            $setField: {
+                field: "genres",
+                input: "$$ROOT",
+                value: {
+                    $reduce: {
+                        input: "$genres",
+                        initialValue: [],
+                        in: { $concatArrays: ["$$value", ["$$this.name"]] }
+                    }
+                }
+            }
+        }
+    });
+    genre && aggregationQuery.push({ $match: { genres: { $all: genre } } });
+    console.log(pageNumber)
+    aggregationQuery.push({ $skip: pageLimit * (parseInt(pageNumber) - 1) }, { $limit: pageLimit });
+    
+    const data = await Series.aggregate(aggregationQuery);
+    
+    aggregationQuery.push({ $count: "count" });
+    const totalAmount = await Series.aggregate(aggregationQuery);
+
+    return { data, totalAmount };
+};
+
 const lookupGenres = () => ([
     {
         $lookup: {
@@ -61,5 +95,6 @@ const sortBySeasonNumber = () => ([
 module.exports = {
     aggregateSeries,
     lookupGenres,
-    sortBySeasonNumber
+    sortBySeasonNumber,
+    filterSeries
 };
