@@ -5,11 +5,9 @@ const Home = () => {
     const user = useSelector(selectUser);
 
     return (
-        <>
-            <div className="text-center">
-                Hello { user.displayName }, this is the Home page placeholder
-            </div>
-        </>
+        <div className="text-center">
+            Hello { user.displayName }, this is the Home page placeholder
+        </div>
     );
 };
 
