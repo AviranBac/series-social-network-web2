@@ -24,28 +24,28 @@ const fetchSeason = async (series, seasonNumber) => {
     return season;
 };
 
-const insertSeasons = async (seasons, seriesName) => {
+const insertSeason = async (season, seriesName) => {
+    let seasonInDB;
+
     try {
-        await Seasons.insertMany(seasons);
-        console.log(`Inserted ${seasons.length} seasons for series ${seriesName} to DB`);
+        seasonInDB = new Seasons(season).save();
+        console.log(`Inserted season ${season.season_number} for series ${seriesName} to DB`);
     } catch (e) {
-        console.log(`Failed while inserting seasons for series ${seriesName} to DB: ${e}`);
+        console.log(`Failed while inserting season number ${season.season_number} for series ${seriesName} to DB: ${e}`);
     }
+
+    return seasonInDB;
 };
 
 const initSeasons = async (series) => {
-    const seasons = [];
-
     for (let currSeason = 1; currSeason <= series.number_of_seasons; currSeason++) {
         const season = await fetchSeason(series, currSeason);
 
         if (season) {
-            season.episode_ids = await insertEpisodes(season.episodes, series);
-            seasons.push(season);
+            let seasonInDB = await insertSeason(season, series.name);
+            await insertEpisodes(series, seasonInDB, season.episodes);
         }
     }
-
-    await insertSeasons(seasons, series.name);
 };
 
 module.exports = {

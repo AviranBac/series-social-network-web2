@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Series = require('./series');
 
 const wishlistsSchema = new mongoose.Schema({
-    username: {
+    email: {
         type: String,
         require: true
     },
