@@ -15,6 +15,7 @@ const fetchSeason = async (series, seasonNumber) => {
         });
 
         season = response.data;
+        season.poster_path = season.poster_path ? `https://image.tmdb.org/t/p/w185${season.poster_path}` : undefined;
         season.series_id = series._id;
         console.log(`Got season number ${seasonNumber} for ${series.name}`);
     } catch (e) {
