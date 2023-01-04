@@ -2,6 +2,7 @@ const Series = require("../db/mongo/models/series");
 const Seasons = require("../db/mongo/models/season");
 const Episodes = require("../db/mongo/models/episode");
 const Genres = require("../db/mongo/models/genre");
+const WatchLists = require("../db/mongo/models/watchlist");
 
 const aggregateSeries = async (seriesIds) => {
     return Series.aggregate([
@@ -37,14 +38,12 @@ const aggregateSeries = async (seriesIds) => {
     ]);
 };
 
-const filterSeries = async ({name, status, genre}, pageNumber, pageLimit) => {
-
+const filterSeries = async ({ name, status, genre }, pageNumber, pageLimit) => {
     const aggregationQuery = [];
 
     name && aggregationQuery.push({ $addFields: { searchIndex: { $indexOfCP: ["$name", String(name)] } } }, { $match: { searchIndex: { $ne: -1 } } });
     status && aggregationQuery.push({ $match: { status: { $eq: status } } });
-    aggregationQuery.push(...lookupGenres());
-    aggregationQuery.push({
+    aggregationQuery.push(...lookupGenres(), {
         $replaceWith: {
             $setField: {
                 field: "genres",
@@ -60,15 +59,42 @@ const filterSeries = async ({name, status, genre}, pageNumber, pageLimit) => {
         }
     });
     genre && aggregationQuery.push({ $match: { genres: { $all: genre } } });
-    console.log(pageNumber)
-    aggregationQuery.push({ $skip: pageLimit * (parseInt(pageNumber) - 1) }, { $limit: pageLimit });
-    
-    const data = await Series.aggregate(aggregationQuery);
-    
-    aggregationQuery.push({ $count: "count" });
-    const totalAmount = await Series.aggregate(aggregationQuery);
+
+    const data = await Series.aggregate([...aggregationQuery, { $skip: pageLimit * (parseInt(pageNumber) - 1) }, { $limit: pageLimit }]);
+    const totalAmount = await Series.aggregate([...aggregationQuery, { $count: "count" }]);
 
     return { data, totalAmount };
+};
+
+const getMostWatchedSeries = async (pageNumber, pageLimit) => {
+    const result = await WatchLists.aggregate([{
+        $lookup: {
+            from: Episodes.collection.name,
+            localField: "episode_id",
+            foreignField: "_id",
+            as: "episode"
+        }
+    }, {
+        $lookup: {
+            from: Seasons.collection.name,
+            localField: "episode.season_id",
+            foreignField: "_id",
+            as: "season"
+        }
+    }, {
+        $lookup: {
+            from: Series.collection.name,
+            localField: "season.series_id",
+            foreignField: "_id",
+            as: "series"
+        }
+    }, { $unwind: "$series" },
+    { $replaceRoot: { newRoot: "$series" } },
+    ...lookupGenres(),
+    { $skip: pageLimit * (parseInt(pageNumber) - 1) },
+    { $limit: pageLimit }]);
+
+    return result;
 };
 
 const lookupGenres = () => ([
@@ -96,5 +122,6 @@ module.exports = {
     aggregateSeries,
     lookupGenres,
     sortBySeasonNumber,
-    filterSeries
+    filterSeries,
+    getMostWatchedSeries
 };
