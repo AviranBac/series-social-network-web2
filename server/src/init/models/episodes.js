@@ -5,7 +5,7 @@ const insertEpisodes = async (series, season, episodes) => {
         return {
             ...episode,
             season_id: season._id,
-            still_path: episode.still_path ? `https://image.tmdb.org/t/p/w185${episode.still_path}` : undefined
+            still_path: episode.still_path ? `https://image.tmdb.org/t/p/w300${episode.still_path}` : undefined
         }
     });
 
