@@ -100,7 +100,7 @@ const SeriesDetails = () => {
 
                     {selectedSeasonOption &&
                         <>
-                            <div className="m-3 d-flex">
+                            <div className="mt-5 mb-4 d-flex">
                                 <Select options={seasonOptions}
                                         value={selectedSeasonOption}
                                         onChange={setSelectedSeasonOption}
@@ -108,6 +108,7 @@ const SeriesDetails = () => {
                                             menuList: () => classes.selectMenuList
                                         }}
                                         styles={{
+                                            container: (styles) => ({ ...styles, width: "15%" }),
                                             option: (styles) => ({ ...styles, cursor: "pointer" }),
                                             control: (styles) => ({ ...styles, cursor: "pointer" })
                                         }}
