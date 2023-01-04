@@ -1,24 +1,41 @@
 import { Fragment, useEffect, useState } from "react";
 import seriesService from "../../services/series.service";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import NoImagePlaceholderSvg from "../../svgs/NoImagePlaceholderSvg";
 import classes from "./SeriesDetails.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faCalendar, faList, faStar, faTv, faVideoCamera } from "@fortawesome/free-solid-svg-icons";
+import Select from "react-select";
+import SeasonDetails from "./seasonDetails/SeasonDetails";
+import { HttpStatusCode } from "axios";
 
 library.add(faCalendar, faList, faVideoCamera, faTv, faStar);
 
 const SeriesDetails = () => {
     const { id: seriesId } = useParams();
     const [series, setSeries] = useState();
+    const [seasonOptions, setSeasonOptions] = useState([]);
+    const [selectedSeasonOption, setSelectedSeasonOption] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         seriesService.loadSeriesDetails(seriesId)
             .then((series) => {
-                console.log(series);
                 setSeries(series);
-            });
+
+                if (series.seasons.length > 0) {
+                    setSelectedSeasonOption({ label: series.seasons[0].name, value: series.seasons[0]._id });
+                    setSeasonOptions(series.seasons.map(season => (
+                        { value: season._id, label: season.name }
+                    )));
+                }
+            })
+            .catch(err => {
+                if (err.response.status === HttpStatusCode.NotFound) {
+                    navigate('/');
+                }
+            })
     }, [seriesId]);
 
     const detailsMetadata = [
@@ -35,9 +52,17 @@ const SeriesDetails = () => {
         ],
         [
             { icon: "star", label: "Popularity", valueFn: (series) => series.popularity },
-            { icon: "star", label: "Rating", valueFn: (series) => `${series.vote_average} (${series.vote_count} votes)` }
+            {
+                icon: "star",
+                label: "Rating",
+                valueFn: (series) => `${series.vote_average} (${series.vote_count} votes)`
+            }
         ]
-    ]
+    ];
+
+    const getCurrentSeason = () => {
+        return series.seasons.find(season => season._id === selectedSeasonOption.value);
+    };
 
     return (
         <>
@@ -60,7 +85,7 @@ const SeriesDetails = () => {
                                     <div className="d-flex w-100" key={index}>
                                         {rowMetadata.map(({ icon, label, valueFn }, index) => (
                                             <Fragment key={index}>
-                                                <FontAwesomeIcon icon={icon} key={`icon ${index}`} />
+                                                <FontAwesomeIcon icon={icon} key={`icon ${index}`}/>
                                                 <span className={classes.flex1} key={index}>
                                                     {label}:
                                                     <span className="fw-bold mx-1" key={index}>{valueFn(series)}</span>
@@ -72,6 +97,26 @@ const SeriesDetails = () => {
                             </div>
                         </div>
                     </div>
+
+                    {selectedSeasonOption &&
+                        <>
+                            <div className="m-3 d-flex">
+                                <Select options={seasonOptions}
+                                        value={selectedSeasonOption}
+                                        onChange={setSelectedSeasonOption}
+                                        classNames={{
+                                            menuList: () => classes.selectMenuList
+                                        }}
+                                        styles={{
+                                            option: (styles) => ({ ...styles, cursor: "pointer" }),
+                                            control: (styles) => ({ ...styles, cursor: "pointer" })
+                                        }}
+                                />
+                            </div>
+
+                            <SeasonDetails season={getCurrentSeason()}/>
+                        </>
+                    }
                 </div>
             }
         </>

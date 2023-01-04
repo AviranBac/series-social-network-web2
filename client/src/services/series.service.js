@@ -6,7 +6,7 @@ const loadSeriesDetails = (seriesId) => {
         .then(response => response.data)
         .catch(error => {
             console.error(`Error while trying to fetch series details for seriesId ${seriesId}. Error: ${error}`);
-            return null;
+            throw error;
         });
 };
 

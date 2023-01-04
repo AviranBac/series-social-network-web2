@@ -19,3 +19,7 @@
 .flex1 {
     flex: 1;
 }
+
+.selectMenuList {
+    margin-top: -.5rem;
+}
