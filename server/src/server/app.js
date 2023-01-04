@@ -23,9 +23,15 @@ app.use('/scraping', scrapingRouter);
 app.use('/watchlist', watchlistRouter);
 app.use('/wishlist', wishlistRouter);
 
-// app.get('/series', async (req, res) => {
+app.get('/series', async (req, res) => {
+    const series = [{"name": "aa1a", "poster_path":"https://image.tmdb.org/t/p/w500/9PFonBhy4cQy7Jz20NpMygczOkv.jpg"}, 
+    {"name": "b2bb", "poster_path":"https://image.tmdb.org/t/p/w500/peNC0eyc3TQJa6x4TdKcBPNP4t0.jpg"},
+    {"name": "aa3a", "poster_path":"https://image.tmdb.org/t/p/w500/7wuKrFvbX7kAIF0ctotARsqayPo.jpg"}, 
+    {"name": "bb4b", "poster_path":"https://image.tmdb.org/t/p/w500/peNC0eyc3TQJa6x4TdKcBPNP4t0.jpg"},
+    {"name": "a5aa", "poster_path":"https://image.tmdb.org/t/p/w500/cvhNj9eoRBe5SxjCbQTkh05UP5K.jpg"}];
+    res.send(series);
 
-// });
+});
 
 
 // app.get('/genres', async (req, res) => {
