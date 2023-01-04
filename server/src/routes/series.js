@@ -1,9 +1,10 @@
 const express = require('express');
+const mongoose = require("mongoose");
 const Series = require('../db/mongo/models/series');
 const Genres = require('../db/mongo/models/genre');
 
-const { searchFollowings } = require("../services/follows");
-const { filterSeries, getMostWatchedSeries } = require('../services/series');
+const { searchFollowers } = require("../services/follows");
+const { filterSeries, getMostWatchedSeries, aggregateSeries } = require('../services/series');
 
 const router = express.Router();
 
@@ -46,7 +47,7 @@ router.get('/commonAmongFollowing/:email', async (req, res) => {
     let statusCode = HttpStatus.OK;
 
     try {
-        followings = await searchFollowings(email);
+        followings = await searchFollowers(email);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         followings = `Couldn't send following of ${email}, error was ${e}`;
@@ -109,7 +110,7 @@ router.get('/:id', async (req, res) => {
     let response;
     let statusCode = 200;
     try {
-        response = await Series.findById(id);
+        response = await aggregateSeries([new mongoose.mongo.ObjectId(id)]);
         if (!response) { statusCode = 404; }
     } catch (e) {
         statusCode = 500;

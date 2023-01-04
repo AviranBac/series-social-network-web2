@@ -1,8 +1,8 @@
+const mongoose = require("mongoose");
 const Series = require("../db/mongo/models/series");
 const Seasons = require("../db/mongo/models/season");
 const Episodes = require("../db/mongo/models/episode");
 const WatchLists = require("../db/mongo/models/watchlist");
-const mongoose = require("mongoose");
 const {
     aggregateSeries,
     lookupGenres,
