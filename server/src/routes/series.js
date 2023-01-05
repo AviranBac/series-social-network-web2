@@ -3,15 +3,23 @@ const mongoose = require("mongoose");
 const HttpStatus = require("http-status-codes");
 const Series = require('../db/mongo/models/series');
 const Genres = require('../db/mongo/models/genre');
+const { validationResult } = require('express-validator/check');
+const seriesValidation = require('../validation/series');
 
-const { filterSeries, getMostWatchedSeries, aggregateSeries, getCommonSeriesAmongFollowing } = require('../services/series');
+const { filterSeries, getMostWatchedSeries, aggregateSeries, getCommonSeriesAmongFollowing, getTopRatedSeries, getPopularSeries } = require('../services/series');
 const { getUserSeriesIdsFromWatchlist } = require('../services/watchlist');
 
 const router = express.Router();
 
 const pageLimit = 10;
 
-router.get('/', async (req, res) => {
+router.get('/', seriesValidation(), async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(HttpStatus.BAD_REQUEST).json({ errors: errors.array() });
+        return;
+    }
+
     const { pageNumber } = req.query;
 
     let response;
@@ -21,12 +29,19 @@ router.get('/', async (req, res) => {
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Failed while fetching genres: ${e}`;
+        console.log(response);
     }
 
     res.status(statusCode).send(response);
 });
 
-router.get('/filters', async (req, res) => {
+router.get('/filters', seriesValidation(), async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(HttpStatus.BAD_REQUEST).json({ errors: errors.array() });
+        return;
+    }
+
     let genres;
     let statusCode = HttpStatus.OK;
     const statuses = Series.schema.path('status').enumValues;
@@ -40,7 +55,13 @@ router.get('/filters', async (req, res) => {
     res.status(statusCode).send({ genres, statuses });
 });
 
-router.get('/commonAmongFollowing/:email', async (req, res) => {
+router.get('/commonAmongFollowing/:email', seriesValidation(), async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(HttpStatus.BAD_REQUEST).json({ errors: errors.array() });
+        return;
+    }
+
     const { pageNumber } = req.query;
     const { email } = req.params;
 
@@ -57,7 +78,13 @@ router.get('/commonAmongFollowing/:email', async (req, res) => {
     res.status(statusCode).send(response);
 });
 
-router.get('/watched', async (req, res) => {
+router.get('/watched', seriesValidation(), async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(HttpStatus.BAD_REQUEST).json({ errors: errors.array() });
+        return;
+    }
+
     const { pageNumber } = req.query;
 
     let response;
@@ -74,13 +101,19 @@ router.get('/watched', async (req, res) => {
 
 });
 
-router.get('/topRated', async (req, res) => {
+router.get('/topRated', seriesValidation(), async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(HttpStatus.BAD_REQUEST).json({ errors: errors.array() });
+        return;
+    }
+    
     const { pageNumber } = req.query;
 
     let response;
     let statusCode = HttpStatus.OK;
     try {
-        response = await Series.find().sort({ vote_average: -1 }).skip(pageLimit * (pageNumber - 1)).limit(pageLimit).exec();
+        response = await getTopRatedSeries(pageNumber, pageLimit);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Failed while fetching series by rating: ${e}`
@@ -90,13 +123,19 @@ router.get('/topRated', async (req, res) => {
     res.status(statusCode).send(response);
 });
 
-router.get('/popular', async (req, res) => {
+router.get('/popular', seriesValidation(), async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(HttpStatus.BAD_REQUEST).json({ errors: errors.array() });
+        return;
+    }
+    
     const { pageNumber } = req.query;
 
     let response;
     let statusCode = HttpStatus.OK;
     try {
-        response = await Series.find().sort({ popularity: -1 }).skip(pageLimit * (pageNumber - 1)).limit(pageLimit).exec();
+        response = await getPopularSeries(pageNumber, pageLimit);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Failed while fetching series by popularity: ${e}`;

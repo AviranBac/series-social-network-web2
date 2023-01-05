@@ -94,6 +94,10 @@ const getCommonSeriesAmongFollowing = async (email, userSeriesIdsWatchList, page
     return followingWatchList;
 };
 
+const getTopRatedSeries = async (pageNumber, pageLimit) => await Series.find().sort({ vote_average: -1 }).skip(pageLimit * (pageNumber - 1)).limit(pageLimit).exec();
+
+const getPopularSeries = async (pageNumber, pageLimit) => await Series.find().sort({ popularity: -1 }).skip(pageLimit * (pageNumber - 1)).limit(pageLimit).exec();
+
 const lookupSeriesFromEpisode = () => ([
     {
         $lookup: {
@@ -147,5 +151,7 @@ module.exports = {
     sortBySeasonNumber,
     filterSeries,
     getMostWatchedSeries,
-    getCommonSeriesAmongFollowing
+    getCommonSeriesAmongFollowing,
+    getTopRatedSeries,
+    getPopularSeries
 };
