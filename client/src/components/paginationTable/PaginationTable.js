@@ -14,8 +14,8 @@ export const userColumnDetails = [
 
 export const seriesColumnDetails = [
     { field: 'name', label: 'Name' },
-    { field: 'numberOfEpisodes', label: 'Number of Episodes' },
-    { field: 'numberOfSeasons', label: 'Number of Seasons' },
+    { field: 'number_of_episodes', label: 'Number of Episodes' },
+    { field: 'number_of_seasons', label: 'Number of Seasons' },
     { field: 'status', label: 'Status' },
     { field: 'genres', label: 'Genres' }
 ];
