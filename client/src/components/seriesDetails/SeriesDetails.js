@@ -4,13 +4,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import NoImagePlaceholderSvg from "../../svgs/NoImagePlaceholderSvg";
 import classes from "./SeriesDetails.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
 import { faCalendar, faList, faStar, faTv, faVideoCamera } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
 import SeasonDetails from "./seasonDetails/SeasonDetails";
 import { HttpStatusCode } from "axios";
-
-library.add(faCalendar, faList, faVideoCamera, faTv, faStar);
 
 const SeriesDetails = () => {
     const { id: seriesId } = useParams();
@@ -40,20 +37,20 @@ const SeriesDetails = () => {
 
     const detailsMetadata = [
         [{
-            icon: "calendar",
+            icon: faCalendar,
             label: "First air date",
             valueFn: (series) => series.first_air_date && new Date(series.first_air_date).toLocaleDateString()
         }],
-        [{ icon: "list", label: "Genres", valueFn: (series) => series.genres.map(genre => genre.name).join(', ') }],
-        [{ icon: "video-camera", label: "Status", valueFn: (series) => series.status }],
+        [{ icon: faList, label: "Genres", valueFn: (series) => series.genres.map(genre => genre.name).join(', ') }],
+        [{ icon: faVideoCamera, label: "Status", valueFn: (series) => series.status }],
         [
-            { icon: "tv", label: "Number of seasons", valueFn: (series) => series.number_of_seasons },
-            { icon: "tv", label: "Number of episodes", valueFn: (series) => series.number_of_episodes }
+            { icon: faTv, label: "Number of seasons", valueFn: (series) => series.number_of_seasons },
+            { icon: faTv, label: "Number of episodes", valueFn: (series) => series.number_of_episodes }
         ],
         [
-            { icon: "star", label: "Popularity", valueFn: (series) => series.popularity },
+            { icon: faStar, label: "Popularity", valueFn: (series) => series.popularity },
             {
-                icon: "star",
+                icon: faStar,
                 label: "Rating",
                 valueFn: (series) => `${series.vote_average} (${series.vote_count} votes)`
             }

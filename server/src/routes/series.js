@@ -1,17 +1,18 @@
 const express = require("express");
 const { getSeriesDetails } = require("../services/series");
+const HttpStatus = require("http-status-codes");
 const router = express.Router();
 
 router.get('/:id', async (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params;
 
     let response;
-    let statusCode = 200;
+    let statusCode = HttpStatus.OK;
     try {
         response = await getSeriesDetails(id);
-        if (!response) { statusCode = 404; }
+        if (!response) { statusCode = HttpStatus.NOT_FOUND; }
     } catch (e) {
-        statusCode = 500;
+        statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Failed while fetching series by id ${id}: ${e}`;
         console.log(response);
     }
