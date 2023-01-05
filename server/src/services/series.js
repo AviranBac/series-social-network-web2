@@ -71,6 +71,7 @@ const getMostWatchedSeries = async (pageNumber, pageLimit) => {
     const result = await WatchLists.aggregate([
         ...lookupSeriesFromEpisode(),
         ...lookupGenres(),
+        { $group: {_id: "$_id", series: { $first: "$$ROOT" }} },
         { $skip: pageLimit * (parseInt(pageNumber) - 1) },
         { $limit: pageLimit }
     ]);
