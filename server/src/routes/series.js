@@ -5,7 +5,7 @@ const Series = require('../db/mongo/models/series');
 const Genres = require('../db/mongo/models/genre');
 
 const { filterSeries, getMostWatchedSeries, aggregateSeries, getCommonSeriesAmongFollowing } = require('../services/series');
-const { getUserWatchlist } = require('../services/watchlist');
+const { getUserSeriesIdsFromWatchlist } = require('../services/watchlist');
 
 const router = express.Router();
 
@@ -47,8 +47,8 @@ router.get('/commonAmongFollowing/:email', async (req, res) => {
     let response;
     let statusCode = HttpStatus.OK;
     try {
-        const userWatchList = await getUserWatchlist(email);
-        response = await getCommonSeriesAmongFollowing(email, userWatchList.map(series => series.name), pageNumber, pageLimit);
+        const userSeriesIdsWatchList = await getUserSeriesIdsFromWatchlist(email);
+        response = await getCommonSeriesAmongFollowing(email, userSeriesIdsWatchList, pageNumber, pageLimit);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Failed while fetching common series amoung following: ${e}`;

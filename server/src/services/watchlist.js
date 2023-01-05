@@ -50,9 +50,14 @@ const getTvEpisodeIdsByEntity = async (entityType, entityId) => {
     return episodeIds;
 };
 
-const getUserWatchlist = async (email) => {
+const getUserSeriesIdsFromWatchlist = async (email) => {
     const seriesWithWatchlistEpisodes = await aggregateWatchlistEpisodes(email);
     const seriesIds = seriesWithWatchlistEpisodes.map(series => series._id);
+    return seriesIds;
+};
+
+const getUserWatchlist = async (email) => {
+    const seriesIds = getUserSeriesIdsFromWatchlist(email);
     const allOriginalSeries = await aggregateSeries(seriesIds);
 
     return allOriginalSeries.map(currentOriginalSeries => {
@@ -130,5 +135,6 @@ const calculateSeriesWatchlistStatus = (originalSeries, watchlistSeries) => {
 module.exports = {
     addToWatchlist,
     removeFromWatchlist,
-    getUserWatchlist
+    getUserWatchlist,
+    getUserSeriesIdsFromWatchlist
 }

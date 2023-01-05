@@ -79,13 +79,13 @@ const getMostWatchedSeries = async (pageNumber, pageLimit) => {
     return result;
 };
 
-const getCommonSeriesAmongFollowing = async (email, userWatchList, pageNumber, pageLimit) => {
+const getCommonSeriesAmongFollowing = async (email, userSeriesIdsWatchList, pageNumber, pageLimit) => {
     const following = await searchFollowers(email);
     
     const followingWatchList = await WatchLists.aggregate([
         { $match: { email: { $in: following.map(follower => follower.email_to) } } },
         ...lookupSeriesFromEpisode(),
-        { $match: {name: { $nin: userWatchList }}},
+        { $match: {_id: { $nin: userSeriesIdsWatchList }}},
         ...lookupGenres(),
         { $skip: pageLimit * (parseInt(pageNumber) - 1) },
         { $limit: pageLimit }
