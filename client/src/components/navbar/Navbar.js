@@ -12,19 +12,16 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUserDisplayName } from "../../features/auth/auth.selectors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library } from '@fortawesome/fontawesome-svg-core';
 import classes from "./Navbar.module.css";
 import { faCircleUser, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-
-library.add(faCircleUser, faRightFromBracket);
 
 const Navbar = () => {
     const userDisplayName = useSelector(selectUserDisplayName);
 
     const displayNameNavOptions = [
-        { link: '#',        icon: 'circle-user',        value: 'Your Profile' },
-        { link: '#',        icon: 'circle-user',        value: 'Update Your Details' },
-        { link: '/logout',  icon: 'right-from-bracket', value: 'Logout' }
+        { link: '#',        icon: faCircleUser,        value: 'Your Profile' },
+        { link: '#',        icon: faCircleUser,        value: 'Update Your Details' },
+        { link: '/logout',  icon: faRightFromBracket, value: 'Logout' }
     ];
 
     return (
