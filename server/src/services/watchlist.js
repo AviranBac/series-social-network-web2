@@ -12,7 +12,7 @@ const {
 const addToWatchlist = async (email, entityType, entityId) => {
     const allEpisodeIdsOfEntity = await getTvEpisodeIdsByEntity(entityType, entityId);
 
-    const existingEpisodeIdsInWatchlist = (await WatchLists.find({ episode_id: { $in: allEpisodeIdsOfEntity } }).exec())
+    const existingEpisodeIdsInWatchlist = (await WatchLists.find({ email, episode_id: { $in: allEpisodeIdsOfEntity } }).exec())
         .map(watchlistRecord => watchlistRecord.episode_id.toString());
     const episodeIdsToAdd = allEpisodeIdsOfEntity.filter(episodeId => !existingEpisodeIdsInWatchlist.includes(episodeId.toString()));
     const watchlistRecordsToAdd = episodeIdsToAdd.map(episodeId => ({ email, episode_id: episodeId }));
