@@ -1,5 +1,5 @@
 import React from 'react';
-import FavoritesIcon from './FavoritesIcon';
+import WishlistIcon from './WishlistIcon';
 import {
   MDBCard,
   MDBCardBody,
@@ -15,7 +15,7 @@ export default function SeriesCard(props) {
         <MDBCardImage src={props.series.poster_path} alt='...' position='top' />
         <MDBCardBody>
           <MDBCardTitle className='text-center'>{props.series.name}</MDBCardTitle>
-          <FavoritesIcon series={props.series}/>
+          <WishlistIcon series={props.series}/>
         </MDBCardBody>
       </MDBCard>
     </MDBCol>

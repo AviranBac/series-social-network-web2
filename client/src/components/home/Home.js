@@ -1,6 +1,7 @@
 import SeriesCard from "./SeriesCard";
 import { MDBRow} from 'mdb-react-ui-kit';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Home = () => {
 
@@ -8,9 +9,8 @@ const Home = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch('http://localhost:8080/series');
-      const data = await response.json();
-      setRecommendedSeries(data);
+      const response = await axios.get('http://localhost:8080/series');
+      setRecommendedSeries(response.data);
     }
     fetchData();
   }, []);
@@ -19,9 +19,8 @@ const Home = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch('http://localhost:8080/series');
-      const data = await response.json();
-      setMostPopularSeries(data);
+      const response = await axios.get('http://localhost:8080/series');
+      setMostPopularSeries(response.data);    
     }
     fetchData();
   }, []);
