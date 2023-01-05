@@ -1,12 +1,11 @@
 const express = require('express');
-const mongoose = require("mongoose");
 const HttpStatus = require("http-status-codes");
 const Series = require('../db/mongo/models/series');
 const Genres = require('../db/mongo/models/genre');
 const { validationResult } = require('express-validator/check');
 const seriesValidation = require('../validation/series');
 
-const { filterSeries, getMostWatchedSeries, aggregateSeries, getCommonSeriesAmongFollowing, getTopRatedSeries, getPopularSeries } = require('../services/series');
+const { filterSeries, getMostWatchedSeries, getCommonSeriesAmongFollowing, getTopRatedSeries, getPopularSeries, getSeriesDetails } = require('../services/series');
 const { getUserSeriesIdsFromWatchlist } = require('../services/watchlist');
 
 const router = express.Router();
@@ -20,12 +19,12 @@ router.get('/', seriesValidation(), async (req, res) => {
         return;
     }
 
-    const { pageNumber } = req.query;
+    const { name, status, genre, pageNumber } = req.query;
 
     let response;
     let statusCode = HttpStatus.OK;
     try {
-        response = await filterSeries(req.body, pageNumber, pageLimit);
+        response = await filterSeries({name, status, genre}, pageNumber, pageLimit);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Failed while fetching genres: ${e}`;
@@ -42,17 +41,19 @@ router.get('/filters', seriesValidation(), async (req, res) => {
         return;
     }
 
-    let genres;
+    let response;
     let statusCode = HttpStatus.OK;
     const statuses = Series.schema.path('status').enumValues;
     try {
-        genres = await Genres.find();
+        const genres = await Genres.find();
+        response = { genres, statuses };
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-        genres = `Failed while fetching genres: ${e}`;
+        response = `Failed while fetching genres: ${e}`;
+        console.log(response);
     }
 
-    res.status(statusCode).send({ genres, statuses });
+    res.status(statusCode).send(response);
 });
 
 router.get('/commonAmongFollowing/:email', seriesValidation(), async (req, res) => {
@@ -151,7 +152,7 @@ router.get('/:id', async (req, res) => {
     let response;
     let statusCode = HttpStatus.OK;
     try {
-        response = await aggregateSeries([new mongoose.mongo.ObjectId(id)]);
+        response = await getSeriesDetails(id);
         if (!response) { statusCode = HttpStatus.NOT_FOUND; }
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;

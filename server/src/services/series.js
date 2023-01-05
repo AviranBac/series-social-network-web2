@@ -4,6 +4,12 @@ const Episodes = require("../db/mongo/models/episode");
 const Genres = require("../db/mongo/models/genre");
 const WatchLists = require("../db/mongo/models/watchlist");
 const { searchFollowings } = require("./follows"); 
+const mongoose = require("mongoose");
+
+const getSeriesDetails = async (seriesId) => {
+    const matchedSeries = await aggregateSeries([new mongoose.mongo.ObjectId(seriesId)]);
+    return matchedSeries.length > 0 ? matchedSeries[0] : null;
+};
 
 const aggregateSeries = async (seriesIds) => {
     return Series.aggregate([
@@ -153,5 +159,6 @@ module.exports = {
     getMostWatchedSeries,
     getCommonSeriesAmongFollowing,
     getTopRatedSeries,
-    getPopularSeries
+    getPopularSeries,
+    getSeriesDetails
 };
