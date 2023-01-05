@@ -5,7 +5,7 @@ const followsValidation = require('../validation/follow');
 const { addFollow, removeFollow, searchFollowings, searchFollowers, isFollowingExist } = require("../services/follows");
 const router = express.Router();
 
-router.get('/:email/followers', async (req, res) => {
+router.get('/:email/following', async (req, res) => {
     let response;
     let statusCode = HttpStatus.OK;
     const { email }  = req.params;
@@ -22,7 +22,7 @@ router.get('/:email/followers', async (req, res) => {
     res.status(statusCode).send(response);
 });
 
-router.get('/:email/following', async (req, res) => {
+router.get('/:email/followers', async (req, res) => {
     let response;
     let statusCode = HttpStatus.OK;
     const { email }  = req.params;
