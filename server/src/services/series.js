@@ -3,6 +3,7 @@ const Seasons = require("../db/mongo/models/season");
 const Episodes = require("../db/mongo/models/episode");
 const Genres = require("../db/mongo/models/genre");
 const WatchLists = require("../db/mongo/models/watchlist");
+const { searchFollowers } = require("./follows"); 
 
 const aggregateSeries = async (seriesIds) => {
     return Series.aggregate([
@@ -67,7 +68,33 @@ const filterSeries = async ({ name, status, genre }, pageNumber, pageLimit) => {
 };
 
 const getMostWatchedSeries = async (pageNumber, pageLimit) => {
-    const result = await WatchLists.aggregate([{
+    const result = await WatchLists.aggregate([
+        ...lookupSeriesFromEpisode(),
+        ...lookupGenres(),
+        { $skip: pageLimit * (parseInt(pageNumber) - 1) },
+        { $limit: pageLimit }
+    ]);
+
+    return result;
+};
+
+const getCommonSeriesAmongFollowing = async (email, userWatchList, pageNumber, pageLimit) => {
+    const following = await searchFollowers(email);
+    
+    const followingWatchList = await WatchLists.aggregate([
+        { $match: { email: { $in: following.map(follower => follower.email_to) } } },
+        ...lookupSeriesFromEpisode(),
+        { $match: {name: { $nin: userWatchList }}},
+        ...lookupGenres(),
+        { $skip: pageLimit * (parseInt(pageNumber) - 1) },
+        { $limit: pageLimit }
+    ]);
+
+    return followingWatchList;
+};
+
+const lookupSeriesFromEpisode = () => ([
+    {
         $lookup: {
             from: Episodes.collection.name,
             localField: "episode_id",
@@ -90,12 +117,7 @@ const getMostWatchedSeries = async (pageNumber, pageLimit) => {
         }
     }, { $unwind: "$series" },
     { $replaceRoot: { newRoot: "$series" } },
-    ...lookupGenres(),
-    { $skip: pageLimit * (parseInt(pageNumber) - 1) },
-    { $limit: pageLimit }]);
-
-    return result;
-};
+]);
 
 const lookupGenres = () => ([
     {
@@ -123,5 +145,6 @@ module.exports = {
     lookupGenres,
     sortBySeasonNumber,
     filterSeries,
-    getMostWatchedSeries
+    getMostWatchedSeries,
+    getCommonSeriesAmongFollowing
 };
