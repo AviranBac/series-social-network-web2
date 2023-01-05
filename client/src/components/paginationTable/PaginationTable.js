@@ -16,7 +16,7 @@ export const seriesColumnDetails = [
     { field: 'name', label: 'Name' },
     { field: 'numberOfEpisodes', label: 'Number of Episodes' },
     { field: 'numberOfSeasons', label: 'Number of Seasons' },
-    // { field: 'status', label: 'Series Status', displayFn: rawValue => getStatusValue(rawValue) }, // TODO: getStatusValue not yet implemented
+    { field: 'status', label: 'Status' },
     { field: 'genres', label: 'Genres' }
 ];
 
