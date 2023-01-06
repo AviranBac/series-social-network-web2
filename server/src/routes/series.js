@@ -19,12 +19,12 @@ router.get('/', seriesValidation(), async (req, res) => {
         return;
     }
 
-    const { name, status, genre, pageNumber = 1 } = req.query;
+    const { name, statuses, genres, pageNumber = 1 } = req.query;
 
     let response;
     let statusCode = HttpStatus.OK;
     try {
-        response = await filterSeries({name, status, genre}, pageNumber, pageLimit);
+        response = await filterSeries({name, statuses, genres}, pageNumber, pageLimit);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Failed while fetching genres: ${e}`;

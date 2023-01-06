@@ -45,11 +45,11 @@ const aggregateSeries = async (seriesIds) => {
     ]);
 };
 
-const filterSeries = async ({ name, status, genre }, pageNumber, pageLimit) => {
+const filterSeries = async ({ name, statuses, genres }, pageNumber, pageLimit) => {
     const aggregationQuery = [];
 
-    name && aggregationQuery.push({ $addFields: { searchIndex: { $indexOfCP: ["$name", String(name)] } } }, { $match: { searchIndex: { $ne: -1 } } });
-    status && aggregationQuery.push({ $match: { status: { $eq: status } } });
+    name && aggregationQuery.push({ $addFields: { searchIndex: { $indexOfCP: [{ $toLower: "$name" }, name.toLowerCase()] } } }, { $match: { searchIndex: { $ne: -1 } } });
+    statuses && aggregationQuery.push({ $match: { status: { $in: JSON.parse(statuses) } } });
     aggregationQuery.push(...lookupGenres(), {
         $replaceWith: {
             $setField: {
@@ -65,53 +65,59 @@ const filterSeries = async ({ name, status, genre }, pageNumber, pageLimit) => {
             }
         }
     });
-    genre && aggregationQuery.push({ $match: { genres: { $all: genre } } });
+    genres && aggregationQuery.push({
+        $addFields: { "relevantGenres": {$setIntersection: ["$genres", JSON.parse(genres)]} }
+    }, { $match: { relevantGenres: { $exists: true , $ne: [] } } }, { $unset: "relevantGenres" });
 
-    const data = await Series.aggregate([...aggregationQuery, { $skip: pageLimit * (parseInt(pageNumber) - 1) }, { $limit: pageLimit }]);
-    const totalAmount = await Series.aggregate([...aggregationQuery, { $count: "count" }]);
+    const data = await Series.aggregate([...aggregationQuery, ...paginationQuery(pageNumber, pageLimit)]);
+    const dataTotalAmount = await Series.aggregate([...aggregationQuery, { $count: "count" }]);
+    const totalAmount = dataTotalAmount[0] ? dataTotalAmount[0].count : 0;
 
     return { data, totalAmount };
 };
 
 const getMostWatchedSeries = async (pageNumber, pageLimit) => {
-    const result = await WatchLists.aggregate([
-        ...lookupSeriesFromEpisode(),
-        { $replaceRoot: { newRoot: "$series" } },
+    const aggregationQuery = [
+        ...getSeriesFromEpisode(),
+        ...getSeriesByDESCCommonOrder(),
         ...lookupGenres(),
-        { $group: { _id: "$_id", series: { $first: "$$ROOT" } } },
-        { $skip: pageLimit * (parseInt(pageNumber) - 1) },
-        { $limit: pageLimit }
-    ]);
+    ];
+    
+    const data = await WatchLists.aggregate([...aggregationQuery, ...paginationQuery(pageNumber, pageLimit) ]);
+    const dataTotalAmount = await WatchLists.aggregate([...aggregationQuery, { $count: "count" }]);
+    const totalAmount = dataTotalAmount[0] ? dataTotalAmount[0].count : 0;
 
-    return result;
+    return { data, totalAmount };
 };
 
 const getCommonSeriesAmongFollowing = async (email, userSeriesIdsWatchList, pageNumber, pageLimit) => {
     const following = await searchFollowings(email);
 
-    const followingWatchList = await WatchLists.aggregate([
+    const aggregationQuery = [
         { $match: { email: { $in: following.map(follower => follower.email_to) } } },
-        ...lookupSeriesFromEpisode(),
-        { $replaceRoot: { newRoot: { email: "$email", seriesId: "$series._id", series: "$series" } } },
-        { $group: {  _id : { email: "$email", seriesId: "$series._id" }, series: {$first: "$series"} } },
-        { $replaceRoot: { newRoot: "$series" } },
-        { $match: { _id: { $nin: userSeriesIdsWatchList }}},
+        ...getSeriesFromEpisode(),
+        ...getSeriesByDESCCommonOrder(),
+        { $match: { _id: { $nin: userSeriesIdsWatchList } } },
         ...lookupGenres(),
-        { $group: { _id: "$_id", series: { $first: "$$ROOT" }, count: { $sum: 1} } },
-        { $sort: { "count": -1 } },
-        { $unset: "count" },
-        { $skip: pageLimit * (parseInt(pageNumber) - 1) },
-        { $limit: pageLimit }
-    ]);
+    ];
 
-    return followingWatchList;
+    const data = await WatchLists.aggregate([...aggregationQuery, ...paginationQuery(pageNumber, pageLimit) ]);
+    const dataTotalAmount = await WatchLists.aggregate([...aggregationQuery, { $count: "count" }]);
+    const totalAmount = dataTotalAmount[0] ? dataTotalAmount[0].count : 0;
+
+    return { data, totalAmount };
 };
 
 const getTopRatedSeries = async (pageNumber, pageLimit) => await Series.find().sort({ vote_average: -1 }).skip(pageLimit * (pageNumber - 1)).limit(pageLimit).exec();
 
 const getPopularSeries = async (pageNumber, pageLimit) => await Series.find().sort({ popularity: -1 }).skip(pageLimit * (pageNumber - 1)).limit(pageLimit).exec();
 
-const lookupSeriesFromEpisode = () => ([
+const paginationQuery = (pageNumber, pageLimit) => ([
+    { $skip: pageLimit * (parseInt(pageNumber) - 1) },
+    { $limit: pageLimit },
+]);
+
+const getSeriesFromEpisode = () => ([
     {
         $lookup: {
             from: Episodes.collection.name,
@@ -134,6 +140,15 @@ const lookupSeriesFromEpisode = () => ([
             as: "series"
         }
     }, { $unwind: "$series" },
+]);
+
+const getSeriesByDESCCommonOrder = () => ([
+    { $replaceRoot: { newRoot: { email: "$email", seriesId: "$series._id", series: "$series" } } },
+    { $group: { _id: { email: "$email", seriesId: "$series._id" }, series: { $first: "$series" } } },
+    { $replaceRoot: { newRoot: "$series" } },
+    { $group: { _id: "$_id", series: { $first: "$$ROOT" }, count: { $sum: 1 } } },
+    { $sort: { "count": -1 } },
+    { $replaceRoot: { newRoot: "$series" } },
 ]);
 
 const lookupGenres = () => ([
