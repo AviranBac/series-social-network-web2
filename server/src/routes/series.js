@@ -164,4 +164,6 @@ router.get('/:id', async (req, res) => {
     res.status(statusCode).send(response);
 });
 
-module.exports = router;
+module.exports = {
+    seriesRouter: router
+};

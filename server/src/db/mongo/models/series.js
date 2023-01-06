@@ -32,9 +32,12 @@ const seriesSchema = new mongoose.Schema({
     number_of_seasons: {
         type: Number,
     },
+    number_of_episodes: {
+        type: Number,
+    },
     status: {
         type: String,
-        enum : statusSeries,
+        enum: statusSeries,
     },
     genre_ids: [{
         type: mongoose.Schema.Types.ObjectId,

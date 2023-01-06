@@ -173,6 +173,7 @@ const sortBySeasonNumber = () => ([
 ]);
 
 module.exports = {
+    getSeriesDetails,
     aggregateSeries,
     lookupGenres,
     sortBySeasonNumber,
