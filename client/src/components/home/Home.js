@@ -2,27 +2,25 @@ import SeriesCard from './SeriesCard';
 import { MDBRow} from 'mdb-react-ui-kit';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import seriesService from "../../services/series.service";
 
 const Home = () => {
 
   const [recommendedSeries, setRecommendedSeries] = useState([]);
 
   useEffect(() => {
-    async function fetchData() {
-      const response = await axios.get('http://localhost:8080/series');
-      setRecommendedSeries(response.data);
-    }
-    fetchData();
+    seriesService.getMostPopularSeries()
+       .then(response => setRecommendedSeries(response))
+       .catch(console.error)
   }, []);
+
 
   const [mostPopularSeries, setMostPopularSeries] = useState([]);
 
   useEffect(() => {
-    async function fetchData() {
-      const response = await axios.get('http://localhost:8080/series');
-      setMostPopularSeries(response.data);    
-    }
-    fetchData();
+    seriesService.getMostPopularSeries()
+       .then(response => setMostPopularSeries(response))
+       .catch(console.error)
   }, []);
 
     const divStyle = {

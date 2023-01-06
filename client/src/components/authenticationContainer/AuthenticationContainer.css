@@ -1,4 +1,4 @@
-.card {
+.auth-container-card {
     border-radius: 1rem;
     max-width: 400px;
 }
@@ -8,7 +8,7 @@
     padding: 1em;
 }
 
-.card-body {
+.auth-container-card-body {
     padding: 1em 3em 3em 3em;
 }
 

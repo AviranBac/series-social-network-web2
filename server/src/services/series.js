@@ -2,6 +2,12 @@ const Series = require("../db/mongo/models/series");
 const Seasons = require("../db/mongo/models/season");
 const Episodes = require("../db/mongo/models/episode");
 const Genres = require("../db/mongo/models/genre");
+const mongoose = require("mongoose");
+
+const getSeriesDetails = async (seriesId) => {
+    const matchedSeries = await aggregateSeries([new mongoose.mongo.ObjectId(seriesId)]);
+    return matchedSeries.length > 0 ? matchedSeries[0] : null;
+};
 
 const aggregateSeries = async (seriesIds) => {
     return Series.aggregate([
@@ -59,6 +65,7 @@ const sortBySeasonNumber = () => ([
 ]);
 
 module.exports = {
+    getSeriesDetails,
     aggregateSeries,
     lookupGenres,
     sortBySeasonNumber

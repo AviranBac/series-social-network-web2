@@ -1,20 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/auth/auth.selectors";
-import axios from 'axios';
-
-const removeSeriesFromWishlist = async (series, user) => {
-  await axios.post('http://localhost:8080/wishlist', { action: "REMOVE" , email: user.email, seriesId: series._id});
-  console.log("removing " + JSON.stringify(series) + " from wishlist");
-}
-
-const addSeriesFromWishlist = async(series, user) => {
-  await axios.post('http://localhost:8080/wishlist', { action: "ADD", email: user.email, seriesId: series._id });
-  console.log("adding " + JSON.stringify(series) + " to wishlist");
-
-}
+import wishlistService from "../../services/wishlist.service";
 
 export default function WishlistIcon(props) {
   const [fill, setFill] = useState(false);
@@ -22,11 +11,14 @@ export default function WishlistIcon(props) {
 
   const clickHandler = () => {
     if(fill){
-      removeSeriesFromWishlist(props.series, user);
+      wishlistService.updateWishlist(props.series, user, "REMOVE").
+      then(setFill(!fill))
+      .catch(console.error)
     } else {
-      addSeriesFromWishlist(props.series, user);
+      wishlistService.updateWishlist(props.series, user, "ADD").
+      then(setFill(!fill))
+      .catch(console.error)
     }
-    setFill(!fill);
   }
 
   return (
