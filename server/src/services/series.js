@@ -108,9 +108,29 @@ const getCommonSeriesAmongFollowing = async (email, userSeriesIdsWatchList, page
     return { data, totalAmount };
 };
 
-const getTopRatedSeries = async (pageNumber, pageLimit) => await Series.find().sort({ vote_average: -1 }).skip(pageLimit * (pageNumber - 1)).limit(pageLimit).exec();
+const getTopRatedSeries = async (pageNumber, pageLimit) => {
+    const aggregationQuery = [
+        { $sort: { vote_average: -1 } },
+    ];
 
-const getPopularSeries = async (pageNumber, pageLimit) => await Series.find().sort({ popularity: -1 }).skip(pageLimit * (pageNumber - 1)).limit(pageLimit).exec();
+    const data = await Series.aggregate([...aggregationQuery, ...paginationQuery(pageNumber, pageLimit) ]);
+    const dataTotalAmount = await Series.aggregate([...aggregationQuery, { $count: "count" }]);
+    const totalAmount = dataTotalAmount[0] ? dataTotalAmount[0].count : 0;
+
+    return { data, totalAmount };
+};
+
+const getPopularSeries = async (pageNumber, pageLimit) => {
+    const aggregationQuery = [
+        { $sort: { popularity: -1 } },
+    ];
+
+    const data = await Series.aggregate([...aggregationQuery, ...paginationQuery(pageNumber, pageLimit) ]);
+    const dataTotalAmount = await Series.aggregate([...aggregationQuery, { $count: "count" }]);
+    const totalAmount = dataTotalAmount[0] ? dataTotalAmount[0].count : 0;
+
+    return { data, totalAmount };
+};
 
 const paginationQuery = (pageNumber, pageLimit) => ([
     { $skip: pageLimit * (parseInt(pageNumber) - 1) },
@@ -148,6 +168,7 @@ const getSeriesByDESCCommonOrder = () => ([
     { $replaceRoot: { newRoot: "$series" } },
     { $group: { _id: "$_id", series: { $first: "$$ROOT" }, count: { $sum: 1 } } },
     { $sort: { "count": -1 } },
+    { $addFields: { "series.usersWatchedCount": "$count" } },
     { $replaceRoot: { newRoot: "$series" } },
 ]);
 
