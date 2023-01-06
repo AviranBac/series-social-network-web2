@@ -1,6 +1,5 @@
 import React from 'react';
 import WishlistIcon from './WishlistIcon';
-import NoImagePlaceholderSvg from "../../svgs/NoImagePlaceholderSvg";
 import {
   MDBCard,
   MDBCardBody,
