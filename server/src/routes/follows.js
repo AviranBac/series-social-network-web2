@@ -29,10 +29,10 @@ router.get('/:email/followers', async (req, res) => {
 
     try {
         response = await searchFollowers(email);
-        console.log(`Sending requested following of ${email}`);
+        console.log(`Sending requested followers of ${email}`);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-        response = `Couldn't send following of ${email}, error was ${e}`;
+        response = `Couldn't send followers of ${email}, error was ${e}`;
         console.log(response);
     }
 
