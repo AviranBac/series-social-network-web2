@@ -9,7 +9,7 @@ const Home = () => {
   const [recommendedSeries, setRecommendedSeries] = useState([]);
 
   useEffect(() => {
-    seriesService.getMostPopularSeries()
+    seriesService.getMostRecommendedSeries()
        .then(response => setRecommendedSeries(response))
        .catch(console.error)
   }, []);
