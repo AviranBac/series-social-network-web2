@@ -20,7 +20,7 @@ export default function WishlistIcon(props) {
   const [fill, setFill] = useState(false);
   const user = useSelector(selectUser);
 
-  const onClick = () => {
+  const clickHandler = () => {
     if(fill){
       removeSeriesFromWishlist(props.series, user);
     } else {
@@ -30,7 +30,7 @@ export default function WishlistIcon(props) {
   }
 
   return (
-    <div onClick={() => onClick()} style={{ cursor: 'pointer' }}>
+    <div onClick={() => clickHandler()} style={{ cursor: 'pointer' }}>
       <FontAwesomeIcon icon={faHeart} color={fill ? 'red' : 'none'} />
     </div>
   );

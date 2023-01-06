@@ -1,4 +1,4 @@
-import SeriesCard from "./SeriesCard";
+import SeriesCard from './SeriesCard';
 import { MDBRow} from 'mdb-react-ui-kit';
 import { useEffect, useState } from 'react';
 import axios from 'axios';

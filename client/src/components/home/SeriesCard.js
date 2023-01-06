@@ -9,13 +9,15 @@ import {
 } from 'mdb-react-ui-kit';
 
 export default function SeriesCard(props) {
+  const { series } = props
+
   return (
     <MDBCol>
       <MDBCard>
-        <MDBCardImage src={props.series.poster_path} alt='...' position='top' />
+        <MDBCardImage src={series.poster_path} alt='...' position='top' />
         <MDBCardBody>
-          <MDBCardTitle className='text-center'>{props.series.name}</MDBCardTitle>
-          <WishlistIcon series={props.series}/>
+          <MDBCardTitle className='text-center'>{series.name}</MDBCardTitle>
+          <WishlistIcon series={series}/>
         </MDBCardBody>
       </MDBCard>
     </MDBCol>
