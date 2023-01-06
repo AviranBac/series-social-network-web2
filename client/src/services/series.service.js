@@ -10,8 +10,10 @@ const loadSeriesDetails = (seriesId) => {
         });
 };
 
-const getMostRecommendedSeries = () => {
-    return axios.get(`${config.serverUrl}/series`)
+const getMostRecommendedSeries = (email, pageNumber = 1) => {
+    return axios.get(`${config.serverUrl}/series/commonAmongFollowing/${email}`, {
+        params: { pageNumber }
+    })
         .then(response => response.data)
         .catch(error => {
             console.error(`Error while trying to fetch most recommended series details. Error: ${error}`);
@@ -19,8 +21,10 @@ const getMostRecommendedSeries = () => {
         });
 };
 
-const getMostPopularSeries = () => {
-    return axios.get(`${config.serverUrl}/series`)
+const getMostPopularSeries = (pageNumber = 1) => {
+    return axios.get(`${config.serverUrl}/series/popular`, {
+        params: { pageNumber }
+    })
         .then(response => response.data)
         .catch(error => {
             console.error(`Error while trying to most popular series details. Error: ${error}`);
