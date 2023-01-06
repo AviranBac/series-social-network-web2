@@ -1,5 +1,6 @@
 import React from 'react';
 import WishlistIcon from './WishlistIcon';
+import NoImagePlaceholderSvg from "../../svgs/NoImagePlaceholderSvg";
 import {
   MDBCard,
   MDBCardBody,
@@ -13,7 +14,7 @@ export default function SeriesCard(props) {
 
   return (
     <MDBCol>
-      <MDBCard>
+      <MDBCard> 
         <MDBCardImage src={series.poster_path} alt='...' position='top' />
         <MDBCardBody>
           <MDBCardTitle className='text-center'>{series.name}</MDBCardTitle>
