@@ -3,7 +3,7 @@ const Seasons = require("../db/mongo/models/season");
 const Episodes = require("../db/mongo/models/episode");
 const Genres = require("../db/mongo/models/genre");
 const WatchLists = require("../db/mongo/models/watchlist");
-const { searchFollowings } = require("./follows"); 
+const { searchFollowings } = require("./follows");
 const mongoose = require("mongoose");
 
 const getSeriesDetails = async (seriesId) => {
@@ -76,8 +76,9 @@ const filterSeries = async ({ name, status, genre }, pageNumber, pageLimit) => {
 const getMostWatchedSeries = async (pageNumber, pageLimit) => {
     const result = await WatchLists.aggregate([
         ...lookupSeriesFromEpisode(),
+        { $replaceRoot: { newRoot: "$series" } },
         ...lookupGenres(),
-        { $group: {_id: "$_id", series: { $first: "$$ROOT" }} },
+        { $group: { _id: "$_id", series: { $first: "$$ROOT" } } },
         { $skip: pageLimit * (parseInt(pageNumber) - 1) },
         { $limit: pageLimit }
     ]);
@@ -87,12 +88,18 @@ const getMostWatchedSeries = async (pageNumber, pageLimit) => {
 
 const getCommonSeriesAmongFollowing = async (email, userSeriesIdsWatchList, pageNumber, pageLimit) => {
     const following = await searchFollowings(email);
-    
+
     const followingWatchList = await WatchLists.aggregate([
         { $match: { email: { $in: following.map(follower => follower.email_to) } } },
         ...lookupSeriesFromEpisode(),
-        { $match: {_id: { $nin: userSeriesIdsWatchList }}},
+        { $replaceRoot: { newRoot: { email: "$email", seriesId: "$series._id", series: "$series" } } },
+        { $group: {  _id : { email: "$email", seriesId: "$series._id" }, series: {$first: "$series"} } },
+        { $replaceRoot: { newRoot: "$series" } },
+        { $match: { _id: { $nin: userSeriesIdsWatchList }}},
         ...lookupGenres(),
+        { $group: { _id: "$_id", series: { $first: "$$ROOT" }, count: { $sum: 1} } },
+        { $sort: { "count": -1 } },
+        { $unset: "count" },
         { $skip: pageLimit * (parseInt(pageNumber) - 1) },
         { $limit: pageLimit }
     ]);
@@ -127,7 +134,6 @@ const lookupSeriesFromEpisode = () => ([
             as: "series"
         }
     }, { $unwind: "$series" },
-    { $replaceRoot: { newRoot: "$series" } },
 ]);
 
 const lookupGenres = () => ([
