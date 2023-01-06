@@ -26,7 +26,6 @@ app.use('/watchlist', watchlistRouter);
 app.use('/wishlist', wishlistRouter);
 
 // app.get('/series', async (req, res) => {
-
 // });
 
 

@@ -10,8 +10,28 @@ const loadSeriesDetails = (seriesId) => {
         });
 };
 
+const getMostRecommendedSeries = () => {
+    return axios.get(`${config.serverUrl}/series`)
+        .then(response => response.data)
+        .catch(error => {
+            console.error(`Error while trying to fetch most recommended series details. Error: ${error}`);
+            throw error;
+        });
+};
+
+const getMostPopularSeries = () => {
+    return axios.get(`${config.serverUrl}/series`)
+        .then(response => response.data)
+        .catch(error => {
+            console.error(`Error while trying to most popular series details. Error: ${error}`);
+            throw error;
+        });
+};
+
 const seriesService = {
-    loadSeriesDetails
+    loadSeriesDetails,
+    getMostRecommendedSeries,
+    getMostPopularSeries
 };
 
 export default seriesService;
