@@ -25,25 +25,4 @@ app.use('/series', seriesRouter);
 app.use('/watchlist', watchlistRouter);
 app.use('/wishlist', wishlistRouter);
 
-// app.get('/series', async (req, res) => {
-// });
-
-
-// app.get('/genres', async (req, res) => {
-
-// });
-
-
-// app.get('/series/:id');
-
-// app.get('/series/filters');
-
-// app.get('/series/commonAmongFollowing');
-
-// app.get('/series/watched');
-
-// app.get('/series/topRated');
-
-// app.get('/series/popular');
-
 module.exports = app;
