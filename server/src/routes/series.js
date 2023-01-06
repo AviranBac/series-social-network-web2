@@ -75,12 +75,13 @@ router.get('/commonAmongFollowing/:email', seriesValidation(), async (req, res) 
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Failed while fetching common series amoung following: ${e}`;
+        console.log(response);
     }
 
     res.status(statusCode).send(response);
 });
 
-router.get('/watched', seriesValidation(), async (req, res) => {
+router.get('/mostWatched', seriesValidation(), async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         res.status(HttpStatus.BAD_REQUEST).json({ errors: errors.array() });
@@ -110,7 +111,7 @@ router.get('/topRated', seriesValidation(), async (req, res) => {
         return;
     }
     
-    const { pageNumber = 1} = req.query;
+    const { pageNumber = 1 } = req.query;
 
     let response;
     let statusCode = HttpStatus.OK;
