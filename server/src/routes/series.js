@@ -6,7 +6,7 @@ const { validationResult } = require('express-validator/check');
 const seriesValidation = require('../validation/series');
 
 const { filterSeries, getMostWatchedSeries, getCommonSeriesAmongFollowing, getTopRatedSeries, getPopularSeries, getSeriesDetails } = require('../services/series');
-const { getUserSeriesIdsFromWatchlist } = require('../services/watchlist');
+const { aggregateWatchlistEpisodes } = require('../services/watchlist');
 
 const router = express.Router();
 
@@ -69,8 +69,9 @@ router.get('/commonAmongFollowing/:email', seriesValidation(), async (req, res) 
     let response;
     let statusCode = HttpStatus.OK;
     try {
-        const userSeriesIdsWatchList = await getUserSeriesIdsFromWatchlist(email);
-        response = await getCommonSeriesAmongFollowing(email, userSeriesIdsWatchList, pageNumber, pageLimit);
+        const seriesWithWatchlistEpisodes = await aggregateWatchlistEpisodes(email);
+        const seriesIdsWatchList = seriesWithWatchlistEpisodes.map(series => series._id);
+        response = await getCommonSeriesAmongFollowing(email, seriesIdsWatchList, pageNumber, pageLimit);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Failed while fetching common series amoung following: ${e}`;
