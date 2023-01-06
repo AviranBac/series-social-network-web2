@@ -19,7 +19,7 @@ router.get('/', seriesValidation(), async (req, res) => {
         return;
     }
 
-    const { name, status, genre, pageNumber } = req.query;
+    const { name, status, genre, pageNumber = 1 } = req.query;
 
     let response;
     let statusCode = HttpStatus.OK;
@@ -63,7 +63,7 @@ router.get('/commonAmongFollowing/:email', seriesValidation(), async (req, res) 
         return;
     }
 
-    const { pageNumber } = req.query;
+    const { pageNumber = 1 } = req.query;
     const { email } = req.params;
 
     let response;
@@ -87,7 +87,7 @@ router.get('/watched', seriesValidation(), async (req, res) => {
         return;
     }
 
-    const { pageNumber } = req.query;
+    const { pageNumber = 1} = req.query;
 
     let response;
     let statusCode = HttpStatus.OK;
@@ -110,7 +110,7 @@ router.get('/topRated', seriesValidation(), async (req, res) => {
         return;
     }
     
-    const { pageNumber } = req.query;
+    const { pageNumber = 1} = req.query;
 
     let response;
     let statusCode = HttpStatus.OK;
@@ -132,7 +132,7 @@ router.get('/popular', seriesValidation(), async (req, res) => {
         return;
     }
     
-    const { pageNumber } = req.query;
+    const { pageNumber = 1 } = req.query;
 
     let response;
     let statusCode = HttpStatus.OK;
