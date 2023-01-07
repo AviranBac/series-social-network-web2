@@ -20,7 +20,7 @@ const Sidebar = ({ visibility, setVisibility }) => {
                     <Offcanvas.Title>Series Social Network</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                    <Nav className="justify-content-end flex-grow-1 pe-3" fill variant="tabs" defaultActiveKey="/home">
+                    <Nav className="justify-content-end flex-grow-1 pe-3" fill variant="tabs">
                         {
                             displaySidebarOptions.map(option => (
                                 <NavItem class="nav-item">
