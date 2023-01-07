@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../features/auth/auth.selectors";
 import wishlistService from "../../services/wishlist.service";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { ActionType } from "../../enums/ActionType";
 
 const WishlistIcon = (props) => {
     const { series, className } = props;
@@ -12,7 +13,7 @@ const WishlistIcon = (props) => {
     const user = useSelector(selectUser);
 
     const clickHandler = () => {
-        const action = fill ? "REMOVE" : "ADD";
+        const action = fill ? ActionType.REMOVE : ActionType.ADD;
 
         wishlistService.updateWishlist(series, user, action)
             .then(() => setFill(!fill))
