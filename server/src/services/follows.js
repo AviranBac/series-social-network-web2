@@ -1,10 +1,10 @@
 const Follows = require("../db/mongo/models/follow");
 
-const searchFollowers = async (email) => {
+const searchFollowings = async (email) => {
     return Follows.find({ email_from: email}).exec();
 };
 
-const searchFollowings = async (email) => {
+const searchFollowers = async (email) => {
     return Follows.find({ email_to: email }).exec();
 };
 

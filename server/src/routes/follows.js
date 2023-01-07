@@ -2,8 +2,25 @@ const express = require("express");
 const HttpStatus = require("http-status-codes");
 const { validationResult } = require('express-validator/check');
 const followsValidation = require('../validation/follow');
-const { addFollow, removeFollow, searchFollowers, searchFollowings, isFollowingExist } = require("../services/follows");
+const { addFollow, removeFollow, searchFollowings, searchFollowers, isFollowingExist } = require("../services/follows");
 const router = express.Router();
+
+router.get('/:email/following', async (req, res) => {
+    let response;
+    let statusCode = HttpStatus.OK;
+    const { email }  = req.params;
+
+    try {
+        response = await searchFollowings(email);
+        console.log(`Sending requested followers of ${email}`);
+    } catch (e) {
+        statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+        response = `Couldn't send followers of ${email}, error was ${e}`;
+        console.log(response);
+    }
+
+    res.status(statusCode).send(response);
+});
 
 router.get('/:email/followers', async (req, res) => {
     let response;
@@ -16,23 +33,6 @@ router.get('/:email/followers', async (req, res) => {
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Couldn't send followers of ${email}, error was ${e}`;
-        console.log(response);
-    }
-
-    res.status(statusCode).send(response);
-});
-
-router.get('/:email/following', async (req, res) => {
-    let response;
-    let statusCode = HttpStatus.OK;
-    const { email }  = req.params;
-
-    try {
-        response = await searchFollowings(email);
-        console.log(`Sending requested following of ${email}`);
-    } catch (e) {
-        statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-        response = `Couldn't send following of ${email}, error was ${e}`;
         console.log(response);
     }
 
