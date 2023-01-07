@@ -4,6 +4,7 @@ import Home from "./components/home/Home";
 import Logout from "./components/logout/Logout";
 import AuthenticationContainer from "./components/authenticationContainer/AuthenticationContainer";
 import SeriesDetails from "./components/seriesDetails/SeriesDetails";
+import Statistics from "./components/statistics/Statistics"
 
 const Routing = () => {
     return (
@@ -12,6 +13,7 @@ const Routing = () => {
                 <Route path="/auth" element={<AuthenticationContainer />} />
             </Route>
             <Route path="/logout" element={<Logout />} />
+            <Route path="/statistics" element={<Statistics />} />
             <Route path="/" element={<AuthenticationGuardRoute />}>
                 <Route path="/" element={<Home />} />
             </Route>
