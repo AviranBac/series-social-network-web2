@@ -12,6 +12,11 @@ export const selectUser = createSelector(
     (authState) => authState?.user
 );
 
+export const selectUserEmail = createSelector(
+    [selectUser],
+    (user) => user?.email
+);
+
 export const selectUserDisplayName = createSelector(
     [selectUser],
     (user) => user?.displayName
