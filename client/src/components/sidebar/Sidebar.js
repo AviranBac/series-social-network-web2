@@ -1,42 +1,42 @@
 import React from 'react';
-import {
-    CDBSidebar,
-    CDBSidebarContent,
-    CDBSidebarFooter,
-    CDBSidebarHeader,
-    CDBSidebarMenu,
-    CDBSidebarMenuItem,
-} from 'cdbreact';
-import { NavLink } from 'react-router-dom';
-const Sidebar = () => {
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import { Nav, NavItem, Container } from 'react-bootstrap';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleUser, faHome, faTv, faChartBar } from "@fortawesome/free-solid-svg-icons";
+
+const Sidebar = ({ visibility, setVisibility }) => {
+    const displaySidebarOptions = [
+        { link: '#action1', icon: faHome, value: 'Home' },
+        { link: '#action2', icon: faTv, value: 'Search Series' },
+        { link: '#action3', icon: faCircleUser, value: 'Search User' },
+        { link: '#action4', icon: faChartBar, value: 'statistics' },
+
+    ];
+
     return (
-        <div
-            style={{ display: 'flex', height: '100vh', overflow: 'scroll initial' }}
-        >
-            <CDBSidebar textColor="#fff" backgroundColor="#3B71CA">
-                <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
-                    Series Social Netork
-                </CDBSidebarHeader>
-                <CDBSidebarContent className="sidebar-content">
-                    <CDBSidebarMenu>
-                        <NavLink exact to="/" activeClassName="activeClicked">
-                            <CDBSidebarMenuItem icon="columns">Home</CDBSidebarMenuItem>
-                        </NavLink>
-                        <NavLink exact to="/tables" activeClassName="activeClicked">
-                            <CDBSidebarMenuItem icon="table">Search Series</CDBSidebarMenuItem>
-                        </NavLink>
-                        <NavLink exact to="/profile" activeClassName="activeClicked">
-                            <CDBSidebarMenuItem icon="user">Search Users</CDBSidebarMenuItem>
-                        </NavLink>
-                        <NavLink exact to="/analytics" activeClassName="activeClicked">
-                            <CDBSidebarMenuItem icon="chart-line">
-                                Statistics
-                            </CDBSidebarMenuItem>
-                        </NavLink>
-                    </CDBSidebarMenu>
-                </CDBSidebarContent>
-            </CDBSidebar>
-        </div>
+        <>
+            <Offcanvas show={visibility} onHide={setVisibility}>
+                <Offcanvas.Header closeButton>
+                    <Offcanvas.Title>Series Social Network</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                    <Nav className="justify-content-end flex-grow-1 pe-3" fill variant="tabs" defaultActiveKey="/home">
+                        <Container>
+                            {
+                                displaySidebarOptions.map(option => (
+                                    <NavItem class="nav-item">
+                                        <Nav.Link className="my-navbar" style={{color: 'black','text-align': 'left'}} href={option.link} onClick={setVisibility}>
+                                            <FontAwesomeIcon icon={option.icon} />
+                                            <span className="ms-3">{option.value}</span>
+                                        </Nav.Link>
+                                    </NavItem>
+                                ))
+                            }
+                        </Container>
+                    </Nav>
+                </Offcanvas.Body>
+            </Offcanvas>
+        </>
     );
 };
 export default Sidebar;
