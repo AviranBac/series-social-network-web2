@@ -56,6 +56,7 @@ const fetchSingleSeries = async (tmdbSeriesId, genre_ids) => {
         });
 
         series = response.data;
+        series.poster_path = series.poster_path ? `https://image.tmdb.org/t/p/w185${series.poster_path}` : undefined;
         series.genre_ids = series.genres.map(genre => genre_ids.filter(genreDbIds => parseInt(genreDbIds.id) === genre.id).map(genre => genre._id));
         console.log(`Got series id: ${series.id}, name: ${series.name}`);
     } catch (e) {

@@ -1,0 +1,37 @@
+table {
+    width: 70%;
+    border-collapse: collapse;
+    border: 1rem;
+}
+
+thead tr th {
+    font-weight: bold;
+    text-align: left;
+    background-color: #fafafa;
+    color: gray;
+}
+
+th, td {
+    padding: .5rem;
+    overflow-wrap: break-word;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(0, 0, 0, .12);
+}
+
+.removeColumn {
+    text-align: right;
+    width: 5%;
+    padding-right: 1rem;
+}
+
+.removeColumn svg:hover {
+    cursor: pointer;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    background-color: #3b71ca;
+}

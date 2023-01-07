@@ -1,0 +1,25 @@
+.container {
+    width: 80%;
+}
+
+.overview {
+    margin: 0 0 1rem 1rem;
+    color: gray;
+}
+
+.details {
+    width: 70%;
+}
+
+.details svg {
+    margin: .3rem .3rem .5rem 1rem;
+    vertical-align: middle;
+}
+
+.flex1 {
+    flex: 1;
+}
+
+.selectMenuList {
+    margin-top: -.5rem;
+}

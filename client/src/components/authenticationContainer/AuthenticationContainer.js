@@ -33,7 +33,7 @@ const AuthenticationContainer = () => {
         <MDBContainer fluid>
             <MDBRow className='d-flex m-5'>
                 <MDBCol col='12'>
-                    <MDBCard className={`bg-primary text-white m-auto card`}>
+                    <MDBCard className={`bg-primary text-white m-auto auth-container-card`}>
                         <MDBTabs pills justify>
                             <MDBTabsItem>
                                 <MDBTabsLink onClick={() => justifyClickHandler(true)} active={isLoginTab}>
@@ -49,12 +49,12 @@ const AuthenticationContainer = () => {
 
                         <MDBTabsContent>
                             <MDBTabsPane show={isLoginTab}>
-                                <MDBCardBody className="card-body">
+                                <MDBCardBody className="auth-container-card-body">
                                     <Login ref={loginRef} moveToRegister={() => justifyClickHandler(false)} />
                                 </MDBCardBody>
                             </MDBTabsPane>
                             <MDBTabsPane show={!isLoginTab}>
-                                <MDBCardBody className="card-body">
+                                <MDBCardBody className="auth-container-card-body">
                                     <Register ref={registerRef} moveToLogin={() => justifyClickHandler(true)} />
                                 </MDBCardBody>
                             </MDBTabsPane>

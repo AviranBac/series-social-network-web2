@@ -3,6 +3,7 @@ import AuthenticationGuardRoute from "./utils/AuthenticationGuardRoute";
 import Home from "./components/home/Home";
 import Logout from "./components/logout/Logout";
 import AuthenticationContainer from "./components/authenticationContainer/AuthenticationContainer";
+import SeriesDetails from "./components/seriesDetails/SeriesDetails";
 
 const Routing = () => {
     return (
@@ -13,6 +14,9 @@ const Routing = () => {
             <Route path="/logout" element={<Logout />} />
             <Route path="/" element={<AuthenticationGuardRoute />}>
                 <Route path="/" element={<Home />} />
+            </Route>
+            <Route path="/series/:id" element={<AuthenticationGuardRoute />}>
+                <Route path="/series/:id" element={<SeriesDetails />} />
             </Route>
             <Route path="*" element={<Navigate to='/' />} />
         </Routes>
