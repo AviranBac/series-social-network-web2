@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../features/auth/auth.selectors";
 import wishlistService from "../../services/wishlist.service";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import "./WishlistIcon.css";
 
 const WishlistIcon = (props) => {
     const { series, className } = props;
