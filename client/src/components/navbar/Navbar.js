@@ -36,7 +36,7 @@ const Navbar = () => {
         <>
             <MDBNavbar color="white" bgColor='primary'>
                 <MDBContainer fluid className="d-flex">
-                    <button onClick={setVisibility} class="btn btn-primary" style={{ backgroundColor: 'transparent' }}>
+                    <button onClick={setVisibility} className="btn btn-primary" style={{ backgroundColor: 'transparent' }}>
                         <FontAwesomeIcon icon={faBars} size="lg" />
                     </button>
                     <div className="fw-bold">Series Social Network</div>
