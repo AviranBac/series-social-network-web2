@@ -33,7 +33,7 @@ const SeriesDetails = () => {
                     navigate('/');
                 }
             })
-    }, [seriesId]);
+    }, [seriesId, navigate]);
 
     const detailsMetadata = [
         [{
