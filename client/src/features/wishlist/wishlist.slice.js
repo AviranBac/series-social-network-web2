@@ -1,0 +1,43 @@
+import _ from "lodash";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import wishlistService from "../../services/wishlist.service";
+import { ActionType } from "../../enums/ActionType";
+
+const seriesInitialState = [];
+const seriesKey = "series";
+
+const wishlistInitialState = {
+    [seriesKey]: seriesInitialState,
+};
+
+export const loadWishlistThunk = createAsyncThunk(
+    'wishlist/load',
+    async (email, thunkApi) => {
+        try {
+            return await wishlistService.getUserWishlist(email);
+        } catch (error) {
+            return thunkApi.rejectWithValue(error.message);
+        }
+    }
+);
+
+const updateWishlistState = (state, updatedWishList) => {
+    state.series = updatedWishList
+};
+
+const wishlistSlice = createSlice({
+    name: "wishlist",
+    initialState: wishlistInitialState,
+    reducers: {
+        updateWishlist: (state, { payload }) => updateWishlistState(state, payload)
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(loadWishlistThunk.fulfilled, (state, { payload }) => {
+                updateWishlistState(state, payload);
+            })
+    }
+});
+
+export const { updateWishlist } = wishlistSlice.actions;
+export default wishlistSlice.reducer;

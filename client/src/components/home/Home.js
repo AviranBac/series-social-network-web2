@@ -1,7 +1,6 @@
 import SeriesCard from './SeriesCard';
 import { MDBRow} from 'mdb-react-ui-kit';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import seriesService from "../../services/series.service";
 
 const Home = () => {
@@ -10,7 +9,7 @@ const Home = () => {
 
   useEffect(() => {
     seriesService.getMostRecommendedSeries()
-       .then(response => setRecommendedSeries(response))
+       .then(response => setRecommendedSeries(response.data.slice(0, 5)))
        .catch(console.error)
   }, []);
 
@@ -19,7 +18,7 @@ const Home = () => {
 
   useEffect(() => {
     seriesService.getMostPopularSeries()
-       .then(response => setMostPopularSeries(response))
+       .then(response => setMostPopularSeries(response.data.slice(0, 5)))
        .catch(console.error)
   }, []);
 

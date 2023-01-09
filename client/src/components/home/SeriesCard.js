@@ -1,5 +1,5 @@
 import React from 'react';
-import WishlistIcon from './WishlistIcon';
+import WishlistIcon from '../wishlistIcon/WishlistIcon';
 import NoImagePlaceholderSvg from "../../svgs/NoImagePlaceholderSvg";
 import {
   MDBCard,
@@ -8,9 +8,12 @@ import {
   MDBCol,
   MDBCardImage
 } from 'mdb-react-ui-kit';
+import { useSelector } from "react-redux";
+import { selectUser } from "../../features/auth/auth.selectors";
 
 export default function SeriesCard(props) {
-  const { series } = props
+  const { series } = props;
+  const currentUser = useSelector(selectUser);
 
   return (
     <MDBCol>
@@ -23,7 +26,7 @@ export default function SeriesCard(props) {
         </div>
         <MDBCardBody>
           <MDBCardTitle className='text-center'>{series.name}</MDBCardTitle>
-          <WishlistIcon series={series}/>
+          <WishlistIcon relatedUser={currentUser} series={series}/>
         </MDBCardBody>
       </MDBCard>
     </MDBCol>
