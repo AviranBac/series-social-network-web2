@@ -1,15 +1,15 @@
-import { useState } from 'react';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import wishlistService from "../../services/wishlist.service";
 import { ActionType } from "../../enums/ActionType";
 import { useDispatch, useSelector } from "react-redux";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { updateWishlist } from "../../features/wishlist/wishlist.slice";
 import { selectSeriesWishlistStatus } from "../../features/wishlist/wishlist.selectors"
 
 const WishlistIcon = (props) => {
-    const { relatedUser, series } = props;
     const dispatch = useDispatch();
+    const { relatedUser, series, className } = props;
 
     const wishlistFillStatus = useSelector((state) => selectSeriesWishlistStatus(state, series._id));
 
@@ -23,9 +23,16 @@ const WishlistIcon = (props) => {
     };
 
     return (
-        <div onClick={() => updateUserWatchlist()} style={{ cursor: 'pointer' }}>
-            <FontAwesomeIcon icon={faHeart} color={wishlistFillStatus ? 'red' : 'none'} />
-        </div>
+        <>
+        <OverlayTrigger placement="bottom"
+                                overlay={<Tooltip id="tooltip"><b>{!wishlistFillStatus ? "Add to wishlist" : "Remove from wishlist"}</b></Tooltip>}>
+                    <FontAwesomeIcon className={className}
+                                     icon={faHeart}
+                                     color={wishlistFillStatus ? 'red' : 'none'}
+                                     cursor="pointer"
+                                     onClick={updateUserWatchlist}/>
+                </OverlayTrigger>
+        </>
     );
 }
 

@@ -1,7 +1,5 @@
-import _ from "lodash";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import wishlistService from "../../services/wishlist.service";
-import { ActionType } from "../../enums/ActionType";
 
 const seriesInitialState = [];
 const seriesKey = "series";
