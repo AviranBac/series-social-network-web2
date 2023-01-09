@@ -23,7 +23,7 @@ const SeriesCard = (props) => {
         <MDBCardBody className="p-0">
           <MDBCardTitle className='text-center py-3'>{series.name}</MDBCardTitle>
           <div className="d-flex w-100 pb-2 mb-3">
-            <WishlistIcon series={series} className="m-auto" />
+            <WishlistIcon className="m-auto" series={series} relatedUser={currentUser} />
             <WatchlistIcon className="m-auto"
                            relatedUser={currentUser}
                            entity={series}
