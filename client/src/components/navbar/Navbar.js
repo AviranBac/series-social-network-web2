@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import { selectUserDisplayName } from "../../features/auth/auth.selectors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classes from "./Navbar.module.css";
-import { faCircleUser, faRightFromBracket, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faCircleUser, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "../sidebar/Sidebar";
 import { useState } from "react";
 
@@ -36,7 +36,7 @@ const Navbar = () => {
         <>
             <MDBNavbar color="white" bgColor='primary'>
                 <MDBContainer fluid className="d-flex">
-                    <button onClick={setVisibility} class="btn btn-primary" style={{ backgroundColor: 'transparent' }}>
+                    <button onClick={setVisibility} className="btn btn-primary" style={{ backgroundColor: 'transparent' }}>
                         <FontAwesomeIcon icon={faBars} size="lg" />
                     </button>
                     <div className="fw-bold">Series Social Network</div>
