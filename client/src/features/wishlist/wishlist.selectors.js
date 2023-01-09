@@ -9,5 +9,5 @@ const selectWishlistSeriesStatus = createSelector(
 
 export const selectSeriesWishlistStatus = createSelector(
     [selectWishlistSeriesStatus, (state, seriesId) => seriesId],
-    (entities, seriesId) => entities.indexOf(seriesId) !== -1 ? true : false
+    (entities, seriesId) => entities.indexOf(seriesId) !== -1
 );

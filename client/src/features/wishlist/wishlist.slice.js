@@ -12,7 +12,8 @@ export const loadWishlistThunk = createAsyncThunk(
     'wishlist/load',
     async (email, thunkApi) => {
         try {
-            return await wishlistService.getUserWishlist(email);
+            const userWishlist = await wishlistService.getUserWishlist(email);
+            return userWishlist.data.map(series => series._id);
         } catch (error) {
             return thunkApi.rejectWithValue(error.message);
         }
