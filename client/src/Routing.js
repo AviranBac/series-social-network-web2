@@ -4,6 +4,7 @@ import Home from "./components/home/Home";
 import Logout from "./components/logout/Logout";
 import AuthenticationContainer from "./components/authenticationContainer/AuthenticationContainer";
 import SeriesDetails from "./components/seriesDetails/SeriesDetails";
+import SearchUsers from "./components/search/SearchUsers"
 
 const Routing = () => {
     return (
@@ -11,6 +12,7 @@ const Routing = () => {
             <Route path="/auth" element={<AuthenticationGuardRoute shouldBeLoggedIn="false" />}>
                 <Route path="/auth" element={<AuthenticationContainer />} />
             </Route>
+            <Route path="/search/users" element={<SearchUsers />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/" element={<AuthenticationGuardRoute />}>
                 <Route path="/" element={<Home />} />
