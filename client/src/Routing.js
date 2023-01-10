@@ -13,7 +13,9 @@ const Routing = () => {
                 <Route path="/auth" element={<AuthenticationContainer />} />
             </Route>
             <Route path="/logout" element={<Logout />} />
-            <Route path="/statistics" element={<Statistics />} />
+            <Route path="/statistics" element={<AuthenticationGuardRoute />}>
+                <Route path="/statistics" element={<Statistics />} />
+            </Route>
             <Route path="/" element={<AuthenticationGuardRoute />}>
                 <Route path="/" element={<Home />} />
             </Route>

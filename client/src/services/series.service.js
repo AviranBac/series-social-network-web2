@@ -27,7 +27,18 @@ const getMostPopularSeries = (pageNumber = 1) => {
     })
         .then(response => response.data)
         .catch(error => {
-            console.error(`Error while trying to most popular series details. Error: ${error}`);
+            console.error(`Error while trying to fetch most popular series details. Error: ${error}`);
+            throw error;
+        });
+};
+
+const getTopRatedSeries = (pageNumber = 1) => {
+    return axios.get(`${config.serverUrl}/series/topRated`, {
+        params: { pageNumber }
+    })
+        .then(response => response.data)
+        .catch(error => {
+            console.error(`Error while trying to fetch top rated series details. Error: ${error}`);
             throw error;
         });
 };
@@ -35,7 +46,8 @@ const getMostPopularSeries = (pageNumber = 1) => {
 const seriesService = {
     loadSeriesDetails,
     getMostRecommendedSeries,
-    getMostPopularSeries
+    getMostPopularSeries,
+    getTopRatedSeries
 };
 
 export default seriesService;

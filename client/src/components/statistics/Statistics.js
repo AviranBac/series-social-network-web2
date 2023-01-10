@@ -4,31 +4,30 @@ import seriesService from "../../services/series.service";
 import { useEffect, useState } from 'react';
 
 const Statistics = () => {
-  const [series, setSeries] = useState([]);
+  const [mostPopularSeries, setMostPopularSeries] = useState([]);
+  const [topRatedSeries, setTopRatedSeries] = useState([]);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [pageSize] = useState(10);
 
   useEffect(() => {
     const fetchData = async() => {
-      const response = await seriesService.getMostPopularSeries(page);
-      setSeries(Array.from(response.data));
-      setTotalCount(response.totalAmount)
+      const mostPopularSeries = await seriesService.getMostPopularSeries(page);
+      const topRatedSeries = await seriesService.getTopRatedSeries(page);
+      setMostPopularSeries(mostPopularSeries.data);
+      setTopRatedSeries(topRatedSeries.data);
+      setTotalCount(mostPopularSeries.totalAmount)
     }
     fetchData();
   }, [page]);
 
-  const onPageChange = (newPage) => {
-    setPage(newPage);
-  }
-
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: 'center' }}>
+    <div className="d-flex flex-column align-items-center">
       <h3>Series Statistics</h3>
-      <SeriesChart series={series} dataKey="popularity" />
-      <SeriesChart series={series} dataKey="vote_average" />
+      <SeriesChart series={mostPopularSeries} dataKey="popularity" />
+      <SeriesChart series={topRatedSeries} dataKey="vote_average" />
       <Pagination
-        onPageChange={page => onPageChange(page)}
+        onPageChange={setPage}
         totalCount={totalCount}
         currentPage={page}
         pageSize={pageSize}
