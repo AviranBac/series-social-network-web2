@@ -48,7 +48,6 @@ const Home = () => {
                        title="Most Popular Series"
                        subtitle="The most popular series available" />
         </div>
-
     );
 };
 

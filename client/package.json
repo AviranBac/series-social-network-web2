@@ -15,6 +15,7 @@
     "classnames": "^2.3.2",
     "is-what": "^4.1.8",
     "mdb-react-ui-kit": "^5.1.0",
+    "normalizr": "^3.6.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
     "react-dom": "^18.2.0",

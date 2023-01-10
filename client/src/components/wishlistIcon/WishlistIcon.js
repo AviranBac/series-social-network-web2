@@ -1,33 +1,38 @@
-import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from "react-redux";
-import { selectUser } from "../../features/auth/auth.selectors";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import wishlistService from "../../services/wishlist.service";
+import { ActionType } from "../../enums/ActionType";
+import { useDispatch, useSelector } from "react-redux";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { updateWishlist } from "../../features/wishlist/wishlist.slice";
+import { selectSeriesWishlistStatus } from "../../features/wishlist/wishlist.selectors"
 
 const WishlistIcon = (props) => {
-    const { series, className } = props;
-    const [fill, setFill] = useState(false);
-    const user = useSelector(selectUser);
+    const dispatch = useDispatch();
+    const { relatedUser, series, className } = props;
 
-    const clickHandler = () => {
-        const action = fill ? "REMOVE" : "ADD";
+    const wishlistFillStatus = useSelector((state) => selectSeriesWishlistStatus(state, series._id));
 
-        wishlistService.updateWishlist(series, user, action)
-            .then(() => setFill(!fill))
-            .catch(console.error)
-    }
+    const updateUserWatchlist = async () => {
+        try {
+            const { series_ids } = await wishlistService.updateWishlist(series._id, relatedUser.email, wishlistFillStatus ? ActionType.REMOVE : ActionType.ADD);
+            dispatch(updateWishlist(series_ids));
+        } catch (e) {
+            console.log(`Error occurred while update user's wish list: ${e}`);
+        }
+    };
 
     return (
+        <>
         <OverlayTrigger placement="bottom"
-                        overlay={<Tooltip id="tooltip"><b>{fill ? "Remove from wishlist" : "Add to wishlist"}</b></Tooltip>}>
-            <FontAwesomeIcon className={className}
-                             icon={faHeart}
-                             color={fill ? 'red' : 'none'}
-                             cursor="pointer"
-                             onClick={clickHandler}/>
-        </OverlayTrigger>
+                                overlay={<Tooltip id="tooltip"><b>{!wishlistFillStatus ? "Add to wishlist" : "Remove from wishlist"}</b></Tooltip>}>
+                    <FontAwesomeIcon className={className}
+                                     icon={faHeart}
+                                     color={wishlistFillStatus ? 'red' : 'none'}
+                                     cursor="pointer"
+                                     onClick={updateUserWatchlist}/>
+                </OverlayTrigger>
+        </>
     );
 }
 
