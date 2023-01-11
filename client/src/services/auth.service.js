@@ -1,5 +1,6 @@
-import axios from 'axios';
 import { config } from "../config/config";
+import { axiosInstance } from "../utils/AxiosInstance";
+import axios from "axios";
 
 const humanizeErrorMessage = (error) => {
     const errorMessage = error.response ? error.response?.data?.error?.message : error.message;
@@ -24,14 +25,18 @@ const humanizeErrorMessage = (error) => {
 const login = (payload) => {
     const { email, password } = payload;
 
-    return axios.post(`${config.firebase.url}/accounts:signInWithPassword?key=${config.firebase.apiKey}`, {
+    return axiosInstance.post(`${config.firebase.url}/accounts:signInWithPassword?key=${config.firebase.apiKey}`, {
         email,
         password,
         returnSecureToken: true
     })
         .then(response => {
-            localStorage.setItem('user', JSON.stringify(response.data));
-            return response.data;
+            const responseWithExpirationDate = {
+                ...response.data,
+                expirationDate: calculateExpirationDate(response.data.expiresIn)
+            }
+            localStorage.setItem('user', JSON.stringify(responseWithExpirationDate));
+            return responseWithExpirationDate;
         })
         .catch(error => {
             throw new Error(humanizeErrorMessage(error));
@@ -41,7 +46,7 @@ const login = (payload) => {
 const register = (payload) => {
     const { email, password } = payload;
 
-    return axios.post(`${config.firebase.url}/accounts:signUp?key=${config.firebase.apiKey}`, {
+    return axiosInstance.post(`${config.firebase.url}/accounts:signUp?key=${config.firebase.apiKey}`, {
         email,
         password,
         returnSecureToken: true
@@ -53,11 +58,10 @@ const register = (payload) => {
 };
 
 const updateUserDetails = ({ idToken, password, displayName }) => {
-    return axios.post(`${config.firebase.url}/accounts:update?key=${config.firebase.apiKey}`, {
+    return axiosInstance.post(`${config.firebase.url}/accounts:update?key=${config.firebase.apiKey}`, {
         idToken,
         password,
-        displayName,
-        returnSecureToken: true
+        displayName
     })
         .then(response => {
             const preUpdateUser = JSON.parse(localStorage.getItem('user'));
@@ -79,8 +83,36 @@ const logout = () => {
     localStorage.removeItem('user');
 };
 
-// TODO
-const refreshToken = () => {};
+const refreshToken = () => {
+    const preUpdateUser = JSON.parse(localStorage.getItem('user'));
+
+    return axios.post(`${config.firebase.url}/token?key=${config.firebase.apiKey}`, {
+        grant_type: "refresh_token",
+        refresh_token: preUpdateUser.refreshToken
+    })
+        .then(response => {
+            const { expires_in: expiresIn, refresh_token: refreshToken, id_token: idToken } = response.data;
+            const updatedUser = {
+                ...preUpdateUser,
+                expiresIn,
+                idToken,
+                refreshToken: refreshToken,
+                expirationDate: calculateExpirationDate(expiresIn)
+            };
+
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            return updatedUser;
+        })
+        .catch(error => {
+            console.log("try");
+            logout();
+            throw new Error(`You need to login. Error: ${humanizeErrorMessage(error)}`);
+        });
+};
+
+const calculateExpirationDate = (expiresIn) => {
+    return new Date(new Date().getTime() + expiresIn * 1000);
+}
 
 const authService = {
     login,

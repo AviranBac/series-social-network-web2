@@ -1,8 +1,8 @@
-import axios from "axios";
 import { config } from "../config/config";
+import { axiosInstance } from "../utils/AxiosInstance";
 
 const loadSeriesDetails = (seriesId) => {
-    return axios.get(`${config.serverUrl}/series/${seriesId}`)
+    return axiosInstance.get(`${config.serverUrl}/series/${seriesId}`)
         .then(response => response.data)
         .catch(error => {
             console.error(`Error while trying to fetch series details for seriesId ${seriesId}. Error: ${error}`);
@@ -11,7 +11,7 @@ const loadSeriesDetails = (seriesId) => {
 };
 
 const getMostRecommendedSeries = (email, pageNumber = 1) => {
-    return axios.get(`${config.serverUrl}/series/commonAmongFollowing/${email}`, {
+    return axiosInstance.get(`${config.serverUrl}/series/commonAmongFollowing/${email}`, {
         params: { pageNumber }
     })
         .then(response => response.data)
@@ -22,7 +22,7 @@ const getMostRecommendedSeries = (email, pageNumber = 1) => {
 };
 
 const getMostPopularSeries = (pageNumber = 1) => {
-    return axios.get(`${config.serverUrl}/series/popular`, {
+    return axiosInstance.get(`${config.serverUrl}/series/popular`, {
         params: { pageNumber }
     })
         .then(response => response.data)
@@ -33,7 +33,7 @@ const getMostPopularSeries = (pageNumber = 1) => {
 };
 
 const getTopRatedSeries = (pageNumber = 1) => {
-    return axios.get(`${config.serverUrl}/series/topRated`, {
+    return axiosInstance.get(`${config.serverUrl}/series/topRated`, {
         params: { pageNumber }
     })
         .then(response => response.data)
