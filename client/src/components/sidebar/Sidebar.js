@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const Sidebar = ({ visibility, setVisibility }) => {
     const displaySidebarOptions = [
         { link: '/', icon: faHome, value: 'Home' },
-        { link: '#action2', icon: faTv, value: 'Search Series' },
+        { link: '/series', icon: faTv, value: 'Search Series' },
         { link: '#action3', icon: faCircleUser, value: 'Search User' },
         { link: '#action4', icon: faChartBar, value: 'statistics' },
 

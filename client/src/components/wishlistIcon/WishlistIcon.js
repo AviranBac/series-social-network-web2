@@ -24,14 +24,14 @@ const WishlistIcon = (props) => {
 
     return (
         <>
-        <OverlayTrigger placement="bottom"
-                                overlay={<Tooltip id="tooltip"><b>{!wishlistFillStatus ? "Add to wishlist" : "Remove from wishlist"}</b></Tooltip>}>
-                    <FontAwesomeIcon className={className}
-                                     icon={faHeart}
-                                     color={wishlistFillStatus ? 'red' : 'none'}
-                                     cursor="pointer"
-                                     onClick={updateUserWatchlist}/>
-                </OverlayTrigger>
+            <OverlayTrigger placement="bottom"
+                overlay={<Tooltip id="tooltip"><b>{!wishlistFillStatus ? "Add to wishlist" : "Remove from wishlist"}</b></Tooltip>}>
+                <FontAwesomeIcon className={className}
+                    icon={faHeart}
+                    color={wishlistFillStatus ? 'red' : 'none'}
+                    cursor="pointer"
+                    onClick={updateUserWatchlist} />
+            </OverlayTrigger>
         </>
     );
 }
