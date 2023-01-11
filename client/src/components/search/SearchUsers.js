@@ -7,13 +7,12 @@ import classes from "./SearchUsers.moudle.css";
 const SearchUsers = () => {
   const [emailSearchValue, setEmailSearchValue] = useState('');
   const [displayNameSearchValue, setDisplayNameSearchValue] = useState('');
-  const [searchBy, setSearchBy] = useState('');
 
   const defaultLoadRequestFn = () => {
     return async (currentPage) => {
       const response = await userService.searchUser(currentPage, emailSearchValue, displayNameSearchValue);
       return {
-        totalElements: response.totalAmount,
+        totalElements: response.totalElements,
         content: response.users
       };
     };
@@ -61,7 +60,6 @@ const SearchUsers = () => {
         routerLinkExtractor={routerLinkExtractor}
       />
     </div>
-
   );
 }
 

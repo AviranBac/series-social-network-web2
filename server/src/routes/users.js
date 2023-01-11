@@ -27,9 +27,9 @@ router.get('', async (req, res) => {
 
     const response = {
         users: users.slice((currentPage - 1) * PAGE_SIZE, (currentPage - 1) * PAGE_SIZE + PAGE_SIZE),
-        totalAmount: users.length
+        totalElements: users.length
     }    
-    console.log(response)
+
     res.send(response);
 });
 
