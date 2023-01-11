@@ -1,12 +1,12 @@
 import axios from "axios";
 import { config } from "../config/config";
 
-const searchUser = (currentPage, searchValue, searchBy) => {
+const searchUser = (currentPage,  emailSearchValue, displayNameSearchValue) => {
     return axios.get(`${config.serverUrl}/users`, {
         params: {
             page: currentPage,
-            searchValue : searchValue,
-            searchBy: searchBy
+            emailSearchValue : emailSearchValue,
+            displayNameSearchValue: displayNameSearchValue
         }
     })
         .then(response => response.data)

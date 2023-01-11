@@ -7,24 +7,22 @@ const PAGE_SIZE = 10;
 router.get('', async (req, res) => {
     const usersResponse = await firebaseAdminConnection.auth().listUsers();
     const currentPage = req.query.page;
-    const searchValue = req.query.searchValue;
-    const searchBy = req.query.searchBy;
-    
+    const emailSearchValue  = req.query.emailSearchValue;
+    const displayNameSearchValue = req.query.displayNameSearchValue;
+
     let users = usersResponse.users.map(user => ({
         email: user.email,
         displayName: user.displayName,
         creationTime: new Date(user.metadata.creationTime),
         lastSignInTime: new Date(user.metadata.lastSignInTime)
     }));
-
-    console.log("seraching " + searchValue + " by " + searchBy)
-    if (searchValue && (searchBy === 'email' || searchBy === 'displayName')) {  
-        console.log("inside");
-
-        users = users.filter((user) => {
-          const fieldValue = (searchBy in user) ? user[searchBy] : undefined
-          return fieldValue && fieldValue.toLowerCase().includes(searchValue.toLowerCase());
-        });
+    
+    if (emailSearchValue || displayNameSearchValue) {  
+            users = users.filter((user) => {
+                let isEmailMatched = user.email && user.email.toLowerCase().includes(emailSearchValue.toLowerCase());
+                let isDisplayNameMatched = user.displayName && user.displayName.toLowerCase().includes(displayNameSearchValue.toLowerCase());
+                return isEmailMatched && isDisplayNameMatched;
+            });
     }
 
     const response = {

@@ -1,42 +1,37 @@
 import { useState, useEffect } from 'react';
 import PaginationTable from '../paginationTable/PaginationTable';
 import userService from "../../services/user.service";
-import {userColumnDetails} from '../paginationTable/PaginationTable';
-
+import { userColumnDetails } from '../paginationTable/PaginationTable';
+import classes from "./SearchUsers.moudle.css";
 
 const SearchUsers = () => {
-  const [searchValue, setSearchValue] = useState('');
+  const [emailSearchValue, setEmailSearchValue] = useState('');
+  const [displayNameSearchValue, setDisplayNameSearchValue] = useState('');
   const [searchBy, setSearchBy] = useState('');
-  const tesel = "bugbug";
 
   const defaultLoadRequestFn = () => {
-    console.log("defaut")
-    console.log(searchValue);
     return async (currentPage) => {
-      console.log(searchValue);
-      console.log(searchBy);
-      console.log(tesel);
-      const response = await userService.searchUser(currentPage, searchValue, searchBy);  
-      return {totalElements: response.totalAmount,
-              content: response.users };
+      const response = await userService.searchUser(currentPage, emailSearchValue, displayNameSearchValue);
+      return {
+        totalElements: response.totalAmount,
+        content: response.users
+      };
     };
   }
-  
+
   const [loadRequestFn, setLoadRequestFn] = useState(defaultLoadRequestFn);
 
   useEffect(() => {
-    console.log("useEffect", searchValue);
     setLoadRequestFn(defaultLoadRequestFn);
-}, [searchValue, searchBy]);
+  }, [emailSearchValue, displayNameSearchValue]);
 
-  const handleSearchValueChange = (event) => {
-    console.log("handleSearchValueChange", event.target.value);
-    setSearchValue(event.target.value);
+  const handleEmailSearchValueChange = (event) => {
+    setEmailSearchValue(event.target.value);
   }
 
-  const handleSearchByChange = (event) => {
-    setSearchBy(event.target.value);
-  } 
+  const handleDisplayNameSearchValueChange = (event) => {
+    setDisplayNameSearchValue(event.target.value);
+  }
 
   const routerLinkExtractor = (user) => {
     return `/user/${user.email}`
@@ -44,26 +39,29 @@ const SearchUsers = () => {
 
 
   return (
-    <div>
-      <div>
+    <div className="center">
+      <div className="input-group">
+        <label>Search by email:</label>
         <input
-          value={searchValue}
-          onChange={handleSearchValueChange}
+          value={emailSearchValue}
+          onChange={handleEmailSearchValueChange}
         />
-        <select onChange={handleSearchByChange}>
-          <option value=""></option>
-          <option value="email">Email</option>
-          <option value="displayName">Display Name</option>
-        </select>
-        <button onClick={() => setLoadRequestFn(defaultLoadRequestFn)}>Search</button>
+      </div>
+      <div className="input-group">
+        <label>Search by display name:</label>
+        <input
+          value={displayNameSearchValue}
+          onChange={handleDisplayNameSearchValueChange}
+        />
       </div>
       <PaginationTable
-          columnDetails={userColumnDetails}
-          loadRequestFn={loadRequestFn}
-          noDataBody="Couldn't load any user"
-          routerLinkExtractor={routerLinkExtractor}
-        />
+        columnDetails={userColumnDetails}
+        loadRequestFn={loadRequestFn}
+        noDataBody="Couldn't load any user"
+        routerLinkExtractor={routerLinkExtractor}
+      />
     </div>
+
   );
 }
 
