@@ -4,18 +4,21 @@ import { config } from "../config/config";
 const humanizeErrorMessage = (error) => {
     const errorMessage = error.response ? error.response?.data?.error?.message : error.message;
 
-    switch (errorMessage) {
-        case "EMAIL_EXISTS": return "This email is already in use.";
-        case "WEAK_PASSWORD": return "Your password must be 6 characters long or more.";
-        case "INVALID_EMAIL": return "Your email address is badly formatted.";
-        case "EMAIL_NOT_FOUND":
-        case "INVALID_PASSWORD":
-            return "Invalid credentials. Please try again.";
-        default: {
-            console.error(errorMessage);
-            return "Unknown error";
-        }
+    if (errorMessage.startsWith("EMAIL_EXISTS")) {
+        return "This email is already in use.";
     }
+    if (errorMessage.startsWith("WEAK_PASSWORD")) {
+        return "Your password must be 6 characters long or more.";
+    }
+    if (errorMessage.startsWith("INVALID_EMAIL")) {
+        return "Your email address is badly formatted.";
+    }
+    if (errorMessage.startsWith("EMAIL_NOT_FOUND") || errorMessage.startsWith("INVALID_PASSWORD")) {
+        return "Invalid credentials. Please try again.";
+    }
+
+    console.error(errorMessage);
+    return "Unknown error";
 };
 
 const login = (payload) => {
@@ -49,13 +52,24 @@ const register = (payload) => {
         });
 };
 
-const updateUserDetails = (idToken, displayName) => {
+const updateUserDetails = ({ idToken, password, displayName }) => {
     return axios.post(`${config.firebase.url}/accounts:update?key=${config.firebase.apiKey}`, {
         idToken,
+        password,
         displayName,
         returnSecureToken: true
     })
-        .then(response => response.data)
+        .then(response => {
+            const preUpdateUser = JSON.parse(localStorage.getItem('user'));
+            const updatedUser = {
+                ...preUpdateUser,
+                idToken: response.data.idToken || preUpdateUser.idToken,
+                displayName: response.data.displayName
+            };
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+
+            return updatedUser;
+        })
         .catch(error => {
             throw new Error(humanizeErrorMessage(error));
         });

@@ -5,12 +5,16 @@ import Logout from "./components/logout/Logout";
 import AuthenticationContainer from "./components/authenticationContainer/AuthenticationContainer";
 import SeriesDetails from "./components/seriesDetails/SeriesDetails";
 import Statistics from "./components/statistics/Statistics"
+import UpdateDetails from "./components/updateDetails/UpdateDetails";
 
 const Routing = () => {
     return (
         <Routes>
             <Route path="/auth" element={<AuthenticationGuardRoute shouldBeLoggedIn="false" />}>
                 <Route path="/auth" element={<AuthenticationContainer />} />
+            </Route>
+            <Route path="/users/update" element={<AuthenticationGuardRoute />}>
+                <Route path="/users/update" element={<UpdateDetails />} />
             </Route>
             <Route path="/logout" element={<Logout />} />
             <Route path="/statistics" element={<AuthenticationGuardRoute />}>
