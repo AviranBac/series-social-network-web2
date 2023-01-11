@@ -8,9 +8,8 @@ const SearchUsers = () => {
   const [searchBy, setSearchBy] = useState('');
 
   useEffect(() => {
-    loadRequestFn();
-  }, [searchValue, searchBy]);
-
+    loadRequestFn(1);
+}, [searchValue, searchBy]);
 
   const handleSearchValueChange = (event) => {
     setSearchValue(event.target.value);
@@ -21,26 +20,24 @@ const SearchUsers = () => {
   }
 
   const loadRequestFn = async (currentPage) => {
-    const response = await userService.searchUser(currentPage);
+    let response = await userService.searchUser(currentPage);
     let filteredData = response.users;
-    console.log("searching " + searchValue + " by " + searchBy )
+    console.log(searchBy)
+    if (searchValue && (searchBy === 'email' || searchBy === 'displayName')) {
+      console.log(" searching")
 
-    if (searchValue) {
+      filteredData = filteredData.filter((user) => {
+        const fieldValue = (searchBy in user) ? user[searchBy] : undefined
+        return fieldValue && fieldValue.toLowerCase().includes(searchValue.toLowerCase());
+      });
+      
       console.log(filteredData)
 
-      filteredData = [{}];
-      console.log(filteredData)
-
-      // filteredData = filteredData.filter((user) => 
-      //   user[searchBy].toLowerCase().includes(searchValue.toLowerCase())
-      //);
-      console.log("finised searching")
-      if(filteredData.length > 0){ console.log("yes")}
-    } 
-      console.log(filteredData)
-
-    return { totalElements: response.totalAmount, content: filteredData }
-  }
+      return { totalElements: filteredData.length, content: filteredData }
+    } else {
+      return { totalElements: response.totalAmount, content: filteredData }
+    }
+  }  
 
   const routerLinkExtractor = (user) => {
     return `/user/${user.email}`
@@ -57,7 +54,7 @@ const SearchUsers = () => {
           <option value="email">Email</option>
           <option value="displayName">Display Name</option>
         </select>
-        <button onClick={loadRequestFn}>Search</button>
+        <button onClick={() => loadRequestFn(1)}>Search</button>
       </div>
       <PaginationTable
           columnDetails={userColumnDetails}
