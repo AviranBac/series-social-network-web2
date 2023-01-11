@@ -5,23 +5,32 @@ import {userColumnDetails} from '../paginationTable/PaginationTable';
 
 
 const SearchUsers = () => {
-
-  const defaultLoadRequestFn = async (currentPage) => {
-    const response = await userService.searchUser(currentPage, searchValue, searchBy);  
-    console.log(response.users )
-    return {totalElements: response.totalAmount,
-            content: response.users };
-  };
-  
   const [searchValue, setSearchValue] = useState('');
   const [searchBy, setSearchBy] = useState('');
+  const tesel = "bugbug";
+
+  const defaultLoadRequestFn = () => {
+    console.log("defaut")
+    console.log(searchValue);
+    return async (currentPage) => {
+      console.log(searchValue);
+      console.log(searchBy);
+      console.log(tesel);
+      const response = await userService.searchUser(currentPage, searchValue, searchBy);  
+      return {totalElements: response.totalAmount,
+              content: response.users };
+    };
+  }
+  
   const [loadRequestFn, setLoadRequestFn] = useState(defaultLoadRequestFn);
 
   useEffect(() => {
+    console.log("useEffect", searchValue);
     setLoadRequestFn(defaultLoadRequestFn);
 }, [searchValue, searchBy]);
 
   const handleSearchValueChange = (event) => {
+    console.log("handleSearchValueChange", event.target.value);
     setSearchValue(event.target.value);
   }
 
@@ -33,6 +42,7 @@ const SearchUsers = () => {
     return `/user/${user.email}`
   };
 
+
   return (
     <div>
       <div>
@@ -41,6 +51,7 @@ const SearchUsers = () => {
           onChange={handleSearchValueChange}
         />
         <select onChange={handleSearchByChange}>
+          <option value=""></option>
           <option value="email">Email</option>
           <option value="displayName">Display Name</option>
         </select>

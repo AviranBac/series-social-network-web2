@@ -40,17 +40,17 @@ const PaginationTable = (props) => {
     const [currentData, setCurrentData] = useState([]);
     const columnsAmount = columnDetails.length + 1 + (imageSrcExtractor ? 1 : 0) + (canRemoveEntity ? 1 : 0);
 
-    const loadRequest = useCallback(() => {
+    const loadRequest = () => {
         loadRequestFn(currentPage)
             .then(response => {
                 setTotalCount(response.totalElements);
                 setCurrentData(response.content);
             });
-    }, [loadRequestFn, currentPage]);
+    };
 
     useEffect(() => {
         loadRequest();
-    }, [currentPage]);
+    }, [loadRequestFn, currentPage]);
 
     const onRemoveEntity = ($event, entity) => {
         $event.stopPropagation();

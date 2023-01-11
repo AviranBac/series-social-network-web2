@@ -9,7 +9,7 @@ router.get('', async (req, res) => {
     const currentPage = req.query.page;
     const searchValue = req.query.searchValue;
     const searchBy = req.query.searchBy;
-
+    
     let users = usersResponse.users.map(user => ({
         email: user.email,
         displayName: user.displayName,
@@ -17,6 +17,7 @@ router.get('', async (req, res) => {
         lastSignInTime: new Date(user.metadata.lastSignInTime)
     }));
 
+    console.log("seraching " + searchValue + " by " + searchBy)
     if (searchValue && (searchBy === 'email' || searchBy === 'displayName')) {  
         console.log("inside");
 
