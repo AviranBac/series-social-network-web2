@@ -18,7 +18,7 @@ const SeriesChart = ({ series, dataKey }) => {
       width={800}
       height={350}
       data={data}
-      margin={{ top: 20, right: 10, left: 10, bottom: 5 }}
+      margin={{ top: 20, right: 30, left: 10, bottom: 5 }}
       onClick={barClickHandler}
     >
       <CartesianGrid strokeDasharray="3 3" stroke="#ffffff00"/>

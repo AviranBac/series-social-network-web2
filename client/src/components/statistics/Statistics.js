@@ -26,12 +26,14 @@ const Statistics = () => {
       <h3>Series Statistics</h3>
       <SeriesChart series={mostPopularSeries} dataKey="popularity" />
       <SeriesChart series={topRatedSeries} dataKey="vote_average" />
-      <Pagination
-        onPageChange={setPage}
-        totalCount={totalCount}
-        currentPage={page}
-        pageSize={pageSize}
-      />
+      <div style={{margin: "5px 0px", position: "relative", top: "-100px"}}>
+        <Pagination
+          onPageChange={setPage}
+          totalCount={totalCount}
+          currentPage={page}
+          pageSize={pageSize}
+        />
+      </div>
     </div>
   );
 };
