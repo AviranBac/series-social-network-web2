@@ -17,7 +17,7 @@ export const seriesColumnDetails = [
     { field: 'number_of_episodes', label: 'Number of Episodes' },
     { field: 'number_of_seasons', label: 'Number of Seasons' },
     { field: 'status', label: 'Status' },
-    { field: 'genres', label: 'Genres' }
+    { field: 'genres', label: 'Genres', displayFn: (field) => field.join(', ') }
 ];
 
 library.add(faClose);
@@ -50,7 +50,7 @@ const PaginationTable = (props) => {
 
     useEffect(() => {
         loadRequest();
-    }, [currentPage]);
+    }, [currentPage, loadRequestFn]);
 
     const onRemoveEntity = ($event, entity) => {
         $event.stopPropagation();
