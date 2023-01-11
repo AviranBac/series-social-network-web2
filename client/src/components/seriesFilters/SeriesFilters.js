@@ -32,21 +32,23 @@ const SeriesFilters = ({ setSeriesFilters }) => {
     };
 
     return (
-        <Container>
+        <> 
             <MDBInputGroup>
                 <MDBInput label='Search by name' onChange={(e) => { setUserFilters({ ...userFilters, name: e.target.value}) }} />
             </MDBInputGroup>
+            <h6 className="mt-2 text-primary fw-bold text-decoration-underline">Filter by genres</h6>
             {
                 (seriesFilterTypes?.genres || []).map((genre) =>
                 <MDBCheckbox key={genre._id} value={genre.name} label={genre.name} onChange={(e) => setFilters(e, filtersType.GENRES)}/>
                 )
             }
+            <h6 className="mt-2 text-primary fw-bold text-decoration-underline">Filter by statuses</h6>
             {
                 (seriesFilterTypes?.statuses || []).map((status) => 
                 <MDBCheckbox key={status} value={status} label={status} onChange={(e) => setFilters(e, filtersType.STATUSES)}/>
                 )
             }
-        </Container>
+        </>
     )
 };
 
