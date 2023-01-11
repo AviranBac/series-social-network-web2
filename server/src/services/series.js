@@ -49,7 +49,7 @@ const filterSeries = async ({ name, statuses, genres }, pageNumber, pageLimit) =
     const aggregationQuery = [];
 
     name && aggregationQuery.push({ $addFields: { searchIndex: { $indexOfCP: [{ $toLower: "$name" }, name.toLowerCase()] } } }, { $match: { searchIndex: { $ne: -1 } } });
-    statuses && aggregationQuery.push({ $match: { status: { $in: JSON.parse(statuses) } } });
+    statuses && aggregationQuery.push({ $match: { status: { $in: statuses } } });
     aggregationQuery.push(...lookupGenres(), {
         $replaceWith: {
             $setField: {
@@ -66,7 +66,7 @@ const filterSeries = async ({ name, statuses, genres }, pageNumber, pageLimit) =
         }
     });
     genres && aggregationQuery.push({
-        $addFields: { "relevantGenres": {$setIntersection: ["$genres", JSON.parse(genres)]} }
+        $addFields: { "relevantGenres": {$setIntersection: ["$genres", genres]} }
     }, { $match: { relevantGenres: { $exists: true , $ne: [] } } }, { $unset: "relevantGenres" });
 
     const data = await Series.aggregate([...aggregationQuery, ...paginationQuery(pageNumber, pageLimit)]);

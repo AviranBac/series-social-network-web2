@@ -7,6 +7,18 @@ const validate = () => {
                 throw new Error('Page number must be grather than 1');
             }
             return true;
+        }),
+        query('genres').custom(value => {
+            if (value && !Array.isArray(value)) {
+                throw new Error('genres must be an array');
+            }
+            return true;
+        }),
+        query('statuses').custom(value => {
+            if (value && !Array.isArray(value)) {
+                throw new Error('statuses must be an array');
+            }
+            return true;
         })
        ];
 };
