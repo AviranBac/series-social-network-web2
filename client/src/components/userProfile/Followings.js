@@ -7,12 +7,12 @@ const Followers = () => {
 
     const currentUser = useSelector(selectUser);
 
-    const followerColumnDetails = [
-        { field: 'email_from', label: 'Email' },
+    const followingColumnDetails = [
+        { field: 'email_to', label: 'Email' },
     ];
 
     const loadRequestFn = async (currentPage) => {
-        const response = await followsService.loadFollowers(currentUser.email, currentPage);
+        const response = await followsService.loadFollowings(currentUser.email, currentPage);
         return {
             totalElements: response.totalAmount,
             content: response.data
@@ -20,7 +20,7 @@ const Followers = () => {
     };
 
     const removeRequestFn = async(user) => {
-       await followsService.updateFollower("REMOVE", user.email_from, user.email_to);
+       await followsService.updateFollowing("REMOVE", user.email_from, user.email_to);
     };
 
 
@@ -31,9 +31,9 @@ const Followers = () => {
     return (
         <div>
             <PaginationTable
-                columnDetails={followerColumnDetails}
+                columnDetails={followingColumnDetails}
                 loadRequestFn={loadRequestFn}
-                noDataBody="Couldn't load any followers"
+                noDataBody="Couldn't load any followings"
                 routerLinkExtractor={routerLinkExtractor}
                 canRemoveEntity={true}
                 removeRequestFn={removeRequestFn}
