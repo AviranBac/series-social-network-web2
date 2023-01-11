@@ -13,7 +13,9 @@ const WishlistIcon = (props) => {
 
     const wishlistFillStatus = useSelector((state) => selectSeriesWishlistStatus(state, series._id));
 
-    const updateUserWatchlist = async () => {
+    const updateUserWatchlist = async (event) => {
+        event.preventDefault();
+
         try {
             const { series_ids } = await wishlistService.updateWishlist(series._id, relatedUser.email, wishlistFillStatus ? ActionType.REMOVE : ActionType.ADD);
             dispatch(updateWishlist(series_ids));

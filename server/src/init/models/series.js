@@ -26,6 +26,7 @@ const fetchPopularSeries = async (genre_ids) => {
 
             const fetchedSeries = await Promise.all(response.data.results
                 .filter(series => wantedLanguages.includes(series.original_language))
+                .filter(({id}) => !popularSeries.map(series => series.id).includes(id))
                 .map((async (series) => await fetchSingleSeries(series.id, genre_ids)))
                 .filter(series => !!series)
                 .slice(0, seriesLimit - popularSeries.length)

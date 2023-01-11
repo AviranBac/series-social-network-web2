@@ -38,7 +38,6 @@ const WatchlistIcon = (props) => {
     };
 
     const updateUserWatchlist = (event) => {
-        event.stopPropagation();
         event.preventDefault();
 
         if (!disableClick) {

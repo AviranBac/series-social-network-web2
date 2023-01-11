@@ -10,7 +10,7 @@ const Sidebar = ({ visibility, setVisibility }) => {
         { link: '/', icon: faHome, value: 'Home' },
         { link: '/series', icon: faTv, value: 'Search Series' },
         { link: '#action3', icon: faCircleUser, value: 'Search User' },
-        { link: '#action4', icon: faChartBar, value: 'statistics' },
+        { link: '/Statistics', icon: faChartBar, value: 'statistics' },
 
     ];
 

@@ -28,7 +28,7 @@ const Navbar = () => {
 
     const displayNameNavOptions = [
         { link: '#', icon: faCircleUser, value: 'Your Profile' },
-        { link: '#', icon: faCircleUser, value: 'Update Your Details' },
+        { link: '/users/update', icon: faCircleUser, value: 'Update Your Details' },
         { link: '/logout', icon: faRightFromBracket, value: 'Logout' }
     ];
 

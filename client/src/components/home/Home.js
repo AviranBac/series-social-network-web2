@@ -17,21 +17,19 @@ const SeriesRow = (props) => {
 
     return (
         <>
-            {series.length > 0 &&
-                <MDBCard className="mt-3">
-                    <MDBCardHeader border="0">
-                        <h4>{title}</h4>
-                        <h6 style={{ color: "gray" }}>{subtitle}</h6>
-                    </MDBCardHeader>
-                    <MDBCardBody style={{ padding: ".5rem 1.5rem" }}>
-                        <MDBRow className='row-cols-1 row-cols-md-5 g-3 mb-2'>
-                            {series.map(series => (
-                                <SeriesCard series={series} key={series._id}/>
-                            ))}
-                        </MDBRow>
-                    </MDBCardBody>
-                </MDBCard>
-            }
+            <MDBCard className="mt-3">
+                <MDBCardHeader border="0">
+                    <h4>{title}</h4>
+                    <h6 style={{ color: "gray" }}>{subtitle}</h6>
+                </MDBCardHeader>
+                <MDBCardBody style={{ padding: ".5rem 1.5rem" }}>
+                    <MDBRow className='row-cols-1 row-cols-md-5 g-3 mb-2'>
+                        {series.map(series => (
+                            <SeriesCard series={series} key={series._id}/>
+                        ))}
+                    </MDBRow>
+                </MDBCardBody>
+            </MDBCard>
         </>
     );
 }
