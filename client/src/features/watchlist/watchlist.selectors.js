@@ -31,5 +31,5 @@ export const selectSeasonWatchlistStatus = createSelector(
 );
 export const selectEpisodeWatchlistStatus = createSelector(
     [selectWatchlistEpisodesState, (state, episodeId) => episodeId],
-    (entities, episodeId) => entities[episodeId]?.watchlistStatus ? entities[episodeId]?.watchlistStatus : WatchlistStatus.NONE
+    (entities, episodeId) => entities[episodeId] ? WatchlistStatus.COMPLETE : WatchlistStatus.NONE
 );
