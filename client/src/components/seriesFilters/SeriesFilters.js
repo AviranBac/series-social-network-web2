@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MDBInputGroup, MDBInput, MDBCheckbox } from 'mdb-react-ui-kit';
 import seriesService from '../../services/series.service';
-import { Container } from 'react-bootstrap';
 
 const filtersType = Object.freeze({ GENRES: "genres", STATUSES: "statuses"});
 
@@ -24,11 +23,11 @@ const SeriesFilters = ({ setSeriesFilters }) => {
     const setFilters = (e, type) => {
         const { value, checked } = e.target;
         const updatedType = checked ? 
-        ({ [type]: [...(userFilters[type]), value] }) : ({ [type]: userFilters[type].filter((filterVal) => filterVal !== value) })
+        ({ [type]: [...(userFilters[type]), value] }) : ({ [type]: userFilters[type].filter((filterVal) => filterVal !== value) });
         setUserFilters({
             ...userFilters,
             ...updatedType
-        })
+        });
     };
 
     return (

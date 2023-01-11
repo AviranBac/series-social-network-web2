@@ -1,22 +1,35 @@
 import React, { useState } from 'react';
 import SeriesFilters from '../seriesFilters/SeriesFilters';
+import seriesService from '../../services/series.service';
+import PaginationTable, { seriesColumnDetails } from '../paginationTable/PaginationTable';
+import { Col, Container, Row } from 'react-bootstrap';
 
 const SearchSeries = () => {
-    const [query,setQuery]=useState({name: "", genres:[], statuses:[]});
+    const [query, setQuery] = useState({ name: "", genres: [], statuses: [] });
 
-    const setFilters = ({name="", genres =query.genres, statuses=query.genres}) => {
-        setQuery({name, genres, statuses});
+    const setFilters = (filters) => {
+        setQuery(filters);
     }
 
-    return (
-        <>
-        <SeriesFilters setSeriesFilters={setFilters}/>
-        
-        <p>name: {query.name}</p>
-        <p>genres: {JSON.stringify(query.genres)}</p>
-        <p>statuses: {JSON.stringify(query.statuses)}</p>
+    const fetchData = async (currentPage = 1) => {
+        const { data, totalAmount } = await seriesService.getSeriesByFilters(query, currentPage);
+        return { content: data, totalElements: totalAmount };
+    };
 
-        </>
+    return (
+        <Container fluid>
+            <Row>
+                <Col xs={4} md={2} className="mt-3">
+                    <SeriesFilters setSeriesFilters={setFilters} />
+                </Col>
+                <Col xs={14} md={10} className="mt-3">
+                    <PaginationTable loadRequestFn={fetchData}
+                                     columnDetails={seriesColumnDetails}
+                                     imageSrcExtractor={(entity => entity.poster_path)}
+                                     routerLinkExtractor={(series) => series._id} />
+                </Col>
+            </Row>
+        </Container>
     )
 };
 
