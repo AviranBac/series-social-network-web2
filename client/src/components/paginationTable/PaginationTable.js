@@ -52,9 +52,9 @@ const PaginationTable = (props) => {
         loadRequest();
     }, [loadRequestFn, currentPage]);
 
-    const onRemoveEntity = ($event, entity) => {
-        $event.stopPropagation();
-        $event.preventDefault();
+    const onRemoveEntity = (event, entity) => {
+        event.stopPropagation();
+        event.preventDefault();
 
         removeRequestFn(entity)
             .then(() => loadRequest());

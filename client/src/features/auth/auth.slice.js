@@ -19,9 +19,27 @@ export const registerThunk = createAsyncThunk(
     'auth/register',
     async (payload, thunkApi) => {
         try {
-            const registerPayload = (({ email, password }) => ({ email, password}))(payload);
+            const registerPayload = (({ email, password }) => ({ email, password }))(payload);
             const registerResponse = await authService.register(registerPayload);
-            await authService.updateUserDetails(registerResponse.idToken, payload.displayName);
+
+            const updatePayload = {
+                idToken: registerResponse.idToken,
+                password: payload.password,
+                displayName: payload.displayName
+            };
+            await authService.updateUserDetails(updatePayload);
+        } catch (error) {
+            return thunkApi.rejectWithValue(error.message);
+        }
+    }
+);
+
+export const updateThunk = createAsyncThunk(
+    'auth/update',
+    async (updatePayload, thunkApi) => {
+        try {
+            const user = await authService.updateUserDetails(updatePayload);
+            return { user };
         } catch (error) {
             return thunkApi.rejectWithValue(error.message);
         }
@@ -49,6 +67,9 @@ const authSlice = createSlice({
             })
             .addCase(loginThunk.fulfilled, (state, action) => {
                 state.isLoggedIn = true;
+                state.user = action.payload.user;
+            })
+            .addCase(updateThunk.fulfilled, (state, action) => {
                 state.user = action.payload.user;
             })
     }
