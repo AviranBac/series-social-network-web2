@@ -4,6 +4,7 @@ import Home from "./components/home/Home";
 import Logout from "./components/logout/Logout";
 import AuthenticationContainer from "./components/authenticationContainer/AuthenticationContainer";
 import SeriesDetails from "./components/seriesDetails/SeriesDetails";
+import Statistics from "./components/statistics/Statistics"
 import UpdateDetails from "./components/updateDetails/UpdateDetails";
 
 const Routing = () => {
@@ -16,6 +17,9 @@ const Routing = () => {
                 <Route path="/users/update" element={<UpdateDetails />} />
             </Route>
             <Route path="/logout" element={<Logout />} />
+            <Route path="/statistics" element={<AuthenticationGuardRoute />}>
+                <Route path="/statistics" element={<Statistics />} />
+            </Route>
             <Route path="/" element={<AuthenticationGuardRoute />}>
                 <Route path="/" element={<Home />} />
             </Route>

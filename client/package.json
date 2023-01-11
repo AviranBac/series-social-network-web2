@@ -25,6 +25,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.6.0",
     "react-scripts": "5.0.1",
+    "recharts": "^2.2.0",
     "react-select": "^5.7.0",
     "sweetalert2": "^11.6.16",
     "sweetalert2-react-content": "^5.0.7",
