@@ -41,11 +41,22 @@ const getSeriesFilterTypes = () => {
         });
 };
 
+const getSeriesByFilters = (query, pageNumber = 1) => {
+    const params = { ...query, pageNumber };
+    return axios.get(`${config.serverUrl}/series`, { params })
+        .then(response => response.data)
+        .catch(error => {
+            console.error(`Error while trying to fetch series filters, Error: ${error}`);
+            throw error;
+        });
+};
+
 const seriesService = {
     loadSeriesDetails,
     getMostRecommendedSeries,
     getMostPopularSeries,
-    getSeriesFilterTypes
+    getSeriesFilterTypes,
+    getSeriesByFilters
 };
 
 export default seriesService;
