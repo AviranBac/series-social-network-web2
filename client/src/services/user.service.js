@@ -1,7 +1,7 @@
 import axios from "axios";
 import { config } from "../config/config";
 
-const searchUser = (currentPage,  emailSearchValue, displayNameSearchValue) => {
+const searchUsers = (currentPage,  emailSearchValue, displayNameSearchValue) => {
     return axios.get(`${config.serverUrl}/users`, {
         params: {
             page: currentPage,
@@ -17,7 +17,7 @@ const searchUser = (currentPage,  emailSearchValue, displayNameSearchValue) => {
 };
 
 const userService = {
-    searchUser
+    searchUsers
 };
 
 export default userService;

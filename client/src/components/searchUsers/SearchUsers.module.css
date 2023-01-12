@@ -8,17 +8,9 @@
   label {
     margin-right: 10px;
   }
-  
-  input {
-    flex-grow: 1;
-  }
 
-  .input-group {
+  .inputGroup {
     display: block;
     margin: 20px 0;
 }
-
-.center {
-    text-align: center;
-  }
   

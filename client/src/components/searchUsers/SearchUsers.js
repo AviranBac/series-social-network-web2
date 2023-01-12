@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import PaginationTable from '../paginationTable/PaginationTable';
 import userService from "../../services/user.service";
 import { userColumnDetails } from '../paginationTable/PaginationTable';
-import classes from "./SearchUsers.moudle.css";
+import classes from "./SearchUsers.module.css";
 
 const SearchUsers = () => {
   const [emailSearchValue, setEmailSearchValue] = useState('');
@@ -10,7 +10,7 @@ const SearchUsers = () => {
 
   const defaultLoadRequestFn = () => {
     return async (currentPage) => {
-      const response = await userService.searchUser(currentPage, emailSearchValue, displayNameSearchValue);
+      const response = await userService.searchUsers(currentPage, emailSearchValue, displayNameSearchValue);
       return {
         totalElements: response.totalElements,
         content: response.users
@@ -38,20 +38,22 @@ const SearchUsers = () => {
 
 
   return (
-    <div className="center">
-      <div className="input-group">
-        <label>Search by email:</label>
-        <input
-          value={emailSearchValue}
-          onChange={handleEmailSearchValueChange}
-        />
-      </div>
-      <div className="input-group">
-        <label>Search by display name:</label>
-        <input
-          value={displayNameSearchValue}
-          onChange={handleDisplayNameSearchValueChange}
-        />
+    <div>
+      <div className="text-center">
+        <div className={classes.inputGroup + ' ' + classes.container}>
+          <label className={classes.label}>Search by email:</label>
+          <input
+            value={emailSearchValue}
+            onChange={handleEmailSearchValueChange}
+          />
+        </div>
+        <div className={classes.inputGroup + ' ' + classes.container}>
+          <label className={classes.label}>Search by display name:</label>
+          <input
+            value={displayNameSearchValue}
+            onChange={handleDisplayNameSearchValueChange}
+          />
+        </div>
       </div>
       <PaginationTable
         columnDetails={userColumnDetails}
