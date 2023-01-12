@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import PaginationTable from '../paginationTable/PaginationTable';
+import { useEffect, useState } from 'react';
+import PaginationTable, { userColumnDetails } from '../paginationTable/PaginationTable';
 import userService from "../../services/user.service";
-import { userColumnDetails } from '../paginationTable/PaginationTable';
 import classes from "./SearchUsers.module.css";
+import { DebounceInput } from "react-debounce-input";
 
 const SearchUsers = () => {
   const [emailSearchValue, setEmailSearchValue] = useState('');
@@ -42,14 +42,14 @@ const SearchUsers = () => {
       <div className="text-center">
         <div className={classes.inputGroup + ' ' + classes.container}>
           <label className={classes.label}>Search by email:</label>
-          <input
+          <DebounceInput
             value={emailSearchValue}
             onChange={handleEmailSearchValueChange}
           />
         </div>
         <div className={classes.inputGroup + ' ' + classes.container}>
           <label className={classes.label}>Search by display name:</label>
-          <input
+          <DebounceInput
             value={displayNameSearchValue}
             onChange={handleDisplayNameSearchValueChange}
           />
