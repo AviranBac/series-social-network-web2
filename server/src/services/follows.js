@@ -1,20 +1,36 @@
 const Follows = require("../db/mongo/models/follow");
 
 const searchFollowings = async (email, pageNumber, pageLimit) => {
-    const totalAmount = (await Follows.find({ email_from: email}).exec()).length;
-    const data = await Follows.aggregate([
-        { $match: { email_from: email }},
-        ...paginationQuery(pageNumber, pageLimit)
-    ]).exec();
+    // const totalAmount = (await Follows.find({ email_from: email}).exec()).length;
+    // const data = await Follows.aggregate([
+    //     { $match: { email_from: email }},
+    //     ...paginationQuery(pageNumber, pageLimit)
+    // ]).exec();
+    // return { data, totalAmount };
+    const aggregationQuery = [  
+        { $match: { email_from: email }} 
+    ];
+    const data = await Follows.aggregate([...aggregationQuery, ...paginationQuery(pageNumber, pageLimit)]);
+    const dataTotalAmount = await Follows.aggregate([...aggregationQuery, { $count: "count" }]);
+    const totalAmount = dataTotalAmount[0] ? dataTotalAmount[0].count : 0;
+    
     return { data, totalAmount };
 };
 
 const searchFollowers = async (email, pageNumber, pageLimit) => {
-    const totalAmount = (await Follows.find({ email_to: email }).exec()).length;
-    const data = await Follows.aggregate([
-        { $match: { email_to: email }},
-        ...paginationQuery(pageNumber, pageLimit)
-    ]).exec();
+    // const totalAmount = (await Follows.find({ email_to: email }).exec()).length;
+    // const data = await Follows.aggregate([
+    //     { $match: { email_to: email }},
+    //     ...paginationQuery(pageNumber, pageLimit)
+    // ]).exec();
+    // return { data, totalAmount };
+    const aggregationQuery = [  
+        { $match: { email_to: email }} 
+    ];
+    const data = await Follows.aggregate([...aggregationQuery, ...paginationQuery(pageNumber, pageLimit)]);
+    const dataTotalAmount = await Follows.aggregate([...aggregationQuery, { $count: "count" }]);
+    const totalAmount = dataTotalAmount[0] ? dataTotalAmount[0].count : 0;
+    
     return { data, totalAmount };
 };
     

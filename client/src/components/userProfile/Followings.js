@@ -2,6 +2,7 @@ import PaginationTable from '../paginationTable/PaginationTable';
 import followsService from "../../services/follows.service";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/auth/auth.selectors";
+import { ActionType } from "../../enums/ActionType";
 
 const Followers = () => {
 
@@ -19,13 +20,13 @@ const Followers = () => {
           };
     };
 
-    const removeRequestFn = async(user) => {
-       await followsService.updateFollowing("REMOVE", user.email_from, user.email_to);
+    const removeRequestFn = async(follow) => {
+       await followsService.updateFollow(ActionType.REMOVE, follow.email_from, follow.email_to);
     };
 
 
-    const routerLinkExtractor = (user) => {
-        return `/user/${user.email_from}`
+    const routerLinkExtractor = (follow) => {
+        return `/user/${follow.email_from}`
     };
 
     return (

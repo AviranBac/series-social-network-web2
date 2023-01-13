@@ -21,30 +21,19 @@ const loadFollowings = (email, pageNumber) => {
         });
 };
 
-const updateFollower = (action, emailFrom, emailTo) => {
+const updateFollow = (action, emailFrom, emailTo) => {
     return axios.post(`${config.serverUrl}/follows`, { action, emailFrom, emailTo })
         .then(response => response.data)
         .catch(error => {
-            console.error(`Error while trying to remove follower. Error: ${error}`);
+            console.error(`Error while trying to update follower. Error: ${error}`);
             throw error;
         });
 };
-
-const updateFollowing = (action, emailFrom, emailTo) => {
-    return axios.post(`${config.serverUrl}/follows`, { action, emailFrom, emailTo })
-        .then(response => response.data)
-        .catch(error => {
-            console.error(`Error while trying to remove following. Error: ${error}`);
-            throw error;
-        });
-};
-
 
 const followsService = {
     loadFollowers,
     loadFollowings,
-    updateFollower,
-    updateFollowing
-};
+    updateFollow
+}
 
 export default followsService;
