@@ -26,7 +26,7 @@ const Followers = () => {
 
 
     const routerLinkExtractor = (follow) => {
-        return `/user/${follow.email_from}`
+        return `/user/${follow.email_to}`
     };
 
     return (
