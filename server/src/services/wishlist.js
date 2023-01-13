@@ -1,25 +1,12 @@
 const mongoose = require("mongoose");
-const { paginationQuery } = require("../utils/queries");
 const Series = require("../db/mongo/models/series");
 const WishLists = require("../db/mongo/models/wishlist");
 
-const getUserWishlist = async (email, pageNumber) => {
+const getUserWishlist = async (email) => {
     const wishlist = await WishLists.findOne({ email }).exec();
-    const seriesIds = wishlist?.series_ids;
+    const seriesIds = wishlist?.series_ids || [];
 
-    let data = [];
-    let totalAmount = 0;
-    if (seriesIds) {
-        const aggregationQuery = [  
-            { $match: { _id: { $in: seriesIds } }} 
-        ];
-
-        data = await Series.aggregate([...aggregationQuery, ...paginationQuery(pageNumber)]);
-        const seriesTotalAmount = await Series.aggregate([...aggregationQuery, { $count: "count" }]);
-        totalAmount = seriesTotalAmount[0] ? seriesTotalAmount[0].count : 0;
-    }
-    
-    return { data, totalAmount };
+    return Series.find({ _id: { $in: seriesIds } }).exec();
 };
 
 const addToWishlist = async (email, seriesId) => {

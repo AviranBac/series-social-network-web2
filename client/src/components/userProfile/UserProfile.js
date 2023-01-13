@@ -3,7 +3,7 @@ import { selectUser } from "../../features/auth/auth.selectors";
 import { Tab, Tabs } from 'react-bootstrap';
 import Followers from "./Followers";
 import Followings from './Followings';
-import './userProfile.module.css';
+import Wishlist from './Wishlist';
 
 const UserProfile = () => {
     const user = useSelector(selectUser);
@@ -17,6 +17,7 @@ const UserProfile = () => {
                 justify
             >
                 <Tab eventKey="Wishlist" title="Wishlist">
+                    <Wishlist/>
                 </Tab> 
                 <Tab eventKey="Watchlist" title="Watchlist">
                 </Tab>
