@@ -43,8 +43,15 @@ const PaginationTable = (props) => {
     const loadRequest = useCallback(() => {
         loadRequestFn(currentPage)
             .then(response => {
-                setTotalCount(response.totalElements);
-                setCurrentData(response.content);
+                const totalCount = response.totalElements;
+                const lastPage = Math.ceil(totalCount / pageSize);
+
+                if (totalCount > 0 && currentPage > lastPage) {
+                    setCurrentPage(1);
+                } else {
+                    setTotalCount(totalCount);
+                    setCurrentData(response.content);
+                }
             });
     }, [loadRequestFn, currentPage]);
 
