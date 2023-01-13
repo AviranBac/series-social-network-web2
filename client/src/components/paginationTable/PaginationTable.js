@@ -50,7 +50,7 @@ const PaginationTable = (props) => {
 
     useEffect(() => {
         loadRequest();
-    }, [currentPage]);
+    }, [loadRequestFn, currentPage]);
 
     const onRemoveEntity = (event, entity) => {
         event.stopPropagation();

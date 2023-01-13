@@ -1,9 +1,13 @@
 import { MDBCard, MDBCardBody, MDBCardFooter, MDBCardImage } from "mdb-react-ui-kit";
 import NoImagePlaceholderSvg from "../../../../svgs/NoImagePlaceholderSvg";
 import classes from "./EntityCard.module.css";
+import WatchlistIcon from "../../../watchlistIcon/WatchlistIcon";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../../../features/auth/auth.selectors";
 
 const EntityCard = (props) => {
-    const { entity, imageSrc, name, description, footer, className = "" } = props;
+    const { entity, entityType, imageSrc, name, description, footer, className = "" } = props;
+    const user = useSelector(selectUser);
 
     return (
         <>
@@ -17,7 +21,13 @@ const EntityCard = (props) => {
                             }
                         </div>
                         <div className={`${classes.summary} w-75`}>
-                            <h2 className="fw-bold">{name}</h2>
+                            <div className="d-flex my-3">
+                                <h2 className={`fw-bold my-0 me-2 ${classes.title}`}>{name}</h2>
+                                <WatchlistIcon relatedUser={user}
+                                               entity={entity}
+                                               entityType={entityType}
+                                               className={`my-auto ${classes.icon}`} />
+                            </div>
                             <span>{description}</span>
                             <p className={`mt-1 ${classes.overview}`}>{entity.overview}</p>
                         </div>
