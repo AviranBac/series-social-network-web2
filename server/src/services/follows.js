@@ -22,6 +22,10 @@ const searchFollowers = async (email, pageNumber) => {
     
     return { data, totalAmount };
 };
+
+const getFollowings = async (email) => {
+    return Follows.find({ email_from: email}).exec();
+};
     
 const isFollowingExist = async (emailFrom, emailTo) => {
     return Follows.exists({ email_to: emailTo, email_from: emailFrom}).exec();
@@ -42,6 +46,7 @@ const removeFollow = async (emailFrom, emailTo) => {
 module.exports = {
     searchFollowers,
     searchFollowings,
+    getFollowings,
     isFollowingExist,
     addFollow,
     removeFollow

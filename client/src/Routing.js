@@ -4,6 +4,7 @@ import Home from "./components/home/Home";
 import Logout from "./components/logout/Logout";
 import AuthenticationContainer from "./components/authenticationContainer/AuthenticationContainer";
 import SeriesDetails from "./components/seriesDetails/SeriesDetails";
+import SearchSeries from "./components/searchSeries/SearchSeries";
 import SearchUsers from "./components/searchUsers/SearchUsers"
 import Statistics from "./components/statistics/Statistics"
 import UpdateDetails from "./components/updateDetails/UpdateDetails";
@@ -38,6 +39,9 @@ const Routing = () => {
             </Route>
             <Route path="/" element={<AuthenticationGuardRoute />}>
                 <Route path="/" element={<Home />} />
+            </Route>
+            <Route path="/series" element={<AuthenticationGuardRoute />}>
+                <Route path="/series" element={<SearchSeries />} />
             </Route>
             <Route path="/series/:id" element={<AuthenticationGuardRoute />}>
                 <Route path="/series/:id" element={<SeriesDetails />} />

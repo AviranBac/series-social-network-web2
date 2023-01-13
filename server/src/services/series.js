@@ -3,7 +3,7 @@ const Seasons = require("../db/mongo/models/season");
 const Episodes = require("../db/mongo/models/episode");
 const Genres = require("../db/mongo/models/genre");
 const WatchLists = require("../db/mongo/models/watchlist");
-const { searchFollowings } = require("./follows");
+const { getFollowings } = require("./follows");
 const mongoose = require("mongoose");
 const { paginationQuery } = require("../utils/queries");
 
@@ -50,7 +50,7 @@ const filterSeries = async ({ name, statuses, genres }, pageNumber) => {
     const aggregationQuery = [];
 
     name && aggregationQuery.push({ $addFields: { searchIndex: { $indexOfCP: [{ $toLower: "$name" }, name.toLowerCase()] } } }, { $match: { searchIndex: { $ne: -1 } } });
-    statuses && aggregationQuery.push({ $match: { status: { $in: JSON.parse(statuses) } } });
+    statuses && aggregationQuery.push({ $match: { status: { $in: statuses } } });
     aggregationQuery.push(...lookupGenres(), {
         $replaceWith: {
             $setField: {
@@ -67,7 +67,7 @@ const filterSeries = async ({ name, statuses, genres }, pageNumber) => {
         }
     });
     genres && aggregationQuery.push({
-        $addFields: { "relevantGenres": {$setIntersection: ["$genres", JSON.parse(genres)]} }
+        $addFields: { "relevantGenres": {$setIntersection: ["$genres", genres]} }
     }, { $match: { relevantGenres: { $exists: true , $ne: [] } } }, { $unset: "relevantGenres" });
 
     const data = await Series.aggregate([...aggregationQuery, ...paginationQuery(pageNumber)]);
