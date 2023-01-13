@@ -27,7 +27,7 @@ const SeriesCard = (props) => {
             <div className="d-flex w-100 pb-2 mb-3">
               <WishlistIcon className="m-auto" series={series} relatedUser={currentUser} />
               <WatchlistIcon className="m-auto"
-                             relatedUser={currentUser}
+                             relatedEmail={currentUser.email}
                              entity={series}
                              entityType={EntityType.SERIES}/>
             </div>

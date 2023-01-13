@@ -3,11 +3,11 @@ import NoImagePlaceholderSvg from "../../../../svgs/NoImagePlaceholderSvg";
 import classes from "./EntityCard.module.css";
 import WatchlistIcon from "../../../watchlistIcon/WatchlistIcon";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../../../features/auth/auth.selectors";
+import { selectUserEmail } from "../../../../features/auth/auth.selectors";
 
 const EntityCard = (props) => {
     const { entity, entityType, imageSrc, name, description, footer, className = "" } = props;
-    const user = useSelector(selectUser);
+    const email = useSelector(selectUserEmail);
 
     return (
         <>
@@ -23,7 +23,7 @@ const EntityCard = (props) => {
                         <div className={`${classes.summary} w-75`}>
                             <div className="d-flex my-3">
                                 <h2 className={`fw-bold my-0 me-2 ${classes.title}`}>{name}</h2>
-                                <WatchlistIcon relatedUser={user}
+                                <WatchlistIcon relatedEmail={email}
                                                entity={entity}
                                                entityType={entityType}
                                                className={`my-auto ${classes.icon}`} />

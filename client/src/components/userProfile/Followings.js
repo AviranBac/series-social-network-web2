@@ -5,7 +5,6 @@ import { selectUser } from "../../features/auth/auth.selectors";
 import { ActionType } from "../../enums/ActionType";
 
 const Followers = () => {
-
     const currentUser = useSelector(selectUser);
 
     const followingColumnDetails = [
@@ -23,7 +22,6 @@ const Followers = () => {
     const removeRequestFn = async(follow) => {
        await followsService.updateFollow(ActionType.REMOVE, follow.email_from, follow.email_to);
     };
-
 
     const routerLinkExtractor = (follow) => {
         return `/user/${follow.email_to}`
