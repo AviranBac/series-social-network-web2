@@ -8,12 +8,18 @@ import { faCalendar, faList, faStar, faTv, faVideoCamera } from "@fortawesome/fr
 import Select from "react-select";
 import SeasonDetails from "./seasonDetails/SeasonDetails";
 import { HttpStatusCode } from "axios";
+import WatchlistIcon from "../watchlistIcon/WatchlistIcon";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../features/auth/auth.selectors";
+import { EntityType } from "../../enums/EntityType";
+import WishlistIcon from "../wishlistIcon/WishlistIcon";
 
 const SeriesDetails = () => {
     const { id: seriesId } = useParams();
     const [series, setSeries] = useState();
     const [seasonOptions, setSeasonOptions] = useState([]);
     const [selectedSeasonOption, setSelectedSeasonOption] = useState(null);
+    const user = useSelector(selectUser);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -65,7 +71,16 @@ const SeriesDetails = () => {
         <>
             {!!series &&
                 <div className={`m-auto p-3 ${classes.container}`}>
-                    <h2 className="m-auto text-center text-primary fw-bold text-decoration-underline">{series.name}</h2>
+                    <div className="m-auto d-flex justify-content-center gap-3">
+                        <h2 className={`text-center text-primary fw-bold text-decoration-underline my-0 ${classes.title}`}>{series.name}</h2>
+                        <WatchlistIcon relatedUser={user}
+                                       entity={series}
+                                       entityType={EntityType.SERIES}
+                                       className={`my-auto ${classes.icon}`} />
+                        <WishlistIcon relatedUser={user}
+                                      series={series}
+                                      className={`my-auto ${classes.icon}`} />
+                    </div>
                     <div className="m-3 d-flex">
                         <div className="m-auto">
                             {series.poster_path ?

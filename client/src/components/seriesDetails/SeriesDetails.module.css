@@ -2,6 +2,10 @@
     width: 80%;
 }
 
+.icon, .title {
+    height: 2rem;
+}
+
 .overview {
     margin: 0 0 1rem 1rem;
     color: gray;
