@@ -4,16 +4,13 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../features/auth/auth.selectors";
 import { ActionType } from "../../enums/ActionType";
 
-const Followers = () => {
-
-    const currentUser = useSelector(selectUser);
-
+const Followers = ({ email }) => {
     const followingColumnDetails = [
         { field: 'email_to', label: 'Email' },
     ];
 
     const loadRequestFn = async (currentPage) => {
-        const response = await followsService.loadFollowings(currentUser.email, currentPage);
+        const response = await followsService.loadFollowings(email, currentPage);
         return {
             totalElements: response.totalAmount,
             content: response.data
@@ -26,7 +23,7 @@ const Followers = () => {
 
 
     const routerLinkExtractor = (follow) => {
-        return `/user/${follow.email_to}`
+        return `/users/${follow.email_to}`
     };
 
     return (

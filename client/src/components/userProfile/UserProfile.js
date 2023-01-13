@@ -1,31 +1,30 @@
-import { useSelector } from "react-redux";
-import { selectUser } from "../../features/auth/auth.selectors";
 import { Tab, Tabs } from 'react-bootstrap';
 import Followers from "./Followers";
 import Followings from './Followings';
 import Wishlist from './Wishlist';
+import { useParams } from "react-router-dom";
 
 const UserProfile = () => {
-    const user = useSelector(selectUser);
+    const { email } = useParams();
 
     return (
         <>
-            <h2 className="mt-4 text-primary text-center fw-bold text-decoration-underline">{user.email}</h2>
+            <h2 className="mt-4 text-primary text-center fw-bold text-decoration-underline">{email}</h2>
             <Tabs
                 defaultActiveKey="Wishlist"
                 className="mb-3"
                 justify
             >
                 <Tab eventKey="Wishlist" title="Wishlist">
-                    <Wishlist/>
+                    <Wishlist email={email}/>
                 </Tab> 
                 <Tab eventKey="Watchlist" title="Watchlist">
                 </Tab>
                 <Tab eventKey="Following" title="Following">
-                    <Followings />
+                    <Followings email={email}/>
                 </Tab>
                 <Tab eventKey="Followers" title="Followers">
-                    <Followers />
+                    <Followers email={email}/>
                 </Tab>
             </Tabs>
         </>

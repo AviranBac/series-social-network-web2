@@ -28,8 +28,8 @@ const Routing = () => {
             <Route path="/statistics" element={<AuthenticationGuardRoute />}>
                 <Route path="/statistics" element={<Statistics />} />
             </Route>
-            <Route path="/users/profile" element={<AuthenticationGuardRoute />}>
-                <Route path="/users/profile" element={<UserProfile />} />
+            <Route path="/users/:email" element={<AuthenticationGuardRoute />}>
+                <Route path="/users/:email" element={<UserProfile />} />
             </Route>
             <Route path="/profile/followers" element={<AuthenticationGuardRoute />}>
                 <Route path="/profile/followers" element={<Followers />} />
