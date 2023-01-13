@@ -2,6 +2,7 @@ import EntityCard from "./entityCard/EntityCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar, faStar } from "@fortawesome/free-solid-svg-icons";
 import classes from "./SeasonDetails.module.css";
+import { EntityType } from "../../../enums/EntityType";
 
 const SeasonCardDescription = (props) => {
     const { season } = props;
@@ -47,6 +48,7 @@ const SeasonCardFooter = (props) => {
             {season && season.episodes.map(episode => (
                 <div className="mb-1" key={episode._id}>
                     <EntityCard entity={episode}
+                                entityType={EntityType.EPISODE}
                                 imageSrc={episode.still_path}
                                 name={getEpisodeDisplayName(episode)}
                                 description={<EpisodeCardDescription episode={episode}/>}
@@ -63,6 +65,7 @@ const SeasonDetails = (props) => {
     return (
         <>
             <EntityCard entity={season}
+                        entityType={EntityType.SEASON}
                         imageSrc={season.poster_path}
                         name={season.name}
                         description={<SeasonCardDescription season={season}/>}
