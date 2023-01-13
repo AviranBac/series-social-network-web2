@@ -27,7 +27,7 @@ const Navbar = () => {
     const userDisplayName = useSelector(selectUserDisplayName);
 
     const displayNameNavOptions = [
-        { link: '#', icon: faCircleUser, value: 'Your Profile' },
+        { link: '/users/profile', icon: faCircleUser, value: 'Your Profile' },
         { link: '/users/update', icon: faCircleUser, value: 'Update Your Details' },
         { link: '/logout', icon: faRightFromBracket, value: 'Logout' }
     ];

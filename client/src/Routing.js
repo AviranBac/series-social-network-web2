@@ -9,6 +9,7 @@ import Statistics from "./components/statistics/Statistics"
 import UpdateDetails from "./components/updateDetails/UpdateDetails";
 import Followers from "./components/userProfile/Followers";
 import Followings from "./components/userProfile/Followings";
+import UserProfile from "./components/userProfile/UserProfile";
 
 const Routing = () => {
     return (
@@ -25,6 +26,9 @@ const Routing = () => {
             <Route path="/logout" element={<Logout />} />
             <Route path="/statistics" element={<AuthenticationGuardRoute />}>
                 <Route path="/statistics" element={<Statistics />} />
+            </Route>
+            <Route path="/users/profile" element={<AuthenticationGuardRoute />}>
+                <Route path="/users/profile" element={<UserProfile />} />
             </Route>
             <Route path="/profile/followers" element={<AuthenticationGuardRoute />}>
                 <Route path="/profile/followers" element={<Followers />} />
