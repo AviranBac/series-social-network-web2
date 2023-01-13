@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  label {
+    margin-right: 10px;
+  }
+
+  .inputGroup {
+    display: block;
+    margin: 20px 0;
+}
+  

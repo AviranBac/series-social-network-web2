@@ -9,9 +9,8 @@ const Sidebar = ({ visibility, setVisibility }) => {
     const displaySidebarOptions = [
         { link: '/', icon: faHome, value: 'Home' },
         { link: '/series', icon: faTv, value: 'Search Series' },
-        { link: '#action3', icon: faCircleUser, value: 'Search User' },
-        { link: '/Statistics', icon: faChartBar, value: 'statistics' },
-
+        { link: '/search/users', icon: faCircleUser, value: 'Search User' },
+        { link: '/statistics', icon: faChartBar, value: 'statistics' },
     ];
 
     return (

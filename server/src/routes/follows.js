@@ -3,19 +3,22 @@ const HttpStatus = require("http-status-codes");
 const { validationResult } = require('express-validator/check');
 const followsValidation = require('../validation/follow');
 const { addFollow, removeFollow, searchFollowings, searchFollowers, isFollowingExist } = require("../services/follows");
+
 const router = express.Router();
+const pageLimit = 10;
 
 router.get('/:email/following', async (req, res) => {
     let response;
     let statusCode = HttpStatus.OK;
     const { email }  = req.params;
+    const { pageNumber = 1 } = req.query;
 
     try {
-        response = await searchFollowings(email);
-        console.log(`Sending requested followers of ${email}`);
+        response = await searchFollowings(email, pageNumber, pageLimit);
+        console.log(`Sending requested followings of ${email}`);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-        response = `Couldn't send followers of ${email}, error was ${e}`;
+        response = `Couldn't send followings of ${email}, error was ${e}`;
         console.log(response);
     }
 
@@ -26,9 +29,10 @@ router.get('/:email/followers', async (req, res) => {
     let response;
     let statusCode = HttpStatus.OK;
     const { email }  = req.params;
+    const { pageNumber = 1 } = req.query;
 
     try {
-        response = await searchFollowers(email);
+        response = await searchFollowers(email, pageNumber, pageLimit);
         console.log(`Sending requested followers of ${email}`);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
