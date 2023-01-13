@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SeriesFilters from '../seriesFilters/SeriesFilters';
+import SeriesFilters from './SeriesFilters';
 import seriesService from '../../services/series.service';
 import PaginationTable, { seriesColumnDetails } from '../paginationTable/PaginationTable';
 import { Col, Container, Row } from 'react-bootstrap';
