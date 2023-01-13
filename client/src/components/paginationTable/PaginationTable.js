@@ -17,7 +17,7 @@ export const seriesColumnDetails = [
     { field: 'number_of_episodes', label: 'Number of Episodes' },
     { field: 'number_of_seasons', label: 'Number of Seasons' },
     { field: 'status', label: 'Status' },
-    { field: 'genres', label: 'Genres' }
+    { field: 'genres', label: 'Genres', displayFn: (field) => field.join(', ') }
 ];
 
 library.add(faClose);
@@ -43,14 +43,21 @@ const PaginationTable = (props) => {
     const loadRequest = useCallback(() => {
         loadRequestFn(currentPage)
             .then(response => {
-                setTotalCount(response.totalElements);
-                setCurrentData(response.content);
+                const totalCount = response.totalElements;
+                const lastPage = Math.ceil(totalCount / pageSize);
+
+                if (totalCount > 0 && currentPage > lastPage) {
+                    setCurrentPage(1);
+                } else {
+                    setTotalCount(totalCount);
+                    setCurrentData(response.content);
+                }
             });
     }, [loadRequestFn, currentPage]);
 
     useEffect(() => {
         loadRequest();
-    }, [currentPage]);
+    }, [currentPage, loadRequestFn]);
 
     const onRemoveEntity = (event, entity) => {
         event.stopPropagation();
