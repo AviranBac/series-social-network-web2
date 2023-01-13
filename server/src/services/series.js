@@ -92,7 +92,7 @@ const getMostWatchedSeries = async (pageNumber) => {
 };
 
 const getCommonSeriesAmongFollowing = async (email, userSeriesIdsWatchList, pageNumber) => {
-    const following = await searchFollowings(email);
+    const following = await getFollowings(email);
 
     const aggregationQuery = [
         { $match: { email: { $in: following.map(follower => follower.email_to) } } },
