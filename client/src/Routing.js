@@ -7,6 +7,8 @@ import SeriesDetails from "./components/seriesDetails/SeriesDetails";
 import SearchUsers from "./components/searchUsers/SearchUsers"
 import Statistics from "./components/statistics/Statistics"
 import UpdateDetails from "./components/updateDetails/UpdateDetails";
+import Followers from "./components/userProfile/Followers";
+import Followings from "./components/userProfile/Followings";
 
 const Routing = () => {
     return (
@@ -23,6 +25,12 @@ const Routing = () => {
             <Route path="/logout" element={<Logout />} />
             <Route path="/statistics" element={<AuthenticationGuardRoute />}>
                 <Route path="/statistics" element={<Statistics />} />
+            </Route>
+            <Route path="/profile/followers" element={<AuthenticationGuardRoute />}>
+                <Route path="/profile/followers" element={<Followers />} />
+            </Route>
+            <Route path="/profile/followings" element={<AuthenticationGuardRoute />}>
+                <Route path="/profile/followings" element={<Followings />} />
             </Route>
             <Route path="/" element={<AuthenticationGuardRoute />}>
                 <Route path="/" element={<Home />} />
