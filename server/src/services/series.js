@@ -3,7 +3,7 @@ const Seasons = require("../db/mongo/models/season");
 const Episodes = require("../db/mongo/models/episode");
 const Genres = require("../db/mongo/models/genre");
 const WatchLists = require("../db/mongo/models/watchlist");
-const { searchFollowings } = require("./follows");
+const { getFollowings } = require("./follows");
 const mongoose = require("mongoose");
 
 const getSeriesDetails = async (seriesId) => {
@@ -91,7 +91,7 @@ const getMostWatchedSeries = async (pageNumber, pageLimit) => {
 };
 
 const getCommonSeriesAmongFollowing = async (email, userSeriesIdsWatchList, pageNumber, pageLimit) => {
-    const following = await searchFollowings(email);
+    const following = await getFollowings(email);
 
     const aggregationQuery = [
         { $match: { email: { $in: following.map(follower => follower.email_to) } } },
