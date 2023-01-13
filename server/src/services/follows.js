@@ -1,12 +1,6 @@
 const Follows = require("../db/mongo/models/follow");
 
 const searchFollowings = async (email, pageNumber, pageLimit) => {
-    // const totalAmount = (await Follows.find({ email_from: email}).exec()).length;
-    // const data = await Follows.aggregate([
-    //     { $match: { email_from: email }},
-    //     ...paginationQuery(pageNumber, pageLimit)
-    // ]).exec();
-    // return { data, totalAmount };
     const aggregationQuery = [  
         { $match: { email_from: email }} 
     ];
@@ -18,12 +12,6 @@ const searchFollowings = async (email, pageNumber, pageLimit) => {
 };
 
 const searchFollowers = async (email, pageNumber, pageLimit) => {
-    // const totalAmount = (await Follows.find({ email_to: email }).exec()).length;
-    // const data = await Follows.aggregate([
-    //     { $match: { email_to: email }},
-    //     ...paginationQuery(pageNumber, pageLimit)
-    // ]).exec();
-    // return { data, totalAmount };
     const aggregationQuery = [  
         { $match: { email_to: email }} 
     ];
