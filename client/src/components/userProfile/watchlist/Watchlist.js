@@ -42,6 +42,9 @@ const Watchlist = ({ email }) => {
                     )) }
                 </MDBAccordion>
             }
+            {
+                watchlist.length === 0 && <h6 className="text-center border-white mt-4">This user does not have a watchlist yet</h6>
+            }
         </>
     );
 };

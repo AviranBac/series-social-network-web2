@@ -5,7 +5,7 @@ import { faCalendar, faStar, faTv, faVideoCamera } from "@fortawesome/free-solid
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectUser } from "../../features/auth/auth.selectors";
+import { selectUserEmail } from "../../features/auth/auth.selectors";
 import NoImagePlaceholderSvg from "../../svgs/NoImagePlaceholderSvg";
 import WishlistIcon from "../wishlistIcon/WishlistIcon";
 import wishlistService from '../../services/wishlist.service';
@@ -14,7 +14,7 @@ import { selectWishlistSeriesIds } from "../../features/wishlist/wishlist.select
 
 const Wishlist = ({ email }) => {
     const [wishlist, setWishlist] = useState([]);
-    const currentUser = useSelector(selectUser);
+    const currentUserEmail = useSelector(selectUserEmail);
     const wishlistSeriesIds = useSelector(selectWishlistSeriesIds);
 
     const detailsMetadata = [
@@ -49,7 +49,7 @@ const Wishlist = ({ email }) => {
     return (
         <>
             {
-                wishlist.map((series) => (
+                wishlist.length > 0 && wishlist.map((series) => (
                     <MDBContainer className="my-3" style={{width: "70%"}} key={series._id}>
                         <MDBCard className="w-100">
                             <MDBCardBody className="d-flex w-100 py-3">
@@ -67,7 +67,7 @@ const Wishlist = ({ email }) => {
                                         <WishlistIcon relatedEmail={email}
                                                       series={series}
                                                       className="my-auto"
-                                                      disableClick={currentUser.email !== email}
+                                                      disableClick={currentUserEmail !== email}
                                                       explicitIsInWishlist={true} />
                                     </div>
                                     <div className={`m-auto ${classes.details}`}>
@@ -95,6 +95,10 @@ const Wishlist = ({ email }) => {
                         </MDBCard>
                     </MDBContainer>
                 ))
+            }
+
+            {
+                wishlist.length === 0 && <h6 className="text-center border-white mt-4">This user does not have a wishlist yet</h6>
             }
         </>
     );
