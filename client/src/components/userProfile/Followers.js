@@ -1,7 +1,5 @@
 import PaginationTable from '../paginationTable/PaginationTable';
 import followsService from "../../services/follows.service";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../features/auth/auth.selectors";
 import { ActionType } from "../../enums/ActionType";
 
 const Followers = ({email}) => {

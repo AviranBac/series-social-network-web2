@@ -3,7 +3,9 @@ import { MDBCard, MDBCardBody, MDBCardImage } from "mdb-react-ui-kit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar, faStar, faTv, faVideoCamera } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
+import { selectUser } from "../../features/auth/auth.selectors";
 import NoImagePlaceholderSvg from "../../svgs/NoImagePlaceholderSvg";
 import WishlistIcon from "../wishlistIcon/WishlistIcon";
 import wishlistService from '../../services/wishlist.service';
@@ -12,6 +14,7 @@ import classes from "./wishlist.module.css";
 const Wishlist = ({ email }) => {
     const [wishlist, setWishlist] = useState([]);
     const navigate = useNavigate();
+    const currentUser = useSelector(selectUser);
 
     const detailsMetadata = [
         [{
@@ -41,6 +44,7 @@ const Wishlist = ({ email }) => {
         }
         fetchData();
     }, [email]);
+
     return (
         <>
             {
@@ -59,7 +63,7 @@ const Wishlist = ({ email }) => {
                                     <h2 className={`fw-bold my-0 me-2 ${classes.title}`}>{series.name}</h2>
                                     <WishlistIcon relatedUser={{email}}
                                         series={series}
-                                        className={`my-auto`} />
+                                        className={`my-auto ${currentUser.email === email ? '' : 'pe-none'}`} />
                                 </div>
                                 <div className={`m-auto ${classes.details}`} style={{cursor: "pointer" }} onClick={() => navigate(`/series/${series._id}`)}>
                                     <div className="d-flex flex-column">
