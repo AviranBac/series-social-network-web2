@@ -15,7 +15,7 @@ import watchlistService from "../../services/watchlist.service";
 import { updateWatchlist } from "../../features/watchlist/watchlist.slice";
 
 const WatchlistIcon = (props) => {
-    const { relatedUser, entity, entityType, disableClick = false, className } = props;
+    const { relatedEmail, entity, entityType, disableClick = false, className, explicitWatchlistStatus, onWatchlistChange } = props;
     const dispatch = useDispatch();
 
     let watchlistStatusSelectorFn;
@@ -25,7 +25,9 @@ const WatchlistIcon = (props) => {
         case EntityType.EPISODE: watchlistStatusSelectorFn = selectEpisodeWatchlistStatus; break;
     }
 
-    const watchlistStatus = useSelector((state) => watchlistStatusSelectorFn(state, entity._id));
+    const loggedInUserWatchlistStatus = useSelector((state) => watchlistStatusSelectorFn(state, entity._id));
+    const watchlistStatus = explicitWatchlistStatus || loggedInUserWatchlistStatus;
+
     const upcomingActionType = watchlistStatus === WatchlistStatus.COMPLETE ? ActionType.REMOVE : ActionType.ADD;
 
     const getStarIcon = () => {
@@ -38,11 +40,15 @@ const WatchlistIcon = (props) => {
     };
 
     const updateUserWatchlist = (event) => {
+        event.stopPropagation();
         event.preventDefault();
 
         if (!disableClick) {
-            watchlistService.updateUserWatchlist(upcomingActionType, relatedUser.email,  entity._id, entityType)
-                .then(updatedWatchlist => dispatch(updateWatchlist(updatedWatchlist)))
+            watchlistService.updateUserWatchlist(upcomingActionType, relatedEmail,  entity._id, entityType)
+                .then(updatedWatchlist => {
+                    dispatch(updateWatchlist(updatedWatchlist));
+                    onWatchlistChange(updatedWatchlist);
+                })
                 .catch(console.error);
         }
     }
@@ -51,11 +57,11 @@ const WatchlistIcon = (props) => {
         <>
             { watchlistStatus &&
                 <OverlayTrigger placement="bottom"
-                                overlay={<Tooltip id="tooltip"><b>{upcomingActionType === ActionType.ADD ? "Add to watchlist" : "Remove from watchlist"}</b></Tooltip>}>
+                                overlay={disableClick ? <></> : <Tooltip id="tooltip"><b>{upcomingActionType === ActionType.ADD ? "Add to watchlist" : "Remove from watchlist"}</b></Tooltip>}>
                     <FontAwesomeIcon className={className}
                                      icon={getStarIcon()}
-                                     color={'gold'}
-                                     cursor="pointer"
+                                     color={ disableClick ? 'gray' : 'gold' }
+                                     cursor={ disableClick ? 'default' : 'pointer' }
                                      onClick={updateUserWatchlist}/>
                 </OverlayTrigger>
             }

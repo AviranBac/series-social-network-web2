@@ -1,0 +1,23 @@
+.accordionItem:not(:last-of-type) {
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: rgba(0,0,0,.125);
+}
+
+.accordionItem:last-child {
+    border-width: 0;
+}
+
+.accordionBtn:not(:global(.collapsed)) {
+    background-color: #dfe7f6;
+    color: unset;
+    box-shadow: none;
+}
+
+.seriesTitle {
+    width: fit-content;
+}
+
+.overview {
+    color: gray;
+}
