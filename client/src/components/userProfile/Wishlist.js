@@ -63,7 +63,8 @@ const Wishlist = ({ email }) => {
                                     <h2 className={`fw-bold my-0 me-2 ${classes.title}`}>{series.name}</h2>
                                     <WishlistIcon relatedUser={{email}}
                                         series={series}
-                                        className={`my-auto ${currentUser.email === email ? '' : 'pe-none'}`} />
+                                        className="my-auto"
+                                        disableClick={currentUser.email === email ? false : true} />
                                 </div>
                                 <div className={`m-auto ${classes.details}`} style={{cursor: "pointer" }} onClick={() => navigate(`/series/${series._id}`)}>
                                     <div className="d-flex flex-column">

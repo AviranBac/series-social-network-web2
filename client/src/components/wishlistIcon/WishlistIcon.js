@@ -9,9 +9,11 @@ import { selectSeriesWishlistStatus } from "../../features/wishlist/wishlist.sel
 
 const WishlistIcon = (props) => {
     const dispatch = useDispatch();
-    const { relatedUser, series, className } = props;
+    const { relatedUser, series, className, disableClick = false } = props;
 
     const wishlistFillStatus = useSelector((state) => selectSeriesWishlistStatus(state, series._id));
+    
+    const classes= `${className} ${disableClick ? " pe-none" : ""}`;
 
     const updateUserWatchlist = async (event) => {
         event.preventDefault();
@@ -28,7 +30,7 @@ const WishlistIcon = (props) => {
         <>
             <OverlayTrigger placement="bottom"
                 overlay={<Tooltip id="tooltip"><b>{!wishlistFillStatus ? "Add to wishlist" : "Remove from wishlist"}</b></Tooltip>}>
-                <FontAwesomeIcon className={className}
+                <FontAwesomeIcon className={classes}
                     icon={faHeart}
                     color={wishlistFillStatus ? 'red' : 'none'}
                     cursor="pointer"
