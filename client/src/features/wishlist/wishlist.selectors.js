@@ -7,6 +7,11 @@ const selectWishlistSeriesStatus = createSelector(
     (wishlistState) => wishlistState?.series
 );
 
+export const selectWishlistSeriesIds = createSelector(
+    [selectWishlistSeriesStatus, (state, seriesId) => seriesId],
+    (wishlistSeriesIds) => wishlistSeriesIds
+);
+
 export const selectSeriesWishlistStatus = createSelector(
     [selectWishlistSeriesStatus, (state, seriesId) => seriesId],
     (entities, seriesId) => entities.indexOf(seriesId) !== -1

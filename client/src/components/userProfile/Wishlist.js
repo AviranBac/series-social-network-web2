@@ -10,11 +10,13 @@ import NoImagePlaceholderSvg from "../../svgs/NoImagePlaceholderSvg";
 import WishlistIcon from "../wishlistIcon/WishlistIcon";
 import wishlistService from '../../services/wishlist.service';
 import classes from "./wishlist.module.css";
+import { selectWishlistSeriesIds } from "../../features/wishlist/wishlist.selectors";
 
 const Wishlist = ({ email }) => {
     const [wishlist, setWishlist] = useState([]);
     const navigate = useNavigate();
     const currentUser = useSelector(selectUser);
+    const wishlistSeriesIds = useSelector((state) => selectWishlistSeriesIds(state));
 
     const detailsMetadata = [
         [{
@@ -43,7 +45,7 @@ const Wishlist = ({ email }) => {
             setWishlist(wishlist.data);
         }
         fetchData();
-    }, [email]);
+    }, [email, wishlistSeriesIds]);
 
     return (
         <>
