@@ -13,7 +13,8 @@ const WishlistIcon = (props) => {
 
     const wishlistFillStatus = useSelector((state) => selectSeriesWishlistStatus(state, series._id));
 
-    const updateUserWatchlist = async (event) => {
+    const updateUserWishlist = async (event) => {
+        event.stopPropagation();
         event.preventDefault();
 
         try {
@@ -32,7 +33,7 @@ const WishlistIcon = (props) => {
                     icon={faHeart}
                     color={wishlistFillStatus ? 'red' : 'none'}
                     cursor="pointer"
-                    onClick={updateUserWatchlist} />
+                    onClick={updateUserWishlist} />
             </OverlayTrigger>
         </>
     );
