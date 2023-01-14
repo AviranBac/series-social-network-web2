@@ -33,7 +33,7 @@ const SearchUsers = () => {
   }
 
   const routerLinkExtractor = (user) => {
-    return `/user/${user.email}`
+    return `/users/${user.email}`
   };
 
 

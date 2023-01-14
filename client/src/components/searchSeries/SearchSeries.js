@@ -26,7 +26,8 @@ const SearchSeries = () => {
                     <PaginationTable loadRequestFn={fetchData}
                                      columnDetails={seriesColumnDetails}
                                      imageSrcExtractor={(entity => entity.poster_path)}
-                                     routerLinkExtractor={(series) => series._id} />
+                                     routerLinkExtractor={(series) => series._id} 
+                                     tableOverrideStyle={{width: "100%"}}/>
                 </Col>
             </Row>
         </Container>

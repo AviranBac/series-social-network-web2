@@ -10,7 +10,7 @@ import SeasonDetails from "./seasonDetails/SeasonDetails";
 import { HttpStatusCode } from "axios";
 import WatchlistIcon from "../watchlistIcon/WatchlistIcon";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../features/auth/auth.selectors";
+import { selectUserEmail } from "../../features/auth/auth.selectors";
 import { EntityType } from "../../enums/EntityType";
 import WishlistIcon from "../wishlistIcon/WishlistIcon";
 
@@ -19,7 +19,7 @@ const SeriesDetails = () => {
     const [series, setSeries] = useState();
     const [seasonOptions, setSeasonOptions] = useState([]);
     const [selectedSeasonOption, setSelectedSeasonOption] = useState(null);
-    const user = useSelector(selectUser);
+    const email = useSelector(selectUserEmail);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -73,11 +73,11 @@ const SeriesDetails = () => {
                 <div className={`m-auto p-3 ${classes.container}`}>
                     <div className="m-auto d-flex justify-content-center gap-3">
                         <h2 className={`text-center text-primary fw-bold text-decoration-underline my-0 ${classes.title}`}>{series.name}</h2>
-                        <WatchlistIcon relatedEmail={user.email}
+                        <WatchlistIcon relatedEmail={email}
                                        entity={series}
                                        entityType={EntityType.SERIES}
                                        className={`my-auto ${classes.icon}`} />
-                        <WishlistIcon relatedUser={user}
+                        <WishlistIcon relatedEmail={email}
                                       series={series}
                                       className={`my-auto ${classes.icon}`} />
                     </div>

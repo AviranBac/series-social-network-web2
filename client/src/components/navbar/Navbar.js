@@ -10,7 +10,7 @@ import {
 } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUserDisplayName } from "../../features/auth/auth.selectors";
+import { selectUser } from "../../features/auth/auth.selectors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classes from "./Navbar.module.css";
 import { faBars, faCircleUser, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
@@ -18,19 +18,18 @@ import Sidebar from "../sidebar/Sidebar";
 import { useState } from "react";
 
 const Navbar = () => {
+    const currentUser = useSelector(selectUser);
     const [offCanvesVisibility, setOffCanvesVisibility] = useState(false);
 
     const setVisibility = () => {
         setOffCanvesVisibility(!offCanvesVisibility);
     };
 
-    const userDisplayName = useSelector(selectUserDisplayName);
-
-    const displayNameNavOptions = [
-        { link: '#', icon: faCircleUser, value: 'Your Profile' },
+    const displayNameNavOptions = (email) => ([
+        { link: `/users/${email}`, icon: faCircleUser, value: 'Your Profile' },
         { link: '/users/update', icon: faCircleUser, value: 'Update Your Details' },
         { link: '/logout', icon: faRightFromBracket, value: 'Logout' }
-    ];
+    ]);
 
     return (
         <>
@@ -42,17 +41,17 @@ const Navbar = () => {
                     <div className="fw-bold">Series Social Network</div>
                     <div className={classes.spacer}></div>
 
-                    {userDisplayName &&
+                    {currentUser?.displayName &&
                         <div>
                             <MDBNavbarNav className="d-flex flex-row">
                                 <MDBNavbarItem>
                                     <MDBDropdown>
                                         <MDBDropdownToggle tag="a" className={`nav-link fw-bold ${classes.displayNameToggle}`}>
-                                            {userDisplayName}
+                                            {currentUser?.displayName}
                                         </MDBDropdownToggle>
 
                                         <MDBDropdownMenu className="dropdown-menu-end">
-                                            {displayNameNavOptions.map(option => (
+                                            {displayNameNavOptions(currentUser.email).map(option => (
                                                 <Link to={option.link} key={option.value}>
                                                     <MDBDropdownItem className="dropdown-item">
                                                         <FontAwesomeIcon icon={option.icon} />

@@ -9,9 +9,9 @@ const getUserWishlist = async (email) => {
     });
 };
 
-const updateWishlist = async (seriesId, email, action) => {
-  return axios.post(`${config.serverUrl}/wishlist`, { action, email, seriesId }).then(response => response.data)
-    .catch(error => {
+const updateWishlist = async (email, seriesId, action) => {
+  return axios.post(`${config.serverUrl}/wishlist`, { action , email, seriesId }).then(response => response.data)
+  .catch(error => {
       console.error(`Error while trying to update wishlist details for user ${email}, Error: ${error}`);
       throw error;
     });

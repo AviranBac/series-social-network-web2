@@ -31,7 +31,8 @@ const PaginationTable = (props) => {
         removeRequestFn,
         imageSrcExtractor,
         routerLinkExtractor,
-        noDataBody = "There are 0 items"
+        noDataBody = "There are 0 items",
+        tableOverrideStyle = {}
     } = props;
 
     const navigate = useNavigate();
@@ -102,7 +103,7 @@ const PaginationTable = (props) => {
 
     return (
         <>
-            <table className="m-auto position-relative">
+            <table className="m-auto position-relative" style={tableOverrideStyle}>
                 <thead>
                 {currentData.length > 0 &&
                     <tr>

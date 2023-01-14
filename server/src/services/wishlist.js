@@ -1,6 +1,6 @@
-const WishLists = require("../db/mongo/models/wishlist");
-const Series = require("../db/mongo/models/series");
 const mongoose = require("mongoose");
+const Series = require("../db/mongo/models/series");
+const WishLists = require("../db/mongo/models/wishlist");
 
 const getUserWishlist = async (email) => {
     const wishlist = await WishLists.findOne({ email }).exec();

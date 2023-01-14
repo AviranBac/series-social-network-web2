@@ -2,14 +2,12 @@ import { MDBAccordion } from "mdb-react-ui-kit";
 import { useEffect, useState } from "react";
 import watchlistService from "../../../services/watchlist.service";
 import classes from "./Watchlist.module.css";
-import { useParams } from "react-router-dom";
 import { sortBy } from "lodash";
 import { useSelector } from "react-redux";
 import { selectUserEmail } from "../../../features/auth/auth.selectors";
 import SingleSeriesItem from "./singleSeriesItem/SingleSeriesItem";
 
-const Watchlist = () => {
-    const { email } = useParams();
+const Watchlist = ({ email }) => {
     const [watchlist, setWatchlist] = useState([]);
     const loggedInEmail = useSelector(selectUserEmail);
     const isLoggedInUser = email === loggedInEmail;
