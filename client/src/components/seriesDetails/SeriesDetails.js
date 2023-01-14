@@ -73,7 +73,7 @@ const SeriesDetails = () => {
                 <div className={`m-auto p-3 ${classes.container}`}>
                     <div className="m-auto d-flex justify-content-center gap-3">
                         <h2 className={`text-center text-primary fw-bold text-decoration-underline my-0 ${classes.title}`}>{series.name}</h2>
-                        <WatchlistIcon relatedUser={user}
+                        <WatchlistIcon relatedEmail={user.email}
                                        entity={series}
                                        entityType={EntityType.SERIES}
                                        className={`my-auto ${classes.icon}`} />

@@ -2,7 +2,7 @@ import PaginationTable from '../paginationTable/PaginationTable';
 import followsService from "../../services/follows.service";
 import { ActionType } from "../../enums/ActionType";
 
-const Followers = ({email}) => {
+const Followers = ({ email }) => {
     const followerColumnDetails = [
         { field: 'email_from', label: 'Email' },
     ];
@@ -12,13 +12,12 @@ const Followers = ({email}) => {
         return {
             totalElements: response.totalAmount,
             content: response.data
-          };
+        };
     };
 
-    const removeRequestFn = async(follow) => {
-       await followsService.updateFollow(ActionType.REMOVE, follow.email_from, follow.email_to);
+    const removeRequestFn = async (follow) => {
+        await followsService.updateFollow(ActionType.REMOVE, follow.email_from, follow.email_to);
     };
-
 
     const routerLinkExtractor = (follow) => {
         return `/users/${follow.email_from}`

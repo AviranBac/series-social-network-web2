@@ -12,13 +12,12 @@ const Followers = ({ email }) => {
         return {
             totalElements: response.totalAmount,
             content: response.data
-          };
+        };
     };
 
-    const removeRequestFn = async(follow) => {
-       await followsService.updateFollow(ActionType.REMOVE, follow.email_from, follow.email_to);
+    const removeRequestFn = async (follow) => {
+        await followsService.updateFollow(ActionType.REMOVE, follow.email_from, follow.email_to);
     };
-
 
     const routerLinkExtractor = (follow) => {
         return `/users/${follow.email_to}`

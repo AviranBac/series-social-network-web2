@@ -2,6 +2,7 @@ import { Tab, Tabs } from 'react-bootstrap';
 import Followers from "./Followers";
 import Followings from './Followings';
 import Wishlist from './Wishlist';
+import Watchlist from './watchlist/Watchlist';
 import { useParams } from "react-router-dom";
 
 const UserProfile = () => {
@@ -19,6 +20,7 @@ const UserProfile = () => {
                     <Wishlist email={email}/>
                 </Tab> 
                 <Tab eventKey="Watchlist" title="Watchlist">
+                    <Watchlist email={email}/>
                 </Tab>
                 <Tab eventKey="Following" title="Following">
                     <Followings email={email}/>
