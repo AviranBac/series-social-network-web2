@@ -33,7 +33,7 @@ const getMostPopularSeries = (pageNumber = 1) => {
 };
 
 const getSeriesFilterTypes = () => {
-    return axios.get(`${config.serverUrl}/series/filters`)
+    return axiosInstance.get(`${config.serverUrl}/series/filters`)
         .then(response => response.data)
         .catch(error => {
             console.error(`Error while trying to fetch series filters, Error: ${error}`);
@@ -43,7 +43,7 @@ const getSeriesFilterTypes = () => {
 
 const getSeriesByFilters = (query, pageNumber = 1) => {
     const params = { ...query, pageNumber };
-    return axios.get(`${config.serverUrl}/series`, { params })
+    return axiosInstance.get(`${config.serverUrl}/series`, { params })
         .then(response => response.data)
         .catch(error => {
             console.error(`Error while trying to fetch series filters, Error: ${error}`);

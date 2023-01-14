@@ -5,6 +5,7 @@ const Genres = require("../db/mongo/models/genre");
 const WatchLists = require("../db/mongo/models/watchlist");
 const { getFollowings } = require("./follows");
 const mongoose = require("mongoose");
+const { paginationQuery } = require("../utils/queries");
 
 const getSeriesDetails = async (seriesId) => {
     const matchedSeries = await aggregateSeries([new mongoose.mongo.ObjectId(seriesId)]);
@@ -45,7 +46,7 @@ const aggregateSeries = async (seriesIds) => {
     ]);
 };
 
-const filterSeries = async ({ name, statuses, genres }, pageNumber, pageLimit) => {
+const filterSeries = async ({ name, statuses, genres }, pageNumber) => {
     const aggregationQuery = [];
 
     name && aggregationQuery.push({ $addFields: { searchIndex: { $indexOfCP: [{ $toLower: "$name" }, name.toLowerCase()] } } }, { $match: { searchIndex: { $ne: -1 } } });
@@ -69,28 +70,28 @@ const filterSeries = async ({ name, statuses, genres }, pageNumber, pageLimit) =
         $addFields: { "relevantGenres": {$setIntersection: ["$genres", genres]} }
     }, { $match: { relevantGenres: { $exists: true , $ne: [] } } }, { $unset: "relevantGenres" });
 
-    const data = await Series.aggregate([...aggregationQuery, ...paginationQuery(pageNumber, pageLimit)]);
+    const data = await Series.aggregate([...aggregationQuery, ...paginationQuery(pageNumber)]);
     const dataTotalAmount = await Series.aggregate([...aggregationQuery, { $count: "count" }]);
     const totalAmount = dataTotalAmount[0] ? dataTotalAmount[0].count : 0;
 
     return { data, totalAmount };
 };
 
-const getMostWatchedSeries = async (pageNumber, pageLimit) => {
+const getMostWatchedSeries = async (pageNumber) => {
     const aggregationQuery = [
         ...getSeriesFromEpisode(),
         ...getSeriesByDESCCommonOrder(),
         ...lookupGenres(),
     ];
     
-    const data = await WatchLists.aggregate([...aggregationQuery, ...paginationQuery(pageNumber, pageLimit) ]);
+    const data = await WatchLists.aggregate([...aggregationQuery, ...paginationQuery(pageNumber) ]);
     const dataTotalAmount = await WatchLists.aggregate([...aggregationQuery, { $count: "count" }]);
     const totalAmount = dataTotalAmount[0] ? dataTotalAmount[0].count : 0;
 
     return { data, totalAmount };
 };
 
-const getCommonSeriesAmongFollowing = async (email, userSeriesIdsWatchList, pageNumber, pageLimit) => {
+const getCommonSeriesAmongFollowing = async (email, userSeriesIdsWatchList, pageNumber) => {
     const following = await getFollowings(email);
 
     const aggregationQuery = [
@@ -101,41 +102,37 @@ const getCommonSeriesAmongFollowing = async (email, userSeriesIdsWatchList, page
         ...lookupGenres(),
     ];
 
-    const data = await WatchLists.aggregate([...aggregationQuery, ...paginationQuery(pageNumber, pageLimit) ]);
+    const data = await WatchLists.aggregate([...aggregationQuery, ...paginationQuery(pageNumber) ]);
     const dataTotalAmount = await WatchLists.aggregate([...aggregationQuery, { $count: "count" }]);
     const totalAmount = dataTotalAmount[0] ? dataTotalAmount[0].count : 0;
 
     return { data, totalAmount };
 };
 
-const getTopRatedSeries = async (pageNumber, pageLimit) => {
+const getTopRatedSeries = async (pageNumber) => {
     const aggregationQuery = [
         { $sort: { vote_average: -1 } },
     ];
 
-    const data = await Series.aggregate([...aggregationQuery, ...paginationQuery(pageNumber, pageLimit) ]);
+    const data = await Series.aggregate([...aggregationQuery, ...paginationQuery(pageNumber) ]);
     const dataTotalAmount = await Series.aggregate([...aggregationQuery, { $count: "count" }]);
     const totalAmount = dataTotalAmount[0] ? dataTotalAmount[0].count : 0;
 
     return { data, totalAmount };
 };
 
-const getPopularSeries = async (pageNumber, pageLimit) => {
+const getPopularSeries = async (pageNumber) => {
     const aggregationQuery = [
         { $sort: { popularity: -1 } },
     ];
 
-    const data = await Series.aggregate([...aggregationQuery, ...paginationQuery(pageNumber, pageLimit) ]);
+    const data = await Series.aggregate([...aggregationQuery, ...paginationQuery(pageNumber) ]);
     const dataTotalAmount = await Series.aggregate([...aggregationQuery, { $count: "count" }]);
     const totalAmount = dataTotalAmount[0] ? dataTotalAmount[0].count : 0;
 
     return { data, totalAmount };
 };
 
-const paginationQuery = (pageNumber, pageLimit) => ([
-    { $skip: pageLimit * (parseInt(pageNumber) - 1) },
-    { $limit: pageLimit },
-]);
 
 const getSeriesFromEpisode = () => ([
     {

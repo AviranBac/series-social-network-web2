@@ -57,11 +57,11 @@ const WatchlistIcon = (props) => {
         <>
             { watchlistStatus &&
                 <OverlayTrigger placement="bottom"
-                                overlay={disableClick ? <></> : <Tooltip id="tooltip"><b>{upcomingActionType === ActionType.ADD ? "Add to watchlist" : "Remove from watchlist"}</b></Tooltip>}>
-                    <FontAwesomeIcon className={className}
+                                overlay={<Tooltip id="tooltip"><b>{upcomingActionType === ActionType.ADD ? "Add to watchlist" : "Remove from watchlist"}</b></Tooltip>}>
+                    <FontAwesomeIcon className={`${className} ${disableClick ? " pe-none" : ""}`}
                                      icon={getStarIcon()}
                                      color={ disableClick ? 'gray' : 'gold' }
-                                     cursor={ disableClick ? 'default' : 'pointer' }
+                                     cursor="pointer"
                                      onClick={updateUserWatchlist}/>
                 </OverlayTrigger>
             }

@@ -1,0 +1,28 @@
+.summary {
+    margin: auto 1rem auto;
+}
+
+.icon, .title {
+    height: 2rem;
+}
+
+.overview {
+    color: gray;
+}
+
+.flex1 {
+    flex: 1;
+}
+
+.details svg {
+    margin: .2rem .5rem 0 0;
+    vertical-align: middle;
+}
+
+.clickable:hover {
+    background-color: #3b71ca;
+}
+
+:global(.nav-link) {
+    margin: auto;
+}

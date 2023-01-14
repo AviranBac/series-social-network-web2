@@ -10,8 +10,6 @@ const { aggregateWatchlistEpisodes } = require('../services/watchlist');
 
 const router = express.Router();
 
-const pageLimit = 10;
-
 router.get('/', seriesValidation(), async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -24,7 +22,7 @@ router.get('/', seriesValidation(), async (req, res) => {
     let response;
     let statusCode = HttpStatus.OK;
     try {
-        response = await filterSeries({name, statuses, genres}, pageNumber, pageLimit);
+        response = await filterSeries({name, statuses, genres}, pageNumber);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Failed while fetching filtered series: ${e}`;
@@ -71,7 +69,7 @@ router.get('/commonAmongFollowing/:email', seriesValidation(), async (req, res) 
     try {
         const seriesWithWatchlistEpisodes = await aggregateWatchlistEpisodes(email);
         const seriesIdsWatchList = seriesWithWatchlistEpisodes.map(series => series._id);
-        response = await getCommonSeriesAmongFollowing(email, seriesIdsWatchList, pageNumber, pageLimit);
+        response = await getCommonSeriesAmongFollowing(email, seriesIdsWatchList, pageNumber);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Failed while fetching common series amoung following: ${e}`;
@@ -93,7 +91,7 @@ router.get('/mostWatched', seriesValidation(), async (req, res) => {
     let response;
     let statusCode = HttpStatus.OK;
     try {
-        response = await getMostWatchedSeries(pageNumber, pageLimit);
+        response = await getMostWatchedSeries(pageNumber);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Failed while fetching most watched series: ${e}`
@@ -116,7 +114,7 @@ router.get('/topRated', seriesValidation(), async (req, res) => {
     let response;
     let statusCode = HttpStatus.OK;
     try {
-        response = await getTopRatedSeries(pageNumber, pageLimit);
+        response = await getTopRatedSeries(pageNumber);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Failed while fetching series by rating: ${e}`
@@ -138,7 +136,7 @@ router.get('/popular', seriesValidation(), async (req, res) => {
     let response;
     let statusCode = HttpStatus.OK;
     try {
-        response = await getPopularSeries(pageNumber, pageLimit);
+        response = await getPopularSeries(pageNumber);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         response = `Failed while fetching series by popularity: ${e}`;

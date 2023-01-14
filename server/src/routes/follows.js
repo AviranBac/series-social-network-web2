@@ -5,7 +5,6 @@ const followsValidation = require('../validation/follow');
 const { addFollow, removeFollow, searchFollowings, searchFollowers, isFollowingExist } = require("../services/follows");
 
 const router = express.Router();
-const pageLimit = 10;
 
 router.get('/:email/following', async (req, res) => {
     let response;
@@ -14,7 +13,7 @@ router.get('/:email/following', async (req, res) => {
     const { pageNumber = 1 } = req.query;
 
     try {
-        response = await searchFollowings(email, pageNumber, pageLimit);
+        response = await searchFollowings(email, pageNumber);
         console.log(`Sending requested followings of ${email}`);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -32,7 +31,7 @@ router.get('/:email/followers', async (req, res) => {
     const { pageNumber = 1 } = req.query;
 
     try {
-        response = await searchFollowers(email, pageNumber, pageLimit);
+        response = await searchFollowers(email, pageNumber);
         console.log(`Sending requested followers of ${email}`);
     } catch (e) {
         statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
