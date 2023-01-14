@@ -4,7 +4,7 @@ import { ActionType } from "../../enums/ActionType";
 import { useDispatch, useSelector } from "react-redux";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { updateWishlist } from "../../features/wishlist/wishlist.slice";
-import { selectSeriesWishlistStatus } from "../../features/wishlist/wishlist.selectors"
+import { selectIsSeriesInWishlist } from "../../features/wishlist/wishlist.selectors"
 import { faHeart as faSolidHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faRegularHeart } from "@fortawesome/free-regular-svg-icons";
 
@@ -12,9 +12,9 @@ const WishlistIcon = (props) => {
     const dispatch = useDispatch();
     const { relatedEmail, series, className, disableClick = false, explicitIsInWishlist } = props;
 
-    const loggedInUserWishlistStatus = useSelector((state) => selectSeriesWishlistStatus(state, series._id));
-    const wishlistFillStatus = explicitIsInWishlist || loggedInUserWishlistStatus;
-    
+    const loggedInUserWishlistFillStatus = useSelector((state) => selectIsSeriesInWishlist(state, series._id));
+    const wishlistFillStatus = explicitIsInWishlist || loggedInUserWishlistFillStatus;
+
     const getHeartIcon = () => {
         return wishlistFillStatus ? faSolidHeart : faRegularHeart;
     };
