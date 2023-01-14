@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { MDBInputGroup, MDBInput, MDBCheckbox } from 'mdb-react-ui-kit';
+import React, { useEffect, useState } from 'react';
+import { MDBCheckbox, MDBInput, MDBInputGroup } from 'mdb-react-ui-kit';
 import seriesService from '../../services/series.service';
 import { Container } from 'react-bootstrap';
 import { debounce } from "lodash";
