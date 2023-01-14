@@ -21,6 +21,16 @@ const loadFollowings = (email, pageNumber) => {
         });
 };
 
+const isFollowing = (emailFrom, emailTo) => {
+    return axiosInstance.get(`${config.serverUrl}/follows/${emailFrom}/following/${emailTo}`,)
+        .then(response => response.data?._id)
+        .catch(error => {
+            console.error(`Error while trying to update follower. Error: ${error}`);
+            throw error;
+        });
+
+};
+
 const updateFollow = (action, emailFrom, emailTo) => {
     return axiosInstance.post(`${config.serverUrl}/follows`, { action, emailFrom, emailTo })
         .then(response => response.data)
@@ -33,7 +43,8 @@ const updateFollow = (action, emailFrom, emailTo) => {
 const followsService = {
     loadFollowers,
     loadFollowings,
-    updateFollow
+    updateFollow,
+    isFollowing
 }
 
 export default followsService;
