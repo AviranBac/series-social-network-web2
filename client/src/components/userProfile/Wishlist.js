@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
-import { MDBCard, MDBCardBody, MDBCardImage } from "mdb-react-ui-kit";
+import { MDBCard, MDBCardBody, MDBCardImage, MDBContainer } from "mdb-react-ui-kit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar, faStar, faTv, faVideoCamera } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
@@ -51,6 +51,7 @@ const Wishlist = ({ email }) => {
         <>
             {
                 wishlist.map((series) => (
+                    <MDBContainer className="my-3" style={{width: "70%"}}>
                     <MDBCard key={series._id} className="w-100">
                         <MDBCardBody className="d-flex w-100 py-3">
                             <div className="m-auto">
@@ -91,6 +92,7 @@ const Wishlist = ({ email }) => {
                             </div>
                         </MDBCardBody>
                     </MDBCard>
+                    </MDBContainer>
                 ))
             }
         </>
