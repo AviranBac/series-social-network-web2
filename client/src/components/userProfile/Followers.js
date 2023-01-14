@@ -1,8 +1,12 @@
 import PaginationTable from '../paginationTable/PaginationTable';
 import followsService from "../../services/follows.service";
 import { ActionType } from "../../enums/ActionType";
+import { useSelector } from "react-redux";
+import { selectUserEmail } from "../../features/auth/auth.selectors";
 
 const Followers = ({ email }) => {
+    const loggedInUserEmail = useSelector(selectUserEmail);
+
     const followerColumnDetails = [
         { field: 'email_from', label: 'Email' },
     ];
@@ -30,7 +34,7 @@ const Followers = ({ email }) => {
                 loadRequestFn={loadRequestFn}
                 noDataBody="Couldn't load any followers"
                 routerLinkExtractor={routerLinkExtractor}
-                canRemoveEntity={true}
+                canRemoveEntity={loggedInUserEmail === email}
                 removeRequestFn={removeRequestFn}
             />
         </div>
