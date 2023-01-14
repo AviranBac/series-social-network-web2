@@ -10,7 +10,7 @@ import {
 } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUserDisplayName, selectUser } from "../../features/auth/auth.selectors";
+import { selectUser } from "../../features/auth/auth.selectors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classes from "./Navbar.module.css";
 import { faBars, faCircleUser, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
@@ -24,8 +24,6 @@ const Navbar = () => {
     const setVisibility = () => {
         setOffCanvesVisibility(!offCanvesVisibility);
     };
-
-    const userDisplayName = useSelector(selectUserDisplayName);
 
     const displayNameNavOptions = (email) => ([
         { link: `/users/${email}`, icon: faCircleUser, value: 'Your Profile' },
@@ -43,13 +41,13 @@ const Navbar = () => {
                     <div className="fw-bold">Series Social Network</div>
                     <div className={classes.spacer}></div>
 
-                    {userDisplayName &&
+                    {currentUser?.displayName &&
                         <div>
                             <MDBNavbarNav className="d-flex flex-row">
                                 <MDBNavbarItem>
                                     <MDBDropdown>
                                         <MDBDropdownToggle tag="a" className={`nav-link fw-bold ${classes.displayNameToggle}`}>
-                                            {userDisplayName}
+                                            {currentUser?.displayName}
                                         </MDBDropdownToggle>
 
                                         <MDBDropdownMenu className="dropdown-menu-end">

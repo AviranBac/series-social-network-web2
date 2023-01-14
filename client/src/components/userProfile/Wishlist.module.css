@@ -15,10 +15,14 @@
 }
 
 .details svg {
-    margin: .3rem .3rem .5rem 1rem;
+    margin: .2rem .5rem 0 0;
     vertical-align: middle;
 }
 
 .clickable:hover {
     background-color: #3b71ca;
+}
+
+:global(.nav-link) {
+    margin: auto;
 }
