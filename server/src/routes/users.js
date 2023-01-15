@@ -9,6 +9,7 @@ router.get('', async (req, res) => {
     const currentPage = req.query.page;
     const emailSearchValue  = req.query.emailSearchValue;
     const displayNameSearchValue = req.query.displayNameSearchValue;
+    const creationTimeSearchValue = req.query.creationTimeSearchValue;
 
     let users = usersResponse.users.map(user => ({
         email: user.email,
@@ -17,11 +18,12 @@ router.get('', async (req, res) => {
         lastSignInTime: new Date(user.metadata.lastSignInTime)
     }));
     
-    if (emailSearchValue || displayNameSearchValue) {  
+    if (emailSearchValue || displayNameSearchValue || creationTimeSearchValue) {  
             users = users.filter((user) => {
                 let isEmailMatched = user.email && user.email.toLowerCase().includes(emailSearchValue.toLowerCase());
                 let isDisplayNameMatched = user.displayName && user.displayName.toLowerCase().includes(displayNameSearchValue.toLowerCase());
-                return isEmailMatched && isDisplayNameMatched;
+                let isCreationTimeMatched = user.creationTime && (user.creationTime).getTime() <  new Date(creationTimeSearchValue).getTime();
+                return isEmailMatched && isDisplayNameMatched && isCreationTimeMatched;
             });
     }
 

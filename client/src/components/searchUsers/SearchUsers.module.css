@@ -3,14 +3,21 @@
     flex-wrap: nowrap;
     align-items: center;
     margin: 20px 0;
+    justify-content: center;
   }
   
-  label {
-    margin-right: 10px;
-  }
-
   .inputGroup {
-    display: block;
-    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-  
+
+label {
+    flex: 0 0 150px; 
+    text-align: right;
+    margin-right: 10px;
+}
+
+.datePicker {
+    margin-left: center; 
+}
