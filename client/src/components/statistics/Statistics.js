@@ -1,41 +1,73 @@
-import SeriesChart from "./SeriesChart";
-import Pagination from "../pagination/Pagination";
+import SeriesChart from "./seriesChart/SeriesChart";
 import seriesService from "../../services/series.service";
-import { useEffect, useState } from 'react';
+import classes from "./Statistics.module.css";
+import { Tab, Tabs } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { selectUserEmail } from "../../features/auth/auth.selectors";
+import followsService from "../../services/follows.service";
 
 const Statistics = () => {
-  const [mostPopularSeries, setMostPopularSeries] = useState([]);
-  const [topRatedSeries, setTopRatedSeries] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
-  const [pageSize] = useState(10);
+    const email = useSelector(selectUserEmail);
+    const seriesExtractors = {
+        xAxisDataKey: "name",
+        routerLinkExtractor: (series) => `/series/${series._id}`
+    };
+    const userExtractors = {
+        xAxisDataKey: "email",
+        routerLinkExtractor: (user) => `/users/${user.email}`
+    };
 
-  useEffect(() => {
-    const fetchData = async() => {
-      const mostPopularSeries = await seriesService.getMostPopularSeries(page);
-      const topRatedSeries = await seriesService.getTopRatedSeries(page);
-      setMostPopularSeries(mostPopularSeries.data);
-      setTopRatedSeries(topRatedSeries.data);
-      setTotalCount(mostPopularSeries.totalAmount)
-    }
-    fetchData();
-  }, [page]);
+    const chartsMetadata = [
+        {
+            loadRequestFn: async (currentPage) => seriesService.getMostRecommendedSeries(email, currentPage),
+            yAxisDataKey: "usersWatchedCount",
+            yAxisDataKeyDisplayName: "Followed users who watched",
+            tabTitle: "Series You Might Like",
+            ...seriesExtractors
+        },
+        {
+            loadRequestFn: async (currentPage) => seriesService.getMostWatchedSeries(currentPage),
+            yAxisDataKey: "usersWatchedCount",
+            yAxisDataKeyDisplayName: "Users who watched",
+            tabTitle: "Most Watched Series",
+            ...seriesExtractors
+        },
+        {
+            loadRequestFn: async (currentPage) => seriesService.getMostPopularSeries(currentPage),
+            yAxisDataKey: "popularity",
+            yAxisDataKeyDisplayName: "Popularity score",
+            tabTitle: "Most Popular Series",
+            ...seriesExtractors
+        },
+        {
+            loadRequestFn: async (currentPage) => seriesService.getTopRatedSeries(currentPage),
+            yAxisDataKey: "vote_average",
+            yAxisDataKeyDisplayName: "Average rating",
+            tabTitle: "Top Rated Series",
+            ...seriesExtractors
+        },
+        {
+            loadRequestFn: async (currentPage) => followsService.getMostFollowedUsers(currentPage),
+            yAxisDataKey: "followersCount",
+            yAxisDataKeyDisplayName: "Users following",
+            tabTitle: "Most Followed Users",
+            ...userExtractors
+        },
+    ];
 
-  return (
-    <div className="d-flex flex-column align-items-center">
-      <h3>Series Statistics</h3>
-      <SeriesChart series={mostPopularSeries} dataKey="popularity" />
-      <SeriesChart series={topRatedSeries} dataKey="vote_average" />
-      <div style={{margin: "5px 0px", position: "relative", top: "-100px"}}>
-        <Pagination
-          onPageChange={setPage}
-          totalCount={totalCount}
-          currentPage={page}
-          pageSize={pageSize}
-        />
-      </div>
-    </div>
-  );
+    return (
+        <div className="d-flex flex-column align-items-center">
+            <h2 className={`text-center text-primary fw-bold text-decoration-underline mt-3 mb-5 ${classes.title}`}>Statistics</h2>
+
+            <Tabs justify unmountOnExit className={classes.tabs}>
+                {chartsMetadata.map(chartMetadata =>
+                    <Tab eventKey={chartMetadata.tabTitle} title={chartMetadata.tabTitle} key={chartMetadata.tabTitle}>
+                        <SeriesChart chartMetadata={chartMetadata} />
+                    </Tab>
+                )}
+            </Tabs>
+        </div>
+    );
 };
 
 export default Statistics;

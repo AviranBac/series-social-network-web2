@@ -21,6 +21,16 @@ const loadFollowings = (email, pageNumber) => {
         });
 };
 
+const getMostFollowedUsers = (pageNumber) => {
+    return axiosInstance.get(`${config.serverUrl}/follows/mostFollowed`, {
+        params: { pageNumber }
+    }).then(response => response.data)
+        .catch(error => {
+            console.error(`Error while trying to fetch most followed users. Error: ${error}`);
+            throw error;
+        });
+};
+
 const updateFollow = (action, emailFrom, emailTo) => {
     return axiosInstance.post(`${config.serverUrl}/follows`, { action, emailFrom, emailTo })
         .then(response => response.data)
@@ -33,6 +43,7 @@ const updateFollow = (action, emailFrom, emailTo) => {
 const followsService = {
     loadFollowers,
     loadFollowings,
+    getMostFollowedUsers,
     updateFollow
 }
 

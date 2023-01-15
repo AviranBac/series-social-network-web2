@@ -1,0 +1,12 @@
+.title {
+    height: 2rem;
+}
+
+.tabs {
+    width: 70%;
+    margin-bottom: 4rem;
+}
+
+:global(.tab-content) {
+    width: 100%;
+}
