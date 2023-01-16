@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-
 import PaginationTable from '../paginationTable/PaginationTable';
 import followsService from "../../services/follows.service";
 import { ActionType } from "../../enums/ActionType";
