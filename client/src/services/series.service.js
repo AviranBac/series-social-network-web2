@@ -62,13 +62,25 @@ const getTopRatedSeries = (pageNumber = 1) => {
         });
 };
 
+const getMostWatchedSeries = (pageNumber = 1) => {
+    return axiosInstance.get(`${config.serverUrl}/series/mostWatched`, {
+        params: { pageNumber }
+    })
+        .then(response => response.data)
+        .catch(error => {
+            console.error(`Error while trying to fetch most watched series details. Error: ${error}`);
+            throw error;
+        });
+};
+
 const seriesService = {
     loadSeriesDetails,
     getMostRecommendedSeries,
     getMostPopularSeries,
     getSeriesFilterTypes,
     getSeriesByFilters,
-    getTopRatedSeries
+    getTopRatedSeries,
+    getMostWatchedSeries
 };
 
 export default seriesService;

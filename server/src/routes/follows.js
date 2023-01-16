@@ -2,7 +2,7 @@ const express = require("express");
 const HttpStatus = require("http-status-codes");
 const { validationResult } = require('express-validator/check');
 const followsValidation = require('../validation/follow');
-const { addFollow, removeFollow, searchFollowings, searchFollowers, isFollowingExist } = require("../services/follows");
+const { addFollow, removeFollow, searchFollowings, searchFollowers, isFollowingExist, getMostFollowedUsers } = require("../services/follows");
 
 const router = express.Router();
 
@@ -59,6 +59,23 @@ router.get('/:email_from/following/:email_to', async (req, res) => {
 
     res.status(statusCode).send(response);
 });
+
+router.get('/mostFollowed', async (req, res) => {
+    let response;
+    let statusCode = HttpStatus.OK;
+    const { pageNumber = 1 } = req.query;
+
+    try {
+        response = await getMostFollowedUsers(pageNumber);
+        console.log(`Sending most followed users, pageNumber: ${pageNumber}`);
+    } catch (e) {
+        statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+        response = `Couldn't send most followed users, pageNumber: ${pageNumber}, error was ${e}`;
+        console.log(response);
+    }
+
+    res.status(statusCode).send(response);
+})
 
 router.post('', followsValidation(), async (req, res) => {
     const errors = validationResult(req);
