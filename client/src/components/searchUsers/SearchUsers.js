@@ -3,14 +3,17 @@ import PaginationTable, { userColumnDetails } from '../paginationTable/Paginatio
 import userService from "../../services/user.service";
 import classes from "./SearchUsers.module.css";
 import { DebounceInput } from "react-debounce-input";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const SearchUsers = () => {
   const [emailSearchValue, setEmailSearchValue] = useState('');
   const [displayNameSearchValue, setDisplayNameSearchValue] = useState('');
+  const [creationTimeSearchValue, setCreationTimeSearchValue] = useState(new Date());
 
   const defaultLoadRequestFn = () => {
     return async (currentPage) => {
-      const response = await userService.searchUsers(currentPage, emailSearchValue, displayNameSearchValue);
+      const response = await userService.searchUsers(currentPage, emailSearchValue, displayNameSearchValue, creationTimeSearchValue);
       return {
         totalElements: response.totalElements,
         content: response.users
@@ -22,7 +25,7 @@ const SearchUsers = () => {
 
   useEffect(() => {
     setLoadRequestFn(defaultLoadRequestFn);
-  }, [emailSearchValue, displayNameSearchValue]);
+  }, [emailSearchValue, displayNameSearchValue, creationTimeSearchValue]);
 
   const handleEmailSearchValueChange = (event) => {
     setEmailSearchValue(event.target.value);
@@ -30,6 +33,10 @@ const SearchUsers = () => {
 
   const handleDisplayNameSearchValueChange = (event) => {
     setDisplayNameSearchValue(event.target.value);
+  }
+
+  const handleCreationTimeSearchValueChange = (date) => {
+    setCreationTimeSearchValue(date);
   }
 
   const routerLinkExtractor = (user) => {
@@ -53,6 +60,14 @@ const SearchUsers = () => {
             value={displayNameSearchValue}
             onChange={handleDisplayNameSearchValueChange}
           />
+        </div>
+        <div className={classes.inputGroup + ' ' + classes.container}>
+          <label className={classes.label}>Search by join date (older than):</label>
+          <div className={classes.datePicker}>
+             <DatePicker 
+             selected={creationTimeSearchValue} 
+             onChange={(date) => handleCreationTimeSearchValueChange(date)} />
+         </div>
         </div>
       </div>
       <PaginationTable
