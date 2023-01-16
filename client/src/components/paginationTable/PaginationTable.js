@@ -9,7 +9,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 export const userColumnDetails = [
     { field: 'email', label: 'Email' },
-    { field: 'displayName', label: 'Display Name' }
+    { field: 'displayName', label: 'Display Name' },    
+    { field: 'creationTime', label: 'Join Date' }
 ];
 
 export const seriesColumnDetails = [
