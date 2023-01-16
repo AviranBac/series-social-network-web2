@@ -32,7 +32,7 @@ const Followers = ({ email }) => {
             <PaginationTable
                 columnDetails={followerColumnDetails}
                 loadRequestFn={loadRequestFn}
-                noDataBody="Couldn't load any followers"
+                noDataBody="This user has no followers yet"
                 routerLinkExtractor={routerLinkExtractor}
                 canRemoveEntity={loggedInUserEmail === email}
                 removeRequestFn={removeRequestFn}

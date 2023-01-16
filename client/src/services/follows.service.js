@@ -21,6 +21,15 @@ const loadFollowings = (email, pageNumber) => {
         });
 };
 
+const isFollowing = (emailFrom, emailTo) => {
+    return axiosInstance.get(`${config.serverUrl}/follows/${emailFrom}/following/${emailTo}`,)
+        .then(response => response.data?._id)
+        .catch(error => {
+            console.error(`Error while trying to update follower. Error: ${error}`);
+            throw error;
+        });
+};
+
 const getMostFollowedUsers = (pageNumber) => {
     return axiosInstance.get(`${config.serverUrl}/follows/mostFollowed`, {
         params: { pageNumber }
@@ -43,8 +52,9 @@ const updateFollow = (action, emailFrom, emailTo) => {
 const followsService = {
     loadFollowers,
     loadFollowings,
+    updateFollow,
+    isFollowing,
     getMostFollowedUsers,
-    updateFollow
-}
+};
 
 export default followsService;
