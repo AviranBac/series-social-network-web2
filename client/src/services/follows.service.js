@@ -55,5 +55,6 @@ const followsService = {
     updateFollow,
     isFollowing,
     getMostFollowedUsers,
-}
+};
 
+export default followsService;
