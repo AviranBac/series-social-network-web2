@@ -25,11 +25,12 @@ const SeriesCard = (props) => {
           <MDBCardBody className="p-0">
             <MDBCardTitle className='text-center py-3'>{series.name}</MDBCardTitle>
             <div className="d-flex w-100 pb-2 mb-3">
-              <WishlistIcon className="m-auto" series={series} relatedEmail={currentUserEmail} />
+              <WishlistIcon className="m-auto" series={series} relatedEmail={currentUserEmail} size="sm" />
               <WatchlistIcon className="m-auto"
                              relatedEmail={currentUserEmail}
                              entity={series}
-                             entityType={EntityType.SERIES}/>
+                             entityType={EntityType.SERIES}
+                             size="sm" />
             </div>
           </MDBCardBody>
         </MDBCard>

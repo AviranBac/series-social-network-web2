@@ -11,7 +11,7 @@ import { useState } from "react";
 
 const WishlistIcon = (props) => {
     const dispatch = useDispatch();
-    const { relatedEmail, series, className, disableClick = false, explicitIsInWishlist } = props;
+    const { relatedEmail, series, className, disableClick = false, size = "md", explicitIsInWishlist } = props;
     const [loading, setLoading] = useState(false);
 
     const loggedInUserWishlistFillStatus = useSelector((state) => selectIsSeriesInWishlist(state, series._id));
@@ -37,7 +37,7 @@ const WishlistIcon = (props) => {
 
     return (
         <>
-            { loading && <Spinner size="sm" className={className} animation="border" variant="primary"/> }
+            { loading && <Spinner size={size} className={className} animation="border" variant="primary"/> }
             { !loading &&
                 <OverlayTrigger placement="bottom"
                                 overlay={<Tooltip id="tooltip"><b>{!wishlistFillStatus ? "Add to wishlist" : "Remove from wishlist"}</b></Tooltip>}>

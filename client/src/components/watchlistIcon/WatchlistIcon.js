@@ -16,7 +16,7 @@ import { updateWatchlist } from "../../features/watchlist/watchlist.slice";
 import { useState } from "react";
 
 const WatchlistIcon = (props) => {
-    const { relatedEmail, entity, entityType, disableClick = false, className, explicitWatchlistStatus, onWatchlistChange = (watchlist) => {} } = props;
+    const { relatedEmail, entity, entityType, disableClick = false, className, size = "md", explicitWatchlistStatus, onWatchlistChange = (watchlist) => {} } = props;
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
 
@@ -61,7 +61,7 @@ const WatchlistIcon = (props) => {
         <>
             { watchlistStatus &&
                 <>
-                    { loading && <Spinner size="sm" className={className} animation="border" variant="primary"/> }
+                    { loading && <Spinner size={size} className={className} animation="border" variant="primary"/> }
                     { !loading &&
                         <OverlayTrigger placement="bottom"
                                         overlay={<Tooltip id="tooltip"><b>{upcomingActionType === ActionType.ADD ? "Add to watchlist" : "Remove from watchlist"}</b></Tooltip>}>

@@ -72,6 +72,7 @@ const Wishlist = ({ email }) => {
                                                       series={series}
                                                       className="my-auto"
                                                       disableClick={currentUserEmail !== email}
+                                                      size="sm"
                                                       explicitIsInWishlist={true} />
                                     </div>
                                     <div className={`m-auto ${classes.details}`}>
