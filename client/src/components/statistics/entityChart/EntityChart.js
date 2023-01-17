@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bar, BarChart, CartesianGrid, Label, ResponsiveContainer, Text, Tooltip, XAxis, YAxis } from 'recharts';
 import Pagination from "../../pagination/Pagination";
-import "./SeriesChart.module.css";
+import "./EntityChart.module.css";
 
-const SeriesChart = ({ chartMetadata }) => {
+const EntityChart = ({ chartMetadata }) => {
     const { loadRequestFn, xAxisDataKey, yAxisDataKey, yAxisDataKeyDisplayName, routerLinkExtractor } = chartMetadata;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
@@ -33,9 +33,9 @@ const SeriesChart = ({ chartMetadata }) => {
 
     useEffect(() => {
         setLoading(true);
-        loadRequestFn(page).then(series => {
-            setData(series.data);
-            setTotalCount(series.totalAmount)
+        loadRequestFn(page).then(entities => {
+            setData(entities.data);
+            setTotalCount(entities.totalAmount)
             setLoading(false);
         });
     }, [loadRequestFn, page]);
@@ -43,7 +43,7 @@ const SeriesChart = ({ chartMetadata }) => {
     return (
         <>
             {data.length === 0 && !loading &&
-                <div className="text-center">There are 0 series matching this criteria.</div>
+                <div className="text-center">There are 0 entities matching this criteria.</div>
             }
             {data.length > 0 &&
                 <>
@@ -82,4 +82,4 @@ const SeriesChart = ({ chartMetadata }) => {
     );
 };
 
-export default SeriesChart;
+export default EntityChart;
