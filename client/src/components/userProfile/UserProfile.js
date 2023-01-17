@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
-import { Tab, Tabs, Button } from 'react-bootstrap';
+import { Button, Tab, Tabs } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 
@@ -26,12 +26,14 @@ const UserProfile = () => {
             const isCurrentUserFollowing = await followService.isFollowing(currentUserEmail, email);
             setIsFollowing(!!isCurrentUserFollowing);
         }
+
+        setIsFollowing(undefined);
         if (!isLoggedInUser) fetchData();
     }, [email]);
 
     const updateFollow = () => {
         followService.updateFollow(isFollowing ? ActionType.REMOVE : ActionType.ADD, currentUserEmail, email)
-        .then(() => setIsFollowing(!isFollowing));
+            .then(() => setIsFollowing(!isFollowing));
     };
 
     return (
@@ -39,7 +41,7 @@ const UserProfile = () => {
             <div className="text-center">
                 <h2 className="mt-4 text-primary text-center fw-bold text-decoration-underline">{email}</h2>
                 {
-                   !isLoggedInUser &&
+                    !isLoggedInUser && isFollowing !== undefined &&
                     <Button onClick={updateFollow} variant={isFollowing ? 'outline-primary' : 'primary'}>
                         <div className={`m-auto ${classes.details}`}>
                             <div className="d-flex flex-column">
@@ -54,16 +56,17 @@ const UserProfile = () => {
                             </div>
                         </div>
                     </Button>
-                } 
+                }
             </div>
             <Tabs
                 defaultActiveKey="Wishlist"
                 className="mb-3"
                 justify
+                unmountOnExit
             >
                 <Tab eventKey="Wishlist" title="Wishlist">
                     <Wishlist email={email}/>
-                </Tab> 
+                </Tab>
                 <Tab eventKey="Watchlist" title="Watchlist">
                     <Watchlist email={email}/>
                 </Tab>

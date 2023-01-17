@@ -6,11 +6,12 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import classnames from "classnames";
 import { Link, useNavigate } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 export const userColumnDetails = [
     { field: 'email', label: 'Email' },
-    { field: 'displayName', label: 'Display Name' },    
-    { field: 'creationTime', label: 'Join Date' }
+    { field: 'displayName', label: 'Display Name' },
+    { field: 'creationTime', label: 'Join Date', displayFn: (field) => new Date(field).toLocaleString() }
 ];
 
 export const seriesColumnDetails = [
@@ -40,9 +41,11 @@ const PaginationTable = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
     const [currentData, setCurrentData] = useState([]);
+    const [loading, setLoading] = useState(true);
     const columnsAmount = columnDetails.length + 1 + (imageSrcExtractor ? 1 : 0) + (canRemoveEntity ? 1 : 0);
 
     const loadRequest = useCallback(() => {
+        setLoading(true);
         loadRequestFn(currentPage)
             .then(response => {
                 const totalCount = response.totalElements;
@@ -53,6 +56,7 @@ const PaginationTable = (props) => {
                 } else {
                     setTotalCount(totalCount);
                     setCurrentData(response.content);
+                    setLoading(false);
                 }
             });
     }, [loadRequestFn, currentPage]);
@@ -74,7 +78,7 @@ const PaginationTable = (props) => {
     );
 
     const getDisplayedFieldsHTML = (entity, index) => {
-        const displayedFieldsHTML = [ { cellHTML: calculatePosition(index) } ];
+        const displayedFieldsHTML = [{ cellHTML: calculatePosition(index) }];
 
         if (imageSrcExtractor) {
             displayedFieldsHTML.push({ cellHTML: <img src={imageSrcExtractor(entity)} alt="entity"/> });
@@ -106,7 +110,7 @@ const PaginationTable = (props) => {
         <>
             <table className="m-auto position-relative" style={tableOverrideStyle}>
                 <thead>
-                {currentData.length > 0 &&
+                {currentData.length > 0 && !loading &&
                     <tr>
                         <th>No.</th>
                         {imageSrcExtractor && <th></th>}
@@ -118,27 +122,36 @@ const PaginationTable = (props) => {
                 }
                 </thead>
                 <tbody>
-                {currentData.map((entity, index) => (
+                {currentData.length > 0 && !loading && currentData.map((entity, index) => (
                     <tr onClick={() => navigateToRouterLink(entity)}
                         className={classnames({
                             [classes.clickable]: !!routerLinkExtractor
                         })}
                         key={index}
                     >
-                        { getDisplayedFieldsHTML(entity, index).map(({ cellHTML, cellClassName }, index) => (
+                        {getDisplayedFieldsHTML(entity, index).map(({ cellHTML, cellClassName }, index) => (
                             <td key={index} className={cellClassName}>
-                                { routerLinkExtractor ?
-                                    <Link to={routerLinkExtractor(entity)} className="w-100 d-block text-black">{cellHTML}</Link> :
-                                    {cellHTML}
+                                {routerLinkExtractor ?
+                                    <Link to={routerLinkExtractor(entity)}
+                                          className="w-100 d-block text-black">{cellHTML}</Link> :
+                                    { cellHTML }
                                 }
                             </td>
-                        )) }
+                        ))}
                     </tr>
                 ))}
 
-                {currentData.length === 0 &&
+                {currentData.length === 0 && !loading &&
                     <tr>
                         <td colSpan={columnsAmount} className="text-center border-white">{noDataBody}</td>
+                    </tr>
+                }
+
+                {loading &&
+                    <tr>
+                        <td colSpan={columnsAmount} className="text-center border-bottom-0">
+                            <Spinner animation="border" variant="primary"/>
+                        </td>
                     </tr>
                 }
                 </tbody>
