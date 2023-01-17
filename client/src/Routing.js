@@ -13,31 +13,15 @@ import UserProfile from "./components/userProfile/UserProfile";
 const Routing = () => {
     return (
         <Routes>
-            <Route path="/auth" element={<AuthenticationGuardRoute shouldBeLoggedIn="false" />}>
-                <Route path="/auth" element={<AuthenticationContainer />} />
-            </Route>
-            <Route path="/search/users" element={<AuthenticationGuardRoute />}>
-                <Route path="/search/users" element={<SearchUsers />} />
-            </Route>
-            <Route path="/users/update" element={<AuthenticationGuardRoute />}>
-                <Route path="/users/update" element={<UpdateDetails />} />
-            </Route>
+            <Route path="/auth"  element={<AuthenticationGuardRoute shouldBeLoggedIn={false}><AuthenticationContainer /></AuthenticationGuardRoute>} />
+            <Route path="/" element={<AuthenticationGuardRoute><Home /></AuthenticationGuardRoute>} />
+            <Route path="/search/users" element={<AuthenticationGuardRoute><SearchUsers /></AuthenticationGuardRoute>} />
+            <Route path="/users/update" element={<AuthenticationGuardRoute><UpdateDetails /></AuthenticationGuardRoute>} />
+            <Route path="/statistics" element={<AuthenticationGuardRoute><Statistics /></AuthenticationGuardRoute>} />
+            <Route path="/users/:email" element={<AuthenticationGuardRoute><UserProfile /></AuthenticationGuardRoute>} />
+            <Route path="/series" element={<AuthenticationGuardRoute><SearchSeries /></AuthenticationGuardRoute>} />
+            <Route path="/series/:id" element={<AuthenticationGuardRoute><SeriesDetails /></AuthenticationGuardRoute>} />
             <Route path="/logout" element={<Logout />} />
-            <Route path="/statistics" element={<AuthenticationGuardRoute />}>
-                <Route path="/statistics" element={<Statistics />} />
-            </Route>
-            <Route path="/users/:email" element={<AuthenticationGuardRoute />}>
-                <Route path="/users/:email" element={<UserProfile />} />
-            </Route>
-            <Route path="/" element={<AuthenticationGuardRoute />}>
-                <Route path="/" element={<Home />} />
-            </Route>
-            <Route path="/series" element={<AuthenticationGuardRoute />}>
-                <Route path="/series" element={<SearchSeries />} />
-            </Route>
-            <Route path="/series/:id" element={<AuthenticationGuardRoute />}>
-                <Route path="/series/:id" element={<SeriesDetails />} />
-            </Route>
             <Route path="*" element={<Navigate to='/' />} />
         </Routes>
     );

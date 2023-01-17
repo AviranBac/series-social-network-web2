@@ -4,15 +4,19 @@ import { useEffect, useState } from 'react';
 import seriesService from "../../services/series.service";
 import { useSelector } from "react-redux";
 import { selectUserEmail } from "../../features/auth/auth.selectors";
+import { Spinner } from "react-bootstrap";
 
 const SeriesRow = (props) => {
     const { seriesRequestFn, title, subtitle } = props;
     const [series, setSeries] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         seriesRequestFn()
             .then(response => setSeries(response.data.slice(0, 5)))
             .catch(console.error)
+            .finally(() => setLoading(false));
     }, [seriesRequestFn]);
 
     return (
@@ -24,7 +28,12 @@ const SeriesRow = (props) => {
                 </MDBCardHeader>
                 <MDBCardBody style={{ padding: ".5rem 1.5rem" }}>
                     <MDBRow className='row-cols-1 row-cols-md-5 g-3 mb-2'>
-                        {series.map(series => (
+                        {loading &&
+                            <div className="text-center m-auto">
+                                <Spinner animation="border" variant="primary"/>
+                            </div>
+                        }
+                        {!loading && series.map(series => (
                             <SeriesCard series={series} key={series._id}/>
                         ))}
                     </MDBRow>

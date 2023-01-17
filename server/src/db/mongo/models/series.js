@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Genres = require('./genre');
 
-const statusSeries = ['Returning Series', 'Ended', 'Canceled'];
+const statusSeries = ['Returning Series', 'Ended', 'Canceled', 'In Production'];
 
 const seriesSchema = new mongoose.Schema({
     name: {

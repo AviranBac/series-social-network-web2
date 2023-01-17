@@ -6,11 +6,13 @@ import { sortBy } from "lodash";
 import { useSelector } from "react-redux";
 import { selectUserEmail } from "../../../features/auth/auth.selectors";
 import SingleSeriesItem from "./singleSeriesItem/SingleSeriesItem";
+import { Spinner } from "react-bootstrap";
 
 const Watchlist = ({ email }) => {
     const [watchlist, setWatchlist] = useState([]);
     const loggedInEmail = useSelector(selectUserEmail);
     const isLoggedInUser = email === loggedInEmail;
+    const [loading, setLoading] = useState(true);
 
     const setSortedWatchlist = (watchlist) => {
         const sortedWatchlist = sortBy(watchlist, series => series.name);
@@ -25,8 +27,12 @@ const Watchlist = ({ email }) => {
     };
 
     useEffect(() => {
+        setLoading(true);
         watchlistService.getUserWatchlist(email)
-            .then(setSortedWatchlist);
+            .then((watchlist) => {
+                setSortedWatchlist(watchlist);
+                setLoading(false);
+            });
     }, [email]);
 
     return (
@@ -43,7 +49,13 @@ const Watchlist = ({ email }) => {
                 </MDBAccordion>
             }
             {
-                watchlist.length === 0 && <h6 className="text-center border-white mt-4">This user does not have a watchlist yet</h6>
+                watchlist.length === 0 && !loading && <h6 className="text-center border-white mt-4">This user does not have a watchlist yet</h6>
+            }
+            {
+                watchlist.length === 0 && loading &&
+                <div className="text-center">
+                    <Spinner animation="border" variant="primary" />
+                </div>
             }
         </>
     );

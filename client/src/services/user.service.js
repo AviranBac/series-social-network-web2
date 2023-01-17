@@ -1,8 +1,8 @@
 import { config } from "../config/config";
-import { axiosInstance } from "../utils/AxiosInstance";
+import axios from "axios";
 
 const searchUsers = (currentPage,  emailSearchValue, displayNameSearchValue, creationTimeSearchValue) => {
-    return axiosInstance.get(`${config.serverUrl}/users`, {
+    return axios.get(`${config.serverUrl}/users`, {
         params: {
             page: currentPage,
             emailSearchValue : emailSearchValue,

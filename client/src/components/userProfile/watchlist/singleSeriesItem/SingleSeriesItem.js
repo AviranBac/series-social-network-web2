@@ -24,6 +24,7 @@ const SingleSeriesHeader = ({ series, email, isLoggedInUser, onWatchlistChange }
                                    entityType={EntityType.SERIES}
                                    disableClick={!isLoggedInUser}
                                    className="m-auto"
+                                   size="sm"
                                    explicitWatchlistStatus={series.watchlistStatus}
                                    onWatchlistChange={onWatchlistChange}
                     />
@@ -62,6 +63,7 @@ const SingleSeriesBody = ({ series, email, isLoggedInUser, onWatchlistChange }) 
                                                    entityType={EntityType.SEASON}
                                                    disableClick={!isLoggedInUser}
                                                    className="mt-1"
+                                                   size="sm"
                                                    explicitWatchlistStatus={season.watchlistStatus}
                                                    onWatchlistChange={onWatchlistChange}
                                     />
@@ -80,6 +82,7 @@ const SingleSeriesBody = ({ series, email, isLoggedInUser, onWatchlistChange }) 
                                                    entityType={EntityType.EPISODE}
                                                    disableClick={!isLoggedInUser}
                                                    className="mt-1"
+                                                   size="sm"
                                                    explicitWatchlistStatus={WatchlistStatus.COMPLETE}
                                                    onWatchlistChange={onWatchlistChange}
                                     />

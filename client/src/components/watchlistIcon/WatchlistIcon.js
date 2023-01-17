@@ -4,7 +4,7 @@ import { ActionType } from "../../enums/ActionType";
 import { faStar as faRegularStar } from "@fortawesome/free-regular-svg-icons";
 import { faStar as faSolidStar, faStarHalfStroke } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { OverlayTrigger, Spinner, Tooltip } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
     selectEpisodeWatchlistStatus,
@@ -13,10 +13,12 @@ import {
 } from "../../features/watchlist/watchlist.selectors";
 import watchlistService from "../../services/watchlist.service";
 import { updateWatchlist } from "../../features/watchlist/watchlist.slice";
+import { useState } from "react";
 
 const WatchlistIcon = (props) => {
-    const { relatedEmail, entity, entityType, disableClick = false, className, explicitWatchlistStatus, onWatchlistChange } = props;
+    const { relatedEmail, entity, entityType, disableClick = false, className, size = "md", explicitWatchlistStatus, onWatchlistChange = (watchlist) => {} } = props;
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
 
     let watchlistStatusSelectorFn;
     switch (entityType) {
@@ -44,26 +46,33 @@ const WatchlistIcon = (props) => {
         event.preventDefault();
 
         if (!disableClick) {
+            setLoading(true);
             watchlistService.updateUserWatchlist(upcomingActionType, relatedEmail,  entity._id, entityType)
                 .then(updatedWatchlist => {
                     dispatch(updateWatchlist(updatedWatchlist));
                     onWatchlistChange(updatedWatchlist);
                 })
-                .catch(console.error);
+                .catch(console.error)
+                .finally(() => setLoading(false));
         }
     }
 
     return (
         <>
             { watchlistStatus &&
-                <OverlayTrigger placement="bottom"
-                                overlay={<Tooltip id="tooltip"><b>{upcomingActionType === ActionType.ADD ? "Add to watchlist" : "Remove from watchlist"}</b></Tooltip>}>
-                    <FontAwesomeIcon className={`${className} ${disableClick ? " pe-none" : ""}`}
-                                     icon={getStarIcon()}
-                                     color={ disableClick ? 'gray' : 'gold' }
-                                     cursor="pointer"
-                                     onClick={updateUserWatchlist}/>
-                </OverlayTrigger>
+                <>
+                    { loading && <Spinner size={size} className={className} animation="border" variant="primary"/> }
+                    { !loading &&
+                        <OverlayTrigger placement="bottom"
+                                        overlay={<Tooltip id="tooltip"><b>{upcomingActionType === ActionType.ADD ? "Add to watchlist" : "Remove from watchlist"}</b></Tooltip>}>
+                            <FontAwesomeIcon className={`${className} ${disableClick ? " pe-none" : ""}`}
+                                             icon={getStarIcon()}
+                                             color={ disableClick ? 'gray' : 'gold' }
+                                             cursor="pointer"
+                                             onClick={updateUserWatchlist}/>
+                        </OverlayTrigger>
+                    }
+                </>
             }
         </>
     );

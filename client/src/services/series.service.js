@@ -1,8 +1,8 @@
 import { config } from "../config/config";
-import { axiosInstance } from "../utils/AxiosInstance";
+import axios from "axios";
 
 const loadSeriesDetails = (seriesId) => {
-    return axiosInstance.get(`${config.serverUrl}/series/${seriesId}`)
+    return axios.get(`${config.serverUrl}/series/${seriesId}`)
         .then(response => response.data)
         .catch(error => {
             console.error(`Error while trying to fetch series details for seriesId ${seriesId}, Error: ${error}`);
@@ -11,7 +11,7 @@ const loadSeriesDetails = (seriesId) => {
 };
 
 const getMostRecommendedSeries = (email, pageNumber = 1) => {
-    return axiosInstance.get(`${config.serverUrl}/series/commonAmongFollowing/${email}`, {
+    return axios.get(`${config.serverUrl}/series/commonAmongFollowing/${email}`, {
         params: { pageNumber }
     })
         .then(response => response.data)
@@ -22,7 +22,7 @@ const getMostRecommendedSeries = (email, pageNumber = 1) => {
 };
 
 const getMostPopularSeries = (pageNumber = 1) => {
-    return axiosInstance.get(`${config.serverUrl}/series/popular`, {
+    return axios.get(`${config.serverUrl}/series/popular`, {
         params: { pageNumber }
     })
         .then(response => response.data)
@@ -33,7 +33,7 @@ const getMostPopularSeries = (pageNumber = 1) => {
 };
 
 const getSeriesFilterTypes = () => {
-    return axiosInstance.get(`${config.serverUrl}/series/filters`)
+    return axios.get(`${config.serverUrl}/series/filters`)
         .then(response => response.data)
         .catch(error => {
             console.error(`Error while trying to fetch series filters, Error: ${error}`);
@@ -43,7 +43,7 @@ const getSeriesFilterTypes = () => {
 
 const getSeriesByFilters = (query, pageNumber = 1) => {
     const params = { ...query, pageNumber };
-    return axiosInstance.get(`${config.serverUrl}/series`, { params })
+    return axios.get(`${config.serverUrl}/series`, { params })
         .then(response => response.data)
         .catch(error => {
             console.error(`Error while trying to fetch series filters, Error: ${error}`);
@@ -52,7 +52,7 @@ const getSeriesByFilters = (query, pageNumber = 1) => {
 };
 
 const getTopRatedSeries = (pageNumber = 1) => {
-    return axiosInstance.get(`${config.serverUrl}/series/topRated`, {
+    return axios.get(`${config.serverUrl}/series/topRated`, {
         params: { pageNumber }
     })
         .then(response => response.data)
@@ -63,7 +63,7 @@ const getTopRatedSeries = (pageNumber = 1) => {
 };
 
 const getMostWatchedSeries = (pageNumber = 1) => {
-    return axiosInstance.get(`${config.serverUrl}/series/mostWatched`, {
+    return axios.get(`${config.serverUrl}/series/mostWatched`, {
         params: { pageNumber }
     })
         .then(response => response.data)

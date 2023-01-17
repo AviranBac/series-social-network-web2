@@ -11,11 +11,13 @@ import WishlistIcon from "../wishlistIcon/WishlistIcon";
 import wishlistService from '../../services/wishlist.service';
 import classes from "./Wishlist.module.css";
 import { selectWishlistSeriesIds } from "../../features/wishlist/wishlist.selectors";
+import { Spinner } from "react-bootstrap";
 
 const Wishlist = ({ email }) => {
     const [wishlist, setWishlist] = useState([]);
     const currentUserEmail = useSelector(selectUserEmail);
     const wishlistSeriesIds = useSelector(selectWishlistSeriesIds);
+    const [loading, setLoading] = useState(true);
 
     const detailsMetadata = [
         [{
@@ -42,14 +44,16 @@ const Wishlist = ({ email }) => {
         async function fetchData() {
             const wishlist = await wishlistService.getUserWishlist(email);
             setWishlist(wishlist.data);
+            setLoading(false);
         }
+
         fetchData();
     }, [email, wishlistSeriesIds]);
 
     return (
         <>
             {
-                wishlist.length > 0 && wishlist.map((series) => (
+                wishlist.length > 0 && !loading && wishlist.map((series) => (
                     <MDBContainer className="my-3" style={{width: "70%"}} key={series._id}>
                         <MDBCard className="w-100">
                             <MDBCardBody className="d-flex w-100 py-3">
@@ -68,6 +72,7 @@ const Wishlist = ({ email }) => {
                                                       series={series}
                                                       className="my-auto"
                                                       disableClick={currentUserEmail !== email}
+                                                      size="sm"
                                                       explicitIsInWishlist={true} />
                                     </div>
                                     <div className={`m-auto ${classes.details}`}>
@@ -98,7 +103,14 @@ const Wishlist = ({ email }) => {
             }
 
             {
-                wishlist.length === 0 && <h6 className="text-center border-white mt-4">This user does not have a wishlist yet</h6>
+                wishlist.length === 0 && !loading && <h6 className="text-center border-white mt-4">This user does not have a wishlist yet</h6>
+            }
+
+            {
+                loading &&
+                <div className="text-center">
+                    <Spinner animation="border" variant="primary" />
+                </div>
             }
         </>
     );

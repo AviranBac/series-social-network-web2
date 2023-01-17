@@ -1,4 +1,4 @@
-import SeriesChart from "./seriesChart/SeriesChart";
+import EntityChart from "./entityChart/EntityChart";
 import seriesService from "../../services/series.service";
 import classes from "./Statistics.module.css";
 import { Tab, Tabs } from "react-bootstrap";
@@ -62,7 +62,7 @@ const Statistics = () => {
             <Tabs justify unmountOnExit className={classes.tabs}>
                 {chartsMetadata.map(chartMetadata =>
                     <Tab eventKey={chartMetadata.tabTitle} title={chartMetadata.tabTitle} key={chartMetadata.tabTitle}>
-                        <SeriesChart chartMetadata={chartMetadata} />
+                        <EntityChart chartMetadata={chartMetadata} />
                     </Tab>
                 )}
             </Tabs>
