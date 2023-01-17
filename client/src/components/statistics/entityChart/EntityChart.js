@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Bar, BarChart, CartesianGrid, Label, ResponsiveContainer, Text, Tooltip, XAxis, YAxis } from 'recharts';
 import Pagination from "../../pagination/Pagination";
 import "./EntityChart.module.css";
+import { Spinner } from "react-bootstrap";
 
 const EntityChart = ({ chartMetadata }) => {
     const { loadRequestFn, xAxisDataKey, yAxisDataKey, yAxisDataKeyDisplayName, routerLinkExtractor } = chartMetadata;
@@ -42,10 +43,11 @@ const EntityChart = ({ chartMetadata }) => {
 
     return (
         <>
+            {loading && <div className="text-center"><Spinner animation="border" variant="primary"/></div> }
             {data.length === 0 && !loading &&
                 <div className="text-center">There are 0 entities matching this criteria.</div>
             }
-            {data.length > 0 &&
+            {data.length > 0 && !loading &&
                 <>
                     <ResponsiveContainer width="80%" height={400}>
                         <BarChart
