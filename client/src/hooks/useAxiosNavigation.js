@@ -36,7 +36,7 @@ export function useAxiosNavigation() {
         );
 
         return () => {
-            axios.interceptors.response.eject(interceptor);
+            axios.interceptors.request.eject(interceptor);
         };
     }, []);
 }
