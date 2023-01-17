@@ -42,7 +42,6 @@ const Wishlist = ({ email }) => {
 
     useEffect(() => {
         async function fetchData() {
-            setLoading(true);
             const wishlist = await wishlistService.getUserWishlist(email);
             setWishlist(wishlist.data);
             setLoading(false);
