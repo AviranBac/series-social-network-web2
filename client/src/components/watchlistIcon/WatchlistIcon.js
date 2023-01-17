@@ -15,7 +15,7 @@ import watchlistService from "../../services/watchlist.service";
 import { updateWatchlist } from "../../features/watchlist/watchlist.slice";
 
 const WatchlistIcon = (props) => {
-    const { relatedEmail, entity, entityType, disableClick = false, className, explicitWatchlistStatus, onWatchlistChange } = props;
+    const { relatedEmail, entity, entityType, disableClick = false, className, explicitWatchlistStatus, onWatchlistChange = (watchlist) => {} } = props;
     const dispatch = useDispatch();
 
     let watchlistStatusSelectorFn;
