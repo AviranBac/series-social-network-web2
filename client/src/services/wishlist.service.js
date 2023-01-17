@@ -1,8 +1,8 @@
 import { config } from "../config/config";
-import { axiosInstance } from "../utils/AxiosInstance";
+import axios from "axios";
 
 const getUserWishlist = async (email) => {
-    return axiosInstance.get(`${config.serverUrl}/wishlist/${email}`)
+    return axios.get(`${config.serverUrl}/wishlist/${email}`)
         .catch(error => {
             console.error(`Error while trying to get user ${email}'s wishlist, Error: ${error}`);
             throw error;
@@ -10,7 +10,7 @@ const getUserWishlist = async (email) => {
 };
 
 const updateWishlist = async (email, seriesId, action) => {
-    return axiosInstance.post(`${config.serverUrl}/wishlist`, {
+    return axios.post(`${config.serverUrl}/wishlist`, {
         action,
         email,
         seriesId

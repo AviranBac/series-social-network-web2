@@ -1,5 +1,4 @@
 import { config } from "../config/config";
-import { axiosInstance } from "../utils/AxiosInstance";
 import axios from "axios";
 
 const humanizeErrorMessage = (error) => {
@@ -25,7 +24,7 @@ const humanizeErrorMessage = (error) => {
 const login = (payload) => {
     const { email, password } = payload;
 
-    return axiosInstance.post(`${config.firebase.url}/accounts:signInWithPassword?key=${config.firebase.apiKey}`, {
+    return axios.post(`${config.firebase.url}/accounts:signInWithPassword?key=${config.firebase.apiKey}`, {
         email,
         password,
         returnSecureToken: true
@@ -46,7 +45,7 @@ const login = (payload) => {
 const register = (payload) => {
     const { email, password } = payload;
 
-    return axiosInstance.post(`${config.firebase.url}/accounts:signUp?key=${config.firebase.apiKey}`, {
+    return axios.post(`${config.firebase.url}/accounts:signUp?key=${config.firebase.apiKey}`, {
         email,
         password,
         returnSecureToken: true
@@ -58,7 +57,7 @@ const register = (payload) => {
 };
 
 const updateUserDetails = ({ idToken, password, displayName }) => {
-    return axiosInstance.post(`${config.firebase.url}/accounts:update?key=${config.firebase.apiKey}`, {
+    return axios.post(`${config.firebase.url}/accounts:update?key=${config.firebase.apiKey}`, {
         idToken,
         password,
         displayName
@@ -104,8 +103,6 @@ const refreshToken = () => {
             return updatedUser;
         })
         .catch(error => {
-            console.log("try");
-            logout();
             throw new Error(`You need to login. Error: ${humanizeErrorMessage(error)}`);
         });
 };

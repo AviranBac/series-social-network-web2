@@ -1,8 +1,8 @@
 import { config } from "../config/config";
-import { axiosInstance } from "../utils/AxiosInstance";
+import axios from "axios";
 
 const loadFollowers = (email, pageNumber) => {
-    return axiosInstance.get(`${config.serverUrl}/follows/${email}/followers/`, {
+    return axios.get(`${config.serverUrl}/follows/${email}/followers/`, {
         params: { pageNumber }
     }).then(response => response.data)
         .catch(error => {
@@ -12,7 +12,7 @@ const loadFollowers = (email, pageNumber) => {
 };
 
 const loadFollowings = (email, pageNumber) => {
-    return axiosInstance.get(`${config.serverUrl}/follows/${email}/following/`, {
+    return axios.get(`${config.serverUrl}/follows/${email}/following/`, {
         params: { pageNumber }
     }).then(response => response.data)
         .catch(error => {
@@ -22,7 +22,7 @@ const loadFollowings = (email, pageNumber) => {
 };
 
 const isFollowing = (emailFrom, emailTo) => {
-    return axiosInstance.get(`${config.serverUrl}/follows/${emailFrom}/following/${emailTo}`,)
+    return axios.get(`${config.serverUrl}/follows/${emailFrom}/following/${emailTo}`,)
         .then(response => response.data?._id)
         .catch(error => {
             console.error(`Error while trying to update follower. Error: ${error}`);
@@ -31,7 +31,7 @@ const isFollowing = (emailFrom, emailTo) => {
 };
 
 const getMostFollowedUsers = (pageNumber) => {
-    return axiosInstance.get(`${config.serverUrl}/follows/mostFollowed`, {
+    return axios.get(`${config.serverUrl}/follows/mostFollowed`, {
         params: { pageNumber }
     }).then(response => response.data)
         .catch(error => {
@@ -41,7 +41,7 @@ const getMostFollowedUsers = (pageNumber) => {
 };
 
 const updateFollow = (action, emailFrom, emailTo) => {
-    return axiosInstance.post(`${config.serverUrl}/follows`, { action, emailFrom, emailTo })
+    return axios.post(`${config.serverUrl}/follows`, { action, emailFrom, emailTo })
         .then(response => response.data)
         .catch(error => {
             console.error(`Error while trying to update follower. Error: ${error}`);
