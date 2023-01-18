@@ -19,10 +19,10 @@ const SearchSeries = () => {
     return (
         <Container fluid>
             <Row>
-                <Col xs={4} md={2} className="mt-3">
+                <Col xs={4} md={3} className="mt-3">
                     <SeriesFilters setSeriesFilters={setFilters} />
                 </Col>
-                <Col xs={14} md={10} className="mt-3">
+                <Col xs={14} md={9} className="mt-3">
                     <PaginationTable loadRequestFn={fetchData}
                                      columnDetails={seriesColumnDetails}
                                      imageSrcExtractor={(entity => entity.poster_path)}
